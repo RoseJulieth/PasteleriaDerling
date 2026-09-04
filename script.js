@@ -35,14 +35,26 @@ const PORTION_GROUPS = {
   A: {
     es: ["10 personas", "15 personas", "20 personas", "25 personas", "30 personas", "35-40 personas"],
     en: ["10 people", "15 people", "20 people", "25 people", "30 people", "35-40 people"],
+    short: {
+      es: ["10 pers.", "15 pers.", "20 pers.", "25 pers.", "30 pers.", "35-40 pers."],
+      en: ["10 ppl", "15 ppl", "20 ppl", "25 ppl", "30 ppl", "35-40 ppl"],
+    },
   },
   B: {
     es: ["10-12 personas", "15 personas", "20 personas", "25 personas", "30 personas", "35-40 personas"],
     en: ["10-12 people", "15 people", "20 people", "25 people", "30 people", "35-40 people"],
+    short: {
+      es: ["10-12 pers.", "15 pers.", "20 pers.", "25 pers.", "30 pers.", "35-40 pers."],
+      en: ["10-12 ppl", "15 ppl", "20 ppl", "25 ppl", "30 ppl", "35-40 ppl"],
+    },
   },
   C: {
     es: ["15 personas", "25 personas", "30 personas", "40 personas", "45 personas", "50 personas"],
     en: ["15 people", "25 people", "30 people", "40 people", "45 people", "50 people"],
+    short: {
+      es: ["15 pers.", "25 pers.", "30 pers.", "40 pers.", "45 pers.", "50 pers."],
+      en: ["15 ppl", "25 ppl", "30 ppl", "40 ppl", "45 ppl", "50 ppl"],
+    },
   },
 };
 const ARO_SIZES = [22, 24, 26, 28, 30, 32];
@@ -328,11 +340,13 @@ const UI = {
     filterAll: "Todas",
     peopleLabel: "Elige el tamaño",
     priceFrom: "Desde",
-    orderButton: "Pedir por WhatsApp",
+    orderButton: "💬 Pedir aquí",
     aroLabel: "Aro",
+    mapsLinkText: "📍 Ver en Google Maps",
     noviosEyebrow: "Matrimonios y Eventos Especiales",
     noviosTitle: "Tortas de Novios y Eventos",
     noviosText: "¿Tienes un matrimonio, aniversario o evento especial? Diseñamos tu torta a medida. Coordina los detalles directamente con nosotras por llamada o WhatsApp.",
+    noviosDietary: "También preparamos tu pedido sin azúcar o según otras necesidades especiales que nos indiques (alergias, intolerancias, etc.). Cuéntanos tu requerimiento por WhatsApp o llamada.",
     noviosCall: "Llamar ahora",
     noviosWhatsapp: "Escribir por WhatsApp",
     infoTitle: "Información Útil",
@@ -375,11 +389,13 @@ const UI = {
     filterAll: "All",
     peopleLabel: "Choose a size",
     priceFrom: "From",
-    orderButton: "Order on WhatsApp",
+    orderButton: "💬 Order here",
     aroLabel: "Size",
+    mapsLinkText: "📍 View on Google Maps",
     noviosEyebrow: "Weddings & Special Events",
     noviosTitle: "Wedding & Event Cakes",
     noviosText: "Planning a wedding, anniversary or special event? We design a custom cake for you. Coordinate the details directly with us by phone call or WhatsApp.",
+    noviosDietary: "We can also prepare your order sugar-free or according to other special needs you let us know about (allergies, intolerances, etc.). Tell us your requirement via WhatsApp or phone call.",
     noviosCall: "Call now",
     noviosWhatsapp: "Message on WhatsApp",
     infoTitle: "Useful Information",
@@ -520,11 +536,22 @@ function buildCakeCard(product) {
   }
 
   const labels = PORTION_GROUPS[product.group][currentLang];
+  const shortLabels = PORTION_GROUPS[product.group].short[currentLang];
   labels.forEach((label, index) => {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "size-btn" + (index === selectedIndex ? " is-active" : "");
-    btn.textContent = t.aroLabel + " " + ARO_SIZES[index];
+
+    const aroSpan = document.createElement("span");
+    aroSpan.className = "size-btn-aro";
+    aroSpan.textContent = t.aroLabel + " " + ARO_SIZES[index];
+
+    const peopleSpan = document.createElement("span");
+    peopleSpan.className = "size-btn-people";
+    peopleSpan.textContent = shortLabels[index];
+
+    btn.appendChild(aroSpan);
+    btn.appendChild(peopleSpan);
     btn.setAttribute("aria-label", label);
     btn.addEventListener("click", () => {
       selectedIndex = index;
@@ -713,6 +740,10 @@ function setupContactLinks() {
       qrImage.hidden = true;
     });
   }
+
+  const mapsLink = document.getElementById("maps-link");
+  const mapsUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(BUSINESS.addressLine);
+  safeExternalLink(mapsLink, mapsUrl);
 
   document.getElementById("business-address").textContent = BUSINESS.addressLine;
   document.getElementById("business-address-footer").textContent = BUSINESS.addressLine;
