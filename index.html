@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pastelería Derling — Catálogo de Tortas Artesanales en Copiapó</title>
+<meta name="description" content="Tortas artesanales, cóctel y kuchenes salados en Copiapó. Pide por WhatsApp. Cake catalog available in English.">
+<meta name="theme-color" content="#7a3b3b">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:,">
+</head>
+<body>
+<a class="skip-link" href="#main-content" data-i18n="skipLink">Ir al contenido</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">🍰</span>
+      <span class="brand-name" id="business-name">Pastelería Derling</span>
+    </div>
+
+    <button type="button" id="nav-toggle" class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="main-nav">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav id="main-nav" class="main-nav">
+      <a href="#catalogo" data-i18n="navCatalog">Catálogo</a>
+      <a href="#novios" data-i18n="navNovios">Novios y Eventos</a>
+      <a href="#info" data-i18n="navInfo">Información</a>
+      <button type="button" id="lang-toggle" class="lang-toggle" aria-label="Switch to English">EN</button>
+    </nav>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="hero-eyebrow" data-i18n="tagline">Sabores que perduran en cada celebración</p>
+      <h1 data-i18n="heroTitle">Pastelería Derling</h1>
+      <p class="hero-subtitle" data-i18n="heroSubtitle">Tortas artesanales, cóctel y kuchenes salados hechos con receta de familia en Copiapó.</p>
+      <div class="hero-cta">
+        <a href="#catalogo" class="btn btn-primary" data-i18n="ctaCatalog">Ver catálogo</a>
+        <a href="#" id="hero-whatsapp" class="btn btn-whatsapp" data-i18n="ctaWhatsapp">Pedir por WhatsApp</a>
+      </div>
+    </div>
+    <!--
+      SUGERENCIA: puedes reemplazar el emoji de fondo por una foto real.
+      Busca la clase ".hero" en styles.css y sigue las instrucciones ahí.
+    -->
+  </section>
+
+  <section id="catalogo" class="catalog-section">
+    <div class="section-inner">
+      <h2 data-i18n="catalogTitle">Nuestro Catálogo</h2>
+      <p class="section-subtitle" data-i18n="catalogSubtitle">Elige el tamaño y el precio se actualiza al instante.</p>
+
+      <div id="filter-bar" class="filter-bar" role="tablist" aria-label="Filtrar catálogo"></div>
+
+      <div id="catalog-grid" class="catalog-grid"></div>
+    </div>
+  </section>
+
+  <section id="novios" class="novios-section">
+    <div class="section-inner novios-inner">
+      <p class="novios-eyebrow" data-i18n="noviosEyebrow">Matrimonios y Eventos Especiales</p>
+      <h2 data-i18n="noviosTitle">Tortas de Novios y Eventos</h2>
+      <p class="novios-text" data-i18n="noviosText">
+        ¿Tienes un matrimonio, aniversario o evento especial? Diseñamos tu torta a medida.
+        Coordina los detalles directamente con nosotras por llamada o WhatsApp.
+      </p>
+      <div class="novios-cta">
+        <a href="#" id="novios-call" class="btn btn-outline" data-i18n="noviosCall">Llamar ahora</a>
+        <a href="#" id="novios-whatsapp" class="btn btn-whatsapp" data-i18n="noviosWhatsapp">Escribir por WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="info" class="info-section">
+    <div class="section-inner">
+      <h2 data-i18n="infoTitle">Información Útil</h2>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <h3 data-i18n="infoSchedule">Horario de Atención</h3>
+          <ul id="schedule-list" class="schedule-list"></ul>
+        </div>
+
+        <div class="info-card">
+          <h3 data-i18n="infoAddress">Dirección y Retiro</h3>
+          <p id="business-address" class="info-address">Av. El Palomar 1733, Copiapó</p>
+          <p data-i18n="infoDelivery">Coordinamos despacho dentro de Copiapó o retiro directo en nuestro local. Consulta disponibilidad y costo de envío por WhatsApp.</p>
+        </div>
+
+        <div class="info-card">
+          <h3 data-i18n="infoAnticipation">Anticipación para Pedidos</h3>
+          <p data-i18n="infoAnticipationText">Recomendamos encargar tus tortas con al menos 48 horas de anticipación, y con 1 semana para tortas de matrimonio o eventos grandes. Se solicita un abono para confirmar el pedido.</p>
+        </div>
+
+        <div class="info-card">
+          <h3 data-i18n="infoPayment">Métodos de Pago</h3>
+          <p data-i18n="infoPaymentText">Efectivo, transferencia bancaria y tarjetas de débito/crédito (sujeto a disponibilidad).</p>
+          <p class="qr-caption" data-i18n="infoQr">Transfiere escaneando este código QR:</p>
+          <div class="qr-box">
+            <img src="images/qr-pago.png" alt="Código QR para transferencias" id="qr-image" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="section-inner footer-inner">
+    <div class="footer-brand">
+      <span id="footer-business-name">Pastelería Derling</span>
+      <p id="business-address-footer" class="footer-address">Av. El Palomar 1733, Copiapó</p>
+      <a href="mailto:esteladerling@gmail.com" id="contact-email" class="footer-email">esteladerling@gmail.com</a>
+    </div>
+    <div class="footer-social">
+      <p data-i18n="footerFollow">Síguenos</p>
+      <div class="social-links">
+        <a href="#" id="social-instagram" aria-label="Instagram">Instagram</a>
+        <a href="#" id="social-facebook" aria-label="Facebook">Facebook</a>
+      </div>
+    </div>
+    <p class="footer-rights">© <span id="footer-year">2026</span> <span class="footer-rights-name">Pastelería Derling</span>. <span data-i18n="footerRights">Todos los derechos reservados.</span></p>
+  </div>
+</footer>
+
+<a href="#" id="float-whatsapp" class="float-whatsapp" aria-label="Escríbenos por WhatsApp">
+  <span aria-hidden="true">💬</span>
+</a>
+
+<script src="script.js"></script>
+</body>
+</html>

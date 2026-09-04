@@ -1,0 +1,99 @@
+CÓMO AGREGAR TUS FOTOS
+=======================
+Guarda tus fotos en esta misma carpeta "images" usando EXACTAMENTE estos
+nombres (todo en minúscula, con guiones, sin tildes ni espacios). Si el
+nombre no coincide, la página mostrará un ícono de torta en su lugar (no se
+rompe, pero no se verá tu foto).
+
+Formato recomendado: JPG o PNG, foto cuadrada o 4:3, menos de 1 MB por fototografía
+para que la página cargue rápido.
+
+FOTO PRINCIPAL (portada) — opcional
+------------------------------------
+hero.jpg
+
+CÓDIGO QR DE TRANSFERENCIAS
+------------------------------------
+qr-pago.png
+
+TORTAS CLÁSICAS
+------------------------------------
+torta-pina.jpg
+torta-naranja.jpg
+torta-moka.jpg
+torta-primavera.jpg
+torta-manjar-merengue.jpg
+torta-manjar-nueces.jpg
+torta-manjar-pastelera.jpg
+torta-lucuma.jpg
+torta-comb-hoja-merengue.jpg
+torta-combinada.jpg
+torta-chocolate-manjar.jpg
+torta-selva-negra.jpg
+
+TORTAS TRADICIONALES
+------------------------------------
+torta-reina-ana.jpg
+torta-chocolate-ganache.jpg
+torta-ciruela.jpg
+torta-turron-nuez.jpg
+torta-turron-coco.jpg
+
+TORTAS ESPECIALES
+------------------------------------
+torta-hojarasca-manjar.jpg
+torta-hojarasca-yemas.jpg
+torta-pompadour.jpg
+torta-trasnochada.jpg
+torta-amor.jpg
+torta-tropical.jpg
+torta-merengue-lucuma.jpg
+torta-merengue-mango.jpg
+torta-merengue-frutilla.jpg
+torta-merengue-pina.jpg
+torta-merengue-frambuesa.jpg
+torta-merengue-durazno.jpg
+
+TORTAS DE PANQUEQUE
+------------------------------------
+torta-panq-almendra.jpg
+torta-panq-chocolate.jpg
+torta-reina-sofia.jpg
+torta-bicolor.jpg
+torta-muselina.jpg
+torta-panq-naranja.jpg
+torta-panq-chocolate-cobertura.jpg
+
+TORTAS PREMIUM
+------------------------------------
+torta-napoleon.jpg
+torta-nuez.jpg
+torta-tres-leches.jpg
+torta-rellena.jpg
+
+CÓCTEL Y CANAPÉS
+------------------------------------
+canapes-pastas.jpg
+canapes-finos.jpg
+petit-bouche.jpg
+empanaditas-queso-pino.jpg
+empanaditas-camaron.jpg
+empanaditas-jamon-queso.jpg
+pizzetas.jpg
+pastel-choclo.jpg
+tapaditos-1.jpg
+diplomatico.jpg
+tapaditos-2.jpg
+
+QUICHES Y KUCHENES SALADOS
+------------------------------------
+quiche-clasico.jpg
+quiche-lorraine.jpg
+quiche-marisco.jpg
+quiche-vegetariano.jpg
+quiche-del-mar.jpg
+quiche-individual.jpg
+
+TIP: no necesitas subir las 55 fotos el primer día. Empieza con las 5-10
+tortas que más vendes y ve agregando el resto después. La página funciona
+perfecto aunque falten fotos.
