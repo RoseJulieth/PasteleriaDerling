@@ -351,6 +351,54 @@ const GALLERY_ITEMS = [
 
 /*
  * ==========================================================================
+ * TEMPORADA ESPECIAL (Fiestas Patrias, Navidad, Día de la Madre, etc.)
+ * ==========================================================================
+ * Usa este espacio para productos de una fecha especial. Cuando la
+ * temporada termine, NO hace falta borrar nada: solo cambia "active" a
+ * false (una línea más abajo) para ocultar toda la sección hasta la
+ * próxima fecha especial. Cuando quieras mostrarla de nuevo, cambia el
+ * título, las fotos y los productos, y vuelve a poner "active" a true.
+ */
+const SEASONAL = {
+  active: true, // true = mostrar la sección / false = ocultarla
+  es: {
+    title: "Fiestas Patrias",
+    subtitle: "Empanadas y productos típicos para este 18 de septiembre. ¡Encarga con tiempo!",
+  },
+  en: {
+    title: "Chilean Independence Day",
+    subtitle: "Empanadas and traditional treats for this September 18th. Order ahead!",
+  },
+};
+
+/*
+ * Cada producto de temporada necesita nombre y foto. El precio es
+ * opcional: si no quieres mostrar uno, borra esa línea completa
+ * (la que dice "price: ...,").
+ *
+ * Para agregar uno nuevo: copia un bloque completo (desde { hasta },) y
+ * pégalo antes del corchete final "]". Cambia "id" (sin espacios ni
+ * tildes), el nombre en español e inglés, el precio y el nombre del
+ * archivo de la foto en "img" (guárdala en la carpeta images/ con ese
+ * mismo nombre). Para quitar un producto, borra su bloque completo.
+ */
+const SEASONAL_ITEMS = [
+  { id: "temporada-1", img: "images/temporada-1.jpg",
+    es: { name: "Empanada de Pino" },
+    en: { name: "Beef Empanada" },
+    price: 1800 },
+  { id: "temporada-2", img: "images/temporada-2.jpg",
+    es: { name: "Empanada de Queso" },
+    en: { name: "Cheese Empanada" },
+    price: 1600 },
+  { id: "temporada-3", img: "images/temporada-3.jpg",
+    es: { name: "Torta de Chocolate Especial 18" },
+    en: { name: "Special Chocolate Cake" },
+    price: 35000 },
+];
+
+/*
+ * ==========================================================================
  * TEXTOS DE LA INTERFAZ (ES / EN)
  * ==========================================================================
  */
@@ -362,6 +410,7 @@ const UI = {
     heroSubtitle: "Tortas artesanales, cóctel y kuchenes salados hechos con receta de familia en Copiapó.",
     ctaCatalog: "Ver catálogo",
     ctaWhatsapp: "Pedir por WhatsApp",
+    navTemporada: "Temporada Especial",
     navCatalog: "Catálogo",
     navGaleria: "Galería",
     navNovios: "Novios y Eventos",
@@ -408,6 +457,10 @@ const UI = {
       `Hola, quiero encargar la ${name} para ${size} (Precio: ${price}). ¿Está disponible?`,
     whatsGreetingSimple: (name, unit, price) =>
       `Hola, quiero encargar: ${name} (${unit}) - Precio: ${price}. ¿Está disponible?`,
+    whatsGreetingSeasonal: (name, seasonTitle, price) =>
+      price
+        ? `Hola, quiero encargar: ${name} (${seasonTitle}) - Precio: ${price}. ¿Está disponible?`
+        : `Hola, quiero encargar: ${name} (${seasonTitle}). ¿Está disponible?`,
     whatsGreetingNovios: "Hola, me gustaría cotizar una torta para matrimonio o evento especial. Fecha del evento: ___ / Número de invitados: ___",
     photoSoon: "Foto próximamente",
   },
@@ -418,6 +471,7 @@ const UI = {
     heroSubtitle: "Handcrafted cakes, cocktail bites and savory kuchen made with a family recipe in Copiapó, Chile.",
     ctaCatalog: "View catalog",
     ctaWhatsapp: "Order on WhatsApp",
+    navTemporada: "Special Season",
     navCatalog: "Catalog",
     navGaleria: "Gallery",
     navNovios: "Weddings & Events",
@@ -464,6 +518,10 @@ const UI = {
       `Hi! I'd like to order the ${name} for ${size} (Price: ${price}). Is it available?`,
     whatsGreetingSimple: (name, unit, price) =>
       `Hi! I'd like to order: ${name} (${unit}) - Price: ${price}. Is it available?`,
+    whatsGreetingSeasonal: (name, seasonTitle, price) =>
+      price
+        ? `Hi! I'd like to order: ${name} (${seasonTitle}) - Price: ${price}. Is it available?`
+        : `Hi! I'd like to order: ${name} (${seasonTitle}). Is it available?`,
     whatsGreetingNovios: "Hi! I'd like a quote for a wedding or special-event cake. Event date: ___ / Number of guests: ___",
     photoSoon: "Photo coming soon",
   },
@@ -529,6 +587,21 @@ function setWhatsappLabel(el, text, iconClass) {
   const span = document.createElement("span");
   span.textContent = text;
   el.appendChild(span);
+}
+
+// Para <img> que ya vienen escritas en el HTML (como el logo o el QR):
+// el navegador empieza a cargarlas apenas lee la página, antes de que
+// termine de cargar script.js. Si la imagen falla muy rápido (por
+// ejemplo, un 404 en el mismo servidor), el evento "error" puede ocurrir
+// antes de que alcancemos a agregar el listener. Por eso primero
+// revisamos "img.complete" — si ya terminó (con o sin éxito) actuamos de
+// inmediato; si no, recién ahí escuchamos el evento.
+function watchImageForError(img, onError) {
+  if (img.complete) {
+    if (img.naturalWidth === 0) onError();
+  } else {
+    img.addEventListener("error", onError, { once: true });
+  }
 }
 
 function makePhotoBox(imgPath, altText) {
@@ -787,6 +860,65 @@ function renderGallery() {
   GALLERY_ITEMS.forEach((item) => grid.appendChild(buildGalleryCard(item)));
 }
 
+function buildSeasonalCard(item) {
+  const t = UI[currentLang];
+  const article = document.createElement("article");
+  article.className = "card";
+  article.appendChild(makePhotoBox(item.img, item[currentLang].name));
+
+  const body = document.createElement("div");
+  body.className = "card-body";
+
+  const title = document.createElement("h3");
+  title.className = "card-title";
+  title.textContent = item[currentLang].name;
+  body.appendChild(title);
+
+  if (item.price) {
+    const priceRow = document.createElement("div");
+    priceRow.className = "price-row";
+    const priceValue = document.createElement("span");
+    priceValue.className = "price-value";
+    priceValue.textContent = formatCLP(item.price);
+    priceRow.appendChild(priceValue);
+    body.appendChild(priceRow);
+  }
+
+  const orderLink = document.createElement("a");
+  orderLink.className = "btn btn-order";
+  setWhatsappLabel(orderLink, t.orderButton);
+  const message = t.whatsGreetingSeasonal(
+    item[currentLang].name,
+    SEASONAL[currentLang].title,
+    item.price ? formatCLP(item.price) : ""
+  );
+  safeExternalLink(orderLink, buildWhatsappLink(BUSINESS.whatsappNumber, message));
+  body.appendChild(orderLink);
+
+  article.appendChild(body);
+  return article;
+}
+
+// Muestra u oculta toda la sección de temporada según SEASONAL.active,
+// para que la dueña pueda "apagarla" sin borrar nada cuando termine la fecha.
+function renderSeasonal() {
+  const section = document.getElementById("temporada");
+  const navLink = document.getElementById("nav-temporada");
+  if (!section) return;
+
+  section.hidden = !SEASONAL.active;
+  if (navLink) navLink.hidden = !SEASONAL.active;
+  if (!SEASONAL.active) return;
+
+  const t = UI[currentLang];
+  document.getElementById("seasonal-title").textContent = SEASONAL[currentLang].title;
+  document.getElementById("seasonal-subtitle").textContent = SEASONAL[currentLang].subtitle;
+
+  const grid = document.getElementById("seasonal-grid");
+  grid.textContent = "";
+  SEASONAL_ITEMS.forEach((item) => grid.appendChild(buildSeasonalCard(item)));
+}
+
 function renderInfoSchedule() {
   const t = UI[currentLang];
   const rows = [
@@ -880,7 +1012,7 @@ function setupContactLinks() {
   const qrImage = document.getElementById("qr-image");
   if (!qrImage.dataset.errorHandlerAttached) {
     qrImage.dataset.errorHandlerAttached = "true";
-    qrImage.addEventListener("error", () => {
+    watchImageForError(qrImage, () => {
       qrImage.hidden = true;
     });
   }
@@ -906,6 +1038,7 @@ function setupContactLinks() {
 
 function render() {
   applyStaticTranslations();
+  renderSeasonal();
   renderFilters();
   renderCatalog();
   renderGallery();
@@ -968,5 +1101,14 @@ document.addEventListener("DOMContentLoaded", () => {
   mapClose.addEventListener("click", () => mapModal.close());
   mapModal.addEventListener("click", (e) => {
     if (e.target === mapModal) mapModal.close();
+  });
+
+  // Si aún no has guardado images/logo.png, se muestra el emoji de torta
+  // en su lugar — nunca se ve un ícono de imagen rota.
+  const logoImg = document.getElementById("brand-logo");
+  const logoEmoji = document.getElementById("brand-mark-emoji");
+  watchImageForError(logoImg, () => {
+    logoImg.hidden = true;
+    logoEmoji.hidden = false;
   });
 });

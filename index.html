@@ -7,7 +7,7 @@
 <meta name="description" content="Tortas artesanales, cóctel y kuchenes salados en Copiapó. Pide por WhatsApp. Cake catalog available in English.">
 <meta name="theme-color" content="#7a3b3b">
 <link rel="stylesheet" href="styles.css">
-<link rel="icon" href="data:,">
+<link rel="icon" href="images/logo.png">
 </head>
 <body>
 <a class="skip-link" href="#main-content" data-i18n="skipLink">Ir al contenido</a>
@@ -15,7 +15,8 @@
 <header class="site-header">
   <div class="header-inner">
     <div class="brand">
-      <span class="brand-mark" aria-hidden="true">🍰</span>
+      <img id="brand-logo" class="brand-logo" src="images/logo.png" alt="" loading="eager">
+      <span class="brand-mark" id="brand-mark-emoji" aria-hidden="true" hidden>🍰</span>
       <span class="brand-name" id="business-name">Pastelería Derling</span>
     </div>
 
@@ -24,6 +25,7 @@
     </button>
 
     <nav id="main-nav" class="main-nav">
+      <a href="#temporada" id="nav-temporada" data-i18n="navTemporada">Temporada Especial</a>
       <a href="#catalogo" data-i18n="navCatalog">Catálogo</a>
       <a href="#galeria" data-i18n="navGaleria">Galería</a>
       <a href="#novios" data-i18n="navNovios">Novios y Eventos</a>
@@ -49,6 +51,14 @@
       SUGERENCIA: puedes reemplazar el emoji de fondo por una foto real.
       Busca la clase ".hero" en styles.css y sigue las instrucciones ahí.
     -->
+  </section>
+
+  <section id="temporada" class="seasonal-section">
+    <div class="section-inner">
+      <h2 id="seasonal-title">Fiestas Patrias</h2>
+      <p class="section-subtitle" id="seasonal-subtitle">Empanadas y productos típicos para este 18 de septiembre.</p>
+      <div id="seasonal-grid" class="catalog-grid"></div>
+    </div>
   </section>
 
   <section id="catalogo" class="catalog-section">

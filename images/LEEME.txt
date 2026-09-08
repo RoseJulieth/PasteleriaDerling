@@ -8,6 +8,17 @@ rompe, pero no se verá tu foto).
 Formato recomendado: JPG o PNG, foto cuadrada o 4:3, menos de 1 MB por fototografía
 para que la página cargue rápido.
 
+LOGO DEL LOCAL — muy importante
+------------------------------------
+logo.png
+(Guarda aquí tu logo, el mismo que usas en tus redes sociales o tarjetas.
+Aparece en la esquina superior izquierda de toda la página y como el
+ícono de la pestaña del navegador. Si aún no lo tienes a mano en tu
+computador, pídeselo a quien te lo diseñó, o guárdalo desde donde lo
+tengas guardado — por ejemplo, desde el chat donde te lo enviaron — con
+"Guardar imagen como..." y ese nombre exacto: logo.png. Mientras no lo
+subas, se muestra un emoji de torta 🍰 en su lugar.)
+
 FOTO PRINCIPAL (portada) — opcional
 ------------------------------------
 hero.jpg
@@ -94,6 +105,29 @@ quiche-vegetariano.jpg
 quiche-del-mar.jpg
 quiche-individual.jpg
 
-TIP: no necesitas subir las 55 fotos el primer día. Empieza con las 5-10
-tortas que más vendes y ve agregando el resto después. La página funciona
-perfecto aunque falten fotos.
+GALERÍA DE TORTAS ESPECIALES REALIZADAS
+------------------------------------
+galeria-1.jpg
+galeria-2.jpg
+galeria-3.jpg
+galeria-4.jpg
+(Para cambiar los nombres que aparecen bajo cada foto, o agregar/quitar
+tortas de esta galería, edita el bloque "GALLERY_ITEMS" en script.js —
+ahí mismo están las instrucciones.)
+
+TEMPORADA ESPECIAL (Fiestas Patrias, Navidad, etc.)
+------------------------------------
+temporada-1.jpg
+temporada-2.jpg
+temporada-3.jpg
+(Esta sección aparece destacada arriba del catálogo, con un recuadro de
+color. Para cambiar el título "Fiestas Patrias" por el de otra fecha
+(Navidad, Día de la Madre, etc.), los productos, sus precios, o para
+ocultar toda la sección cuando termine la temporada, edita el bloque
+"SEASONAL" y "SEASONAL_ITEMS" en script.js — ahí mismo están las
+instrucciones, incluyendo cómo "apagarla" con active: false.)
+
+TIP: no necesitas subir todas las fotos el primer día. Empieza con las
+5-10 tortas que más vendes y ve agregando el resto después. La página
+funciona perfecto aunque falten fotos — pero el LOGO sí se recomienda
+subirlo cuanto antes, es lo primero que ven tus clientas.

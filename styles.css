@@ -157,6 +157,11 @@ a {
 .brand-mark {
   font-size: 1.6rem;
 }
+.brand-logo {
+  height: 42px;
+  width: auto;
+  border-radius: 8px;
+}
 
 .nav-toggle {
   display: flex;
@@ -277,6 +282,20 @@ a {
   gap: 14px;
   justify-content: center;
   margin-top: 16px;
+}
+
+/* ---------- Temporada especial ---------- */
+.seasonal-section {
+  padding: 44px 0 8px;
+}
+.seasonal-section .section-inner {
+  background: linear-gradient(135deg, #fff3e0, #ffe3d6);
+  border: 2px dashed var(--color-accent);
+  border-radius: var(--radius-lg);
+  padding: 28px 20px;
+}
+.seasonal-section h2 {
+  margin-bottom: 0.2em;
 }
 
 /* ---------- Catálogo ---------- */
