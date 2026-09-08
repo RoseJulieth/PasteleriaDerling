@@ -440,6 +440,8 @@ const UI = {
     quoteEmail: "Email",
     quoteTelefono: "Teléfono",
     quoteDireccion: "Dirección",
+    quoteFecha: "Fecha del pedido",
+    quoteHora: "Hora del pedido",
     quoteCakeText: "Escrito en torta (opcional)",
     quoteMessage: "Consulta o cotización",
     quoteMessagePlaceholder: "Cuéntanos qué necesitas: tipo de torta, cantidad de personas, otros productos (canapés, alfajores, cachitos...), fecha del evento, etc.",
@@ -521,6 +523,8 @@ const UI = {
     quoteEmail: "Email",
     quoteTelefono: "Phone",
     quoteDireccion: "Address",
+    quoteFecha: "Order Date",
+    quoteHora: "Order Time",
     quoteCakeText: "Cake message (optional)",
     quoteMessage: "Inquiry or quote request",
     quoteMessagePlaceholder: "Tell us what you need: cake type, number of guests, other products (canapés, alfajores, cachitos...), event date, etc.",
@@ -985,6 +989,15 @@ function setupQuoteFormLabels() {
 
 // Junta los datos del formulario de cotización en un solo mensaje de
 // texto, listo para mandar por WhatsApp o por correo.
+// Convierte la fecha del <input type="date"> (siempre "AAAA-MM-DD") al
+// formato chileno "DD-MM-AAAA", sin pasar por Date() para evitar
+// problemas de zona horaria que podrían correr el día.
+function formatDateCL(isoDate) {
+  if (!isoDate) return "";
+  const [y, m, d] = isoDate.split("-");
+  return `${d}-${m}-${y}`;
+}
+
 function buildQuoteMessage() {
   const t = UI[currentLang];
   const nombre = document.getElementById("q-nombre").value.trim();
@@ -992,6 +1005,8 @@ function buildQuoteMessage() {
   const email = document.getElementById("q-email").value.trim();
   const telefono = document.getElementById("q-telefono").value.trim();
   const direccion = document.getElementById("q-direccion").value.trim();
+  const fecha = document.getElementById("q-fecha").value;
+  const hora = document.getElementById("q-hora").value;
   const escrito = document.getElementById("q-escrito").value.trim();
   const mensaje = document.getElementById("q-mensaje").value.trim();
 
@@ -1003,6 +1018,8 @@ function buildQuoteMessage() {
     t.quoteEmail + ": " + email,
     t.quoteTelefono + ": " + telefono,
     t.quoteDireccion + ": " + direccion,
+    t.quoteFecha + ": " + formatDateCL(fecha),
+    t.quoteHora + ": " + hora,
   ];
   if (escrito) lines.push(t.quoteCakeText + ": " + escrito);
   lines.push(t.quoteMessage + ": " + mensaje);
@@ -1224,4 +1241,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("quote-form").addEventListener("submit", (e) => e.preventDefault());
   document.getElementById("quote-whatsapp").addEventListener("click", handleQuoteWhatsapp);
   document.getElementById("quote-email").addEventListener("click", handleQuoteEmail);
+
+  // No dejar elegir una fecha anterior a hoy en el formulario de cotización.
+  const todayISO = new Date().toLocaleDateString("en-CA"); // formato AAAA-MM-DD
+  document.getElementById("q-fecha").min = todayISO;
 });
