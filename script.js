@@ -11,6 +11,8 @@ const BUSINESS = {
   addressLine: "Av. El Palomar 1733, Copiapó",
   // Número de WhatsApp SIN "+", sin espacios, con código de país 56.
   whatsappNumber: "56999646164",
+  // El mismo número de WhatsApp, pero bonito para mostrar en pantalla.
+  whatsappDisplay: "+56 9 9964 6164",
   // Teléfono fijo para el botón "Llamar" (formato tel: con +).
   phoneCall: "+56522210429",
   email: "esteladerling@gmail.com",
@@ -320,6 +322,35 @@ const SIMPLE_ITEMS = [
 
 /*
  * ==========================================================================
+ * GALERÍA DE TORTAS ESPECIALES REALIZADAS
+ * ==========================================================================
+ * Este es un espacio para mostrar tortas personalizadas que ya hiciste
+ * (cumpleaños temáticos, bodas, bautizos, etc.). Solo necesitan nombre y
+ * foto — no tienen precio ni botones de tamaño.
+ *
+ * Para agregar una: copia un bloque completo (desde { hasta },) y pégalo
+ * antes del corchete final "]". Cambia "id" (sin espacios ni tildes),
+ * el nombre en español e inglés, y el nombre del archivo de la foto en
+ * "img" (guárdala en la carpeta images/ con ese mismo nombre).
+ * Para quitar una torta de la galería, borra su bloque completo.
+ */
+const GALLERY_ITEMS = [
+  { id: "galeria-1", img: "images/galeria-1.jpg",
+    es: { name: "Torta de Bodas" },
+    en: { name: "Wedding Cake" } },
+  { id: "galeria-2", img: "images/galeria-2.jpg",
+    es: { name: "Cumpleaños Temático" },
+    en: { name: "Themed Birthday Cake" } },
+  { id: "galeria-3", img: "images/galeria-3.jpg",
+    es: { name: "Torta de Bautizo" },
+    en: { name: "Christening Cake" } },
+  { id: "galeria-4", img: "images/galeria-4.jpg",
+    es: { name: "Torta de Cumpleaños Infantil" },
+    en: { name: "Kids' Birthday Cake" } },
+];
+
+/*
+ * ==========================================================================
  * TEXTOS DE LA INTERFAZ (ES / EN)
  * ==========================================================================
  */
@@ -332,17 +363,24 @@ const UI = {
     ctaCatalog: "Ver catálogo",
     ctaWhatsapp: "Pedir por WhatsApp",
     navCatalog: "Catálogo",
+    navGaleria: "Galería",
     navNovios: "Novios y Eventos",
     navInfo: "Información",
     langButton: "EN",
     catalogTitle: "Nuestro Catálogo",
     catalogSubtitle: "Elige el tamaño y el precio se actualiza al instante.",
+    searchLabel: "Buscar en el catálogo",
+    searchPlaceholder: "Buscar torta o producto...",
     filterAll: "Todas",
     peopleLabel: "Elige el tamaño",
     priceFrom: "Desde",
-    orderButton: "💬 Pedir aquí",
+    orderButton: "Pedir aquí",
     aroLabel: "Aro",
     mapsLinkText: "📍 Ver en Google Maps",
+    mapsEnlarge: "🔍 Ampliar mapa",
+    mapsClose: "Cerrar",
+    galleryTitle: "Tortas Especiales Realizadas",
+    gallerySubtitle: "Algunos trabajos personalizados que hemos hecho. ¿Quieres algo similar? Escríbenos.",
     noviosEyebrow: "Matrimonios y Eventos Especiales",
     noviosTitle: "Tortas de Novios y Eventos",
     noviosText: "¿Tienes un matrimonio, aniversario o evento especial? Diseñamos tu torta a medida. Coordina los detalles directamente con nosotras por llamada o WhatsApp.",
@@ -381,17 +419,24 @@ const UI = {
     ctaCatalog: "View catalog",
     ctaWhatsapp: "Order on WhatsApp",
     navCatalog: "Catalog",
+    navGaleria: "Gallery",
     navNovios: "Weddings & Events",
     navInfo: "Information",
     langButton: "ES",
     catalogTitle: "Our Catalog",
     catalogSubtitle: "Choose a size and the price updates instantly.",
+    searchLabel: "Search the catalog",
+    searchPlaceholder: "Search for a cake or product...",
     filterAll: "All",
     peopleLabel: "Choose a size",
     priceFrom: "From",
-    orderButton: "💬 Order here",
+    orderButton: "Order here",
     aroLabel: "Size",
     mapsLinkText: "📍 View on Google Maps",
+    mapsEnlarge: "🔍 Enlarge map",
+    mapsClose: "Close",
+    galleryTitle: "Special Cakes We've Made",
+    gallerySubtitle: "Some custom work we've created. Want something similar? Message us.",
     noviosEyebrow: "Weddings & Special Events",
     noviosTitle: "Wedding & Event Cakes",
     noviosText: "Planning a wedding, anniversary or special event? We design a custom cake for you. Coordinate the details directly with us by phone call or WhatsApp.",
@@ -448,6 +493,44 @@ function safeExternalLink(a, href) {
   a.setAttribute("rel", "noopener noreferrer");
 }
 
+// Quita tildes y pasa a minúsculas, para que la búsqueda encuentre
+// "lucuma" aunque el producto se llame "Lúcuma".
+function normalizeText(text) {
+  return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
+// Íconos dibujados en SVG (sin depender de ninguna imagen externa ni de
+// una fuente de íconos), para usarlos en los botones de contacto.
+const ICON_PATHS = {
+  whatsapp: "M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.198.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.05 21.785h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.892 6.994c-.003 5.45-4.437 9.884-9.884 9.884zm8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z",
+  instagram: "M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z",
+  facebook: "M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z",
+};
+
+function makeIcon(name, className) {
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+  if (className) svg.setAttribute("class", className);
+  const path = document.createElementNS(svgNS, "path");
+  path.setAttribute("fill", "currentColor");
+  path.setAttribute("d", ICON_PATHS[name]);
+  svg.appendChild(path);
+  return svg;
+}
+
+// Vacía un botón/enlace y lo rellena con [ícono de WhatsApp] + texto,
+// usando solo DOM (sin innerHTML) para mantenerlo seguro.
+function setWhatsappLabel(el, text, iconClass) {
+  el.textContent = "";
+  el.appendChild(makeIcon("whatsapp", iconClass || "btn-icon"));
+  const span = document.createElement("span");
+  span.textContent = text;
+  el.appendChild(span);
+}
+
 function makePhotoBox(imgPath, altText) {
   const box = document.createElement("div");
   box.className = "photo-box";
@@ -484,6 +567,7 @@ function buildCakeCard(product) {
   const article = document.createElement("article");
   article.className = "card";
   article.dataset.category = product.category;
+  article.dataset.searchText = product[currentLang].name + " " + product[currentLang].desc;
 
   article.appendChild(makePhotoBox(product.img, product[currentLang].name));
 
@@ -518,7 +602,7 @@ function buildCakeCard(product) {
 
   const orderLink = document.createElement("a");
   orderLink.className = "btn btn-order";
-  orderLink.textContent = t.orderButton;
+  setWhatsappLabel(orderLink, t.orderButton);
   body.appendChild(orderLink);
 
   let selectedIndex = 0;
@@ -572,6 +656,7 @@ function buildSimpleCard(product) {
   const article = document.createElement("article");
   article.className = "card";
   article.dataset.category = product.category;
+  article.dataset.searchText = product[currentLang].name + " " + product[currentLang].desc;
 
   article.appendChild(makePhotoBox(product.img, product[currentLang].name));
 
@@ -604,7 +689,7 @@ function buildSimpleCard(product) {
 
   const orderLink = document.createElement("a");
   orderLink.className = "btn btn-order";
-  orderLink.textContent = t.orderButton;
+  setWhatsappLabel(orderLink, t.orderButton);
   const message = t.whatsGreetingSimple(
     product[currentLang].name,
     product[currentLang].unit || "",
@@ -638,18 +723,41 @@ function renderFilters() {
     nav.appendChild(btn);
   });
 
-  nav.addEventListener("click", (e) => {
+  // Se usa "onclick" (en vez de addEventListener) a propósito: renderFilters()
+  // se llama de nuevo cada vez que cambias de idioma, y "onclick" reemplaza
+  // el manejador anterior en lugar de ir acumulando uno nuevo encima.
+  nav.onclick = (e) => {
     const btn = e.target.closest(".filter-btn");
     if (!btn) return;
     nav.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("is-active"));
     btn.classList.add("is-active");
-    applyFilter(btn.dataset.filter);
+    applyFilters();
+  };
+}
+
+// Combina el filtro de categoría (botones) con el texto de búsqueda.
+function applyFilters() {
+  const activeBtn = document.querySelector(".filter-btn.is-active");
+  const category = activeBtn ? activeBtn.dataset.filter : "all";
+  const searchInput = document.getElementById("product-search");
+  const query = normalizeText((searchInput ? searchInput.value : "").trim());
+
+  document.querySelectorAll("#catalog-grid .card").forEach((card) => {
+    const matchesCategory = category === "all" || card.dataset.category === category;
+    const matchesSearch = !query || normalizeText(card.dataset.searchText || "").includes(query);
+    card.hidden = !(matchesCategory && matchesSearch);
   });
 }
 
-function applyFilter(filter) {
-  document.querySelectorAll("#catalog-grid .card").forEach((card) => {
-    card.hidden = filter !== "all" && card.dataset.category !== filter;
+function populateSearchSuggestions() {
+  const list = document.getElementById("product-datalist");
+  if (!list) return;
+  list.textContent = "";
+  const names = CAKES.concat(SIMPLE_ITEMS).map((p) => p[currentLang].name);
+  names.forEach((name) => {
+    const option = document.createElement("option");
+    option.value = name;
+    list.appendChild(option);
   });
 }
 
@@ -658,6 +766,25 @@ function renderCatalog() {
   grid.textContent = "";
   CAKES.forEach((product) => grid.appendChild(buildCakeCard(product)));
   SIMPLE_ITEMS.forEach((product) => grid.appendChild(buildSimpleCard(product)));
+  populateSearchSuggestions();
+}
+
+function buildGalleryCard(item) {
+  const figure = document.createElement("figure");
+  figure.className = "gallery-card";
+  figure.appendChild(makePhotoBox(item.img, item[currentLang].name));
+  const caption = document.createElement("figcaption");
+  caption.className = "gallery-caption";
+  caption.textContent = item[currentLang].name;
+  figure.appendChild(caption);
+  return figure;
+}
+
+function renderGallery() {
+  const grid = document.getElementById("gallery-grid");
+  if (!grid) return;
+  grid.textContent = "";
+  GALLERY_ITEMS.forEach((item) => grid.appendChild(buildGalleryCard(item)));
 }
 
 function renderInfoSchedule() {
@@ -679,7 +806,7 @@ function renderInfoSchedule() {
     dayEl.className = "schedule-day";
     dayEl.textContent = day;
     const hoursEl = document.createElement("span");
-    hoursEl.className = "schedule-hours";
+    hoursEl.className = "schedule-hours" + (hours === t.hoursClosed ? " is-closed" : "");
     hoursEl.textContent = hours;
     li.appendChild(dayEl);
     li.appendChild(hoursEl);
@@ -693,6 +820,14 @@ function applyStaticTranslations() {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
     if (t[key] !== undefined) el.textContent = t[key];
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-placeholder");
+    if (t[key] !== undefined) el.setAttribute("placeholder", t[key]);
+  });
+  document.querySelectorAll("[data-i18n-aria-label]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-aria-label");
+    if (t[key] !== undefined) el.setAttribute("aria-label", t[key]);
   });
   document.getElementById("lang-toggle").textContent = t.langButton;
   document.getElementById("lang-toggle").setAttribute(
@@ -709,10 +844,12 @@ function setupContactLinks() {
     floatBtn,
     buildWhatsappLink(BUSINESS.whatsappNumber, currentLang === "es" ? "Hola, tengo una consulta sobre sus productos." : "Hi! I have a question about your products.")
   );
-  floatBtn.setAttribute("aria-label", t.floatWhatsapp);
+  setWhatsappLabel(floatBtn, BUSINESS.whatsappDisplay, "btn-icon float-whatsapp-icon");
+  floatBtn.setAttribute("aria-label", t.floatWhatsapp + ": " + BUSINESS.whatsappDisplay);
 
   const noviosWhats = document.getElementById("novios-whatsapp");
   safeExternalLink(noviosWhats, buildWhatsappLink(BUSINESS.whatsappNumber, t.whatsGreetingNovios));
+  setWhatsappLabel(noviosWhats, t.noviosWhatsapp);
 
   const noviosCall = document.getElementById("novios-call");
   noviosCall.setAttribute("href", "tel:" + BUSINESS.phoneCall);
@@ -722,12 +859,19 @@ function setupContactLinks() {
     heroWhats,
     buildWhatsappLink(BUSINESS.whatsappNumber, currentLang === "es" ? "Hola, quiero hacer un pedido." : "Hi! I'd like to place an order.")
   );
+  setWhatsappLabel(heroWhats, t.ctaWhatsapp);
 
   const igLink = document.getElementById("social-instagram");
   safeExternalLink(igLink, BUSINESS.instagram);
+  igLink.textContent = "";
+  igLink.appendChild(makeIcon("instagram", "social-icon"));
+  igLink.setAttribute("aria-label", "Instagram");
 
   const fbLink = document.getElementById("social-facebook");
   safeExternalLink(fbLink, BUSINESS.facebook);
+  fbLink.textContent = "";
+  fbLink.appendChild(makeIcon("facebook", "social-icon"));
+  fbLink.setAttribute("aria-label", "Facebook");
 
   const emailLink = document.getElementById("contact-email");
   emailLink.setAttribute("href", "mailto:" + encodeURIComponent(BUSINESS.email));
@@ -745,10 +889,17 @@ function setupContactLinks() {
   const mapsUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(BUSINESS.addressLine);
   safeExternalLink(mapsLink, mapsUrl);
 
+  const mapEmbedUrl = "https://www.google.com/maps?q=" + encodeURIComponent(BUSINESS.addressLine) + "&output=embed";
+  const mapSmall = document.getElementById("map-embed");
+  const mapLarge = document.getElementById("map-embed-large");
+  if (mapSmall) mapSmall.src = mapEmbedUrl;
+  if (mapLarge) mapLarge.src = mapEmbedUrl;
+
   document.getElementById("business-address").textContent = BUSINESS.addressLine;
   document.getElementById("business-address-footer").textContent = BUSINESS.addressLine;
   document.getElementById("business-name").textContent = BUSINESS.name;
   document.getElementById("footer-business-name").textContent = BUSINESS.name;
+  document.getElementById("business-name-modal").textContent = BUSINESS.name;
   const year = document.getElementById("footer-year");
   year.textContent = String(new Date().getFullYear());
 }
@@ -757,10 +908,10 @@ function render() {
   applyStaticTranslations();
   renderFilters();
   renderCatalog();
+  renderGallery();
   renderInfoSchedule();
   setupContactLinks();
-  const activeFilter = document.querySelector(".filter-btn.is-active");
-  applyFilter(activeFilter ? activeFilter.dataset.filter : "all");
+  applyFilters();
 }
 
 function setLanguage(lang) {
@@ -799,5 +950,23 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("main-nav").classList.remove("is-open");
       document.getElementById("nav-toggle").setAttribute("aria-expanded", "false");
     });
+  });
+
+  document.getElementById("product-search").addEventListener("input", applyFilters);
+
+  const mapModal = document.getElementById("map-modal");
+  const mapTrigger = document.getElementById("map-embed-trigger");
+  const mapClose = document.getElementById("map-modal-close");
+
+  mapTrigger.addEventListener("click", () => {
+    if (typeof mapModal.showModal === "function") {
+      mapModal.showModal();
+    } else {
+      document.getElementById("maps-link").click();
+    }
+  });
+  mapClose.addEventListener("click", () => mapModal.close());
+  mapModal.addEventListener("click", (e) => {
+    if (e.target === mapModal) mapModal.close();
   });
 });

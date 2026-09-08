@@ -25,6 +25,7 @@
 
     <nav id="main-nav" class="main-nav">
       <a href="#catalogo" data-i18n="navCatalog">Catálogo</a>
+      <a href="#galeria" data-i18n="navGaleria">Galería</a>
       <a href="#novios" data-i18n="navNovios">Novios y Eventos</a>
       <a href="#info" data-i18n="navInfo">Información</a>
       <button type="button" id="lang-toggle" class="lang-toggle" aria-label="Switch to English">EN</button>
@@ -55,9 +56,31 @@
       <h2 data-i18n="catalogTitle">Nuestro Catálogo</h2>
       <p class="section-subtitle" data-i18n="catalogSubtitle">Elige el tamaño y el precio se actualiza al instante.</p>
 
+      <div class="search-bar">
+        <label for="product-search" class="visually-hidden" data-i18n="searchLabel">Buscar en el catálogo</label>
+        <input
+          type="search"
+          id="product-search"
+          list="product-datalist"
+          class="search-input"
+          data-i18n-placeholder="searchPlaceholder"
+          placeholder="Buscar torta o producto..."
+          autocomplete="off"
+        >
+        <datalist id="product-datalist"></datalist>
+      </div>
+
       <div id="filter-bar" class="filter-bar" role="tablist" aria-label="Filtrar catálogo"></div>
 
       <div id="catalog-grid" class="catalog-grid"></div>
+    </div>
+  </section>
+
+  <section id="galeria" class="gallery-section">
+    <div class="section-inner">
+      <h2 data-i18n="galleryTitle">Tortas Especiales Realizadas</h2>
+      <p class="section-subtitle" data-i18n="gallerySubtitle">Algunos trabajos personalizados que hemos hecho. ¿Quieres algo similar? Escríbenos.</p>
+      <div id="gallery-grid" class="gallery-grid"></div>
     </div>
   </section>
 
@@ -93,7 +116,10 @@
         <div class="info-card">
           <h3 data-i18n="infoAddress">Dirección y Retiro</h3>
           <p id="business-address" class="info-address">Av. El Palomar 1733, Copiapó</p>
-          <a href="#" id="maps-link" class="btn btn-maps" data-i18n="mapsLinkText">📍 Ver en Google Maps</a>
+          <div class="map-embed-wrap">
+            <iframe id="map-embed" class="map-embed-iframe" title="Mapa de ubicación" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <button type="button" id="map-embed-trigger" class="map-embed-overlay" data-i18n="mapsEnlarge">🔍 Ampliar mapa</button>
+          </div>
           <p data-i18n="infoDelivery">Coordinamos despacho dentro de Copiapó o retiro directo en nuestro local. Consulta disponibilidad y costo de envío por WhatsApp.</p>
         </div>
 
@@ -126,17 +152,24 @@
     <div class="footer-social">
       <p data-i18n="footerFollow">Síguenos</p>
       <div class="social-links">
-        <a href="#" id="social-instagram" aria-label="Instagram">Instagram</a>
-        <a href="#" id="social-facebook" aria-label="Facebook">Facebook</a>
+        <a href="#" id="social-instagram" class="social-icon-link" aria-label="Instagram"></a>
+        <a href="#" id="social-facebook" class="social-icon-link" aria-label="Facebook"></a>
       </div>
     </div>
     <p class="footer-rights">© <span id="footer-year">2026</span> <span class="footer-rights-name">Pastelería Derling</span>. <span data-i18n="footerRights">Todos los derechos reservados.</span></p>
   </div>
 </footer>
 
-<a href="#" id="float-whatsapp" class="float-whatsapp" aria-label="Escríbenos por WhatsApp">
-  <span aria-hidden="true">💬</span>
-</a>
+<a href="#" id="float-whatsapp" class="float-whatsapp" aria-label="Escríbenos por WhatsApp"></a>
+
+<dialog id="map-modal" class="map-modal">
+  <div class="map-modal-header">
+    <span class="map-modal-title" id="business-name-modal">Pastelería Derling</span>
+    <button type="button" id="map-modal-close" class="map-modal-close" data-i18n-aria-label="mapsClose" aria-label="Cerrar">✕</button>
+  </div>
+  <iframe id="map-embed-large" class="map-embed-large-iframe" title="Mapa ampliado" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  <a href="#" id="maps-link" class="btn btn-maps map-modal-link" data-i18n="mapsLinkText">📍 Ver en Google Maps</a>
+</dialog>
 
 <script src="script.js"></script>
 </body>
