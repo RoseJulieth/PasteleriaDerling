@@ -425,11 +425,29 @@ const UI = {
     priceFrom: "Desde",
     orderButton: "Pedir aquí",
     aroLabel: "Aro",
+    cakeTextLabel: "✏️ Escrito en la torta (opcional)",
+    cakeTextPlaceholder: "Ej: Feliz Cumpleaños Juan",
     mapsLinkText: "📍 Ver en Google Maps",
     mapsEnlarge: "🔍 Ampliar mapa",
     mapsClose: "Cerrar",
     galleryTitle: "Tortas Especiales Realizadas",
     gallerySubtitle: "Algunos trabajos personalizados que hemos hecho. ¿Quieres algo similar? Escríbenos.",
+    navCotizar: "Cotiza Aquí",
+    quoteTitle: "Cotiza tu Pedido",
+    quoteSubtitle: "¿Quieres varias cosas a la vez (torta, canapés, alfajores, cachitos, etc.)? Cuéntanos todo aquí y te respondemos por WhatsApp o correo.",
+    quoteNombre: "Nombre",
+    quoteApellido: "Apellido",
+    quoteEmail: "Email",
+    quoteTelefono: "Teléfono",
+    quoteDireccion: "Dirección",
+    quoteCakeText: "Escrito en torta (opcional)",
+    quoteMessage: "Consulta o cotización",
+    quoteMessagePlaceholder: "Cuéntanos qué necesitas: tipo de torta, cantidad de personas, otros productos (canapés, alfajores, cachitos...), fecha del evento, etc.",
+    quoteSendWhatsapp: "Enviar por WhatsApp",
+    quoteSendEmail: "Enviar por Gmail",
+    quoteRequiredNote: "* Campos obligatorios",
+    quoteMessageIntro: "Hola, quiero cotizar un pedido:",
+    quoteEmailSubject: "Cotización - Pastelería Derling",
     noviosEyebrow: "Matrimonios y Eventos Especiales",
     noviosTitle: "Tortas de Novios y Eventos",
     noviosText: "¿Tienes un matrimonio, aniversario o evento especial? Diseñamos tu torta a medida. Coordina los detalles directamente con nosotras por llamada o WhatsApp.",
@@ -453,8 +471,10 @@ const UI = {
     footerFollow: "Síguenos",
     footerRights: "Todos los derechos reservados.",
     floatWhatsapp: "Escríbenos por WhatsApp",
-    whatsGreeting: (name, size, price) =>
-      `Hola, quiero encargar la ${name} para ${size} (Precio: ${price}). ¿Está disponible?`,
+    whatsGreeting: (name, size, price, cakeText) =>
+      `Hola, quiero encargar la ${name} para ${size} (Precio: ${price}).` +
+      (cakeText ? ` Escrito en la torta: "${cakeText}".` : "") +
+      ` ¿Está disponible?`,
     whatsGreetingSimple: (name, unit, price) =>
       `Hola, quiero encargar: ${name} (${unit}) - Precio: ${price}. ¿Está disponible?`,
     whatsGreetingSeasonal: (name, seasonTitle, price) =>
@@ -486,11 +506,29 @@ const UI = {
     priceFrom: "From",
     orderButton: "Order here",
     aroLabel: "Size",
+    cakeTextLabel: "✏️ Cake message (optional)",
+    cakeTextPlaceholder: "E.g.: Happy Birthday John",
     mapsLinkText: "📍 View on Google Maps",
     mapsEnlarge: "🔍 Enlarge map",
     mapsClose: "Close",
     galleryTitle: "Special Cakes We've Made",
     gallerySubtitle: "Some custom work we've created. Want something similar? Message us.",
+    navCotizar: "Get a Quote",
+    quoteTitle: "Request a Quote",
+    quoteSubtitle: "Want several things at once (cake, canapés, alfajores, cachitos, etc.)? Tell us everything here and we'll reply via WhatsApp or email.",
+    quoteNombre: "First Name",
+    quoteApellido: "Last Name",
+    quoteEmail: "Email",
+    quoteTelefono: "Phone",
+    quoteDireccion: "Address",
+    quoteCakeText: "Cake message (optional)",
+    quoteMessage: "Inquiry or quote request",
+    quoteMessagePlaceholder: "Tell us what you need: cake type, number of guests, other products (canapés, alfajores, cachitos...), event date, etc.",
+    quoteSendWhatsapp: "Send via WhatsApp",
+    quoteSendEmail: "Send via Gmail",
+    quoteRequiredNote: "* Required fields",
+    quoteMessageIntro: "Hi! I'd like to request a quote:",
+    quoteEmailSubject: "Quote Request - Pastelería Derling",
     noviosEyebrow: "Weddings & Special Events",
     noviosTitle: "Wedding & Event Cakes",
     noviosText: "Planning a wedding, anniversary or special event? We design a custom cake for you. Coordinate the details directly with us by phone call or WhatsApp.",
@@ -514,8 +552,10 @@ const UI = {
     footerFollow: "Follow us",
     footerRights: "All rights reserved.",
     floatWhatsapp: "Message us on WhatsApp",
-    whatsGreeting: (name, size, price) =>
-      `Hi! I'd like to order the ${name} for ${size} (Price: ${price}). Is it available?`,
+    whatsGreeting: (name, size, price, cakeText) =>
+      `Hi! I'd like to order the ${name} for ${size} (Price: ${price}).` +
+      (cakeText ? ` Cake message: "${cakeText}".` : "") +
+      ` Is it available?`,
     whatsGreetingSimple: (name, unit, price) =>
       `Hi! I'd like to order: ${name} (${unit}) - Price: ${price}. Is it available?`,
     whatsGreetingSeasonal: (name, seasonTitle, price) =>
@@ -666,6 +706,19 @@ function buildCakeCard(product) {
   sizeRow.className = "size-row";
   body.appendChild(sizeRow);
 
+  const cakeTextLabel = document.createElement("label");
+  cakeTextLabel.className = "cake-text-label";
+  const cakeTextLabelSpan = document.createElement("span");
+  cakeTextLabelSpan.textContent = t.cakeTextLabel;
+  const cakeTextInput = document.createElement("input");
+  cakeTextInput.type = "text";
+  cakeTextInput.className = "cake-text-input";
+  cakeTextInput.maxLength = 60;
+  cakeTextInput.placeholder = t.cakeTextPlaceholder;
+  cakeTextLabel.appendChild(cakeTextLabelSpan);
+  cakeTextLabel.appendChild(cakeTextInput);
+  body.appendChild(cakeTextLabel);
+
   const priceRow = document.createElement("div");
   priceRow.className = "price-row";
   const priceValue = document.createElement("span");
@@ -687,10 +740,13 @@ function buildCakeCard(product) {
     const message = t.whatsGreeting(
       product[currentLang].name,
       labels[selectedIndex],
-      formatCLP(price)
+      formatCLP(price),
+      cakeTextInput.value.trim()
     );
     safeExternalLink(orderLink, buildWhatsappLink(BUSINESS.whatsappNumber, message));
   }
+
+  cakeTextInput.addEventListener("input", refresh);
 
   const labels = PORTION_GROUPS[product.group][currentLang];
   const shortLabels = PORTION_GROUPS[product.group].short[currentLang];
@@ -919,6 +975,58 @@ function renderSeasonal() {
   SEASONAL_ITEMS.forEach((item) => grid.appendChild(buildSeasonalCard(item)));
 }
 
+// Actualiza el texto del botón de WhatsApp del formulario de cotización
+// (con ícono) al idioma actual. Se llama en cada render().
+function setupQuoteFormLabels() {
+  const t = UI[currentLang];
+  const whatsBtn = document.getElementById("quote-whatsapp");
+  if (whatsBtn) setWhatsappLabel(whatsBtn, t.quoteSendWhatsapp);
+}
+
+// Junta los datos del formulario de cotización en un solo mensaje de
+// texto, listo para mandar por WhatsApp o por correo.
+function buildQuoteMessage() {
+  const t = UI[currentLang];
+  const nombre = document.getElementById("q-nombre").value.trim();
+  const apellido = document.getElementById("q-apellido").value.trim();
+  const email = document.getElementById("q-email").value.trim();
+  const telefono = document.getElementById("q-telefono").value.trim();
+  const direccion = document.getElementById("q-direccion").value.trim();
+  const escrito = document.getElementById("q-escrito").value.trim();
+  const mensaje = document.getElementById("q-mensaje").value.trim();
+
+  const lines = [
+    t.quoteMessageIntro,
+    "",
+    t.quoteNombre + ": " + nombre,
+    t.quoteApellido + ": " + apellido,
+    t.quoteEmail + ": " + email,
+    t.quoteTelefono + ": " + telefono,
+    t.quoteDireccion + ": " + direccion,
+  ];
+  if (escrito) lines.push(t.quoteCakeText + ": " + escrito);
+  lines.push(t.quoteMessage + ": " + mensaje);
+  return lines.join("\n");
+}
+
+function handleQuoteWhatsapp() {
+  const form = document.getElementById("quote-form");
+  if (!form.reportValidity()) return;
+  const url = buildWhatsappLink(BUSINESS.whatsappNumber, buildQuoteMessage());
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function handleQuoteEmail() {
+  const form = document.getElementById("quote-form");
+  if (!form.reportValidity()) return;
+  const t = UI[currentLang];
+  const url =
+    "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(BUSINESS.email) +
+    "&su=" + encodeURIComponent(t.quoteEmailSubject) +
+    "&body=" + encodeURIComponent(buildQuoteMessage());
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
 function renderInfoSchedule() {
   const t = UI[currentLang];
   const rows = [
@@ -1044,6 +1152,7 @@ function render() {
   renderGallery();
   renderInfoSchedule();
   setupContactLinks();
+  setupQuoteFormLabels();
   applyFilters();
 }
 
@@ -1111,4 +1220,8 @@ document.addEventListener("DOMContentLoaded", () => {
     logoImg.hidden = true;
     logoEmoji.hidden = false;
   });
+
+  document.getElementById("quote-form").addEventListener("submit", (e) => e.preventDefault());
+  document.getElementById("quote-whatsapp").addEventListener("click", handleQuoteWhatsapp);
+  document.getElementById("quote-email").addEventListener("click", handleQuoteEmail);
 });

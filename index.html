@@ -28,6 +28,7 @@
       <a href="#temporada" id="nav-temporada" data-i18n="navTemporada">Temporada Especial</a>
       <a href="#catalogo" data-i18n="navCatalog">Catálogo</a>
       <a href="#galeria" data-i18n="navGaleria">Galería</a>
+      <a href="#cotizar" data-i18n="navCotizar">Cotiza Aquí</a>
       <a href="#novios" data-i18n="navNovios">Novios y Eventos</a>
       <a href="#info" data-i18n="navInfo">Información</a>
       <button type="button" id="lang-toggle" class="lang-toggle" aria-label="Switch to English">EN</button>
@@ -91,6 +92,54 @@
       <h2 data-i18n="galleryTitle">Tortas Especiales Realizadas</h2>
       <p class="section-subtitle" data-i18n="gallerySubtitle">Algunos trabajos personalizados que hemos hecho. ¿Quieres algo similar? Escríbenos.</p>
       <div id="gallery-grid" class="gallery-grid"></div>
+    </div>
+  </section>
+
+  <section id="cotizar" class="quote-section">
+    <div class="section-inner">
+      <h2 data-i18n="quoteTitle">Cotiza tu Pedido</h2>
+      <p class="section-subtitle" data-i18n="quoteSubtitle">¿Quieres varias cosas a la vez (torta, canapés, alfajores, cachitos, etc.)? Cuéntanos todo aquí y te respondemos por WhatsApp o correo.</p>
+
+      <form id="quote-form" class="quote-form" novalidate>
+        <div class="quote-grid">
+          <label class="quote-field">
+            <span data-i18n="quoteNombre">Nombre</span>
+            <input type="text" id="q-nombre" required autocomplete="given-name">
+          </label>
+          <label class="quote-field">
+            <span data-i18n="quoteApellido">Apellido</span>
+            <input type="text" id="q-apellido" required autocomplete="family-name">
+          </label>
+          <label class="quote-field">
+            <span data-i18n="quoteEmail">Email</span>
+            <input type="email" id="q-email" required autocomplete="email">
+          </label>
+          <label class="quote-field">
+            <span data-i18n="quoteTelefono">Teléfono</span>
+            <input type="tel" id="q-telefono" required autocomplete="tel">
+          </label>
+          <label class="quote-field quote-field-wide">
+            <span data-i18n="quoteDireccion">Dirección</span>
+            <input type="text" id="q-direccion" required autocomplete="street-address">
+          </label>
+          <label class="quote-field quote-field-wide">
+            <span data-i18n="quoteCakeText">Escrito en torta (opcional)</span>
+            <input type="text" id="q-escrito" maxlength="60">
+          </label>
+        </div>
+
+        <label class="quote-field quote-field-full">
+          <span data-i18n="quoteMessage">Consulta o cotización</span>
+          <textarea id="q-mensaje" required rows="4" data-i18n-placeholder="quoteMessagePlaceholder" placeholder="Cuéntanos qué necesitas..."></textarea>
+        </label>
+
+        <p class="quote-required-note" data-i18n="quoteRequiredNote">* Campos obligatorios</p>
+
+        <div class="quote-actions">
+          <button type="button" id="quote-whatsapp" class="btn btn-whatsapp"></button>
+          <button type="button" id="quote-email" class="btn btn-primary" data-i18n="quoteSendEmail">Enviar por Gmail</button>
+        </div>
+      </form>
     </div>
   </section>
 

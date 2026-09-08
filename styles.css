@@ -480,6 +480,33 @@ a {
   color: #4a2f0a;
 }
 
+.cake-text-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 14px;
+}
+.cake-text-input {
+  min-height: 44px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--color-border);
+  font-size: 0.95rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--color-text);
+}
+.cake-text-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
 .price-row {
   display: flex;
   align-items: baseline;
@@ -530,6 +557,77 @@ a {
   font-weight: 700;
   font-size: 0.9rem;
   text-align: center;
+}
+
+/* ---------- Cotiza aquí ---------- */
+.quote-section {
+  padding: 8px 0 56px;
+}
+.quote-form {
+  margin-top: 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+}
+.quote-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 620px) {
+  .quote-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .quote-field-wide {
+    grid-column: 1 / -1;
+  }
+}
+.quote-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+.quote-field-full {
+  margin-top: 16px;
+}
+.quote-field input,
+.quote-field textarea {
+  min-height: var(--touch-min);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--color-border);
+  font-size: 0.95rem;
+  font-weight: 400;
+  font-family: inherit;
+  color: var(--color-text);
+}
+.quote-field textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+.quote-field input:focus,
+.quote-field textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+.quote-required-note {
+  margin: 14px 0 0;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+.quote-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 10px;
+}
+.quote-actions .btn {
+  flex: 1 1 220px;
 }
 
 /* ---------- Novios / Eventos ---------- */
