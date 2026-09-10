@@ -398,9 +398,9 @@ const SEASONAL_SUBCATEGORIES = [
  */
 const SEASONAL_ITEMS = [
   // ---------- Empanadas ----------
-  { id: "empanada-ave-pino", subcategory: "empanadas", img: "images/temporada-empanada-ave-pino.jpg",
-    es: { name: "Empanadas al Horno (Ave, trozos de pino)" },
-    en: { name: "Baked Empanada (Chicken & Pino)" },
+  { id: "empanada-ave-carne", subcategory: "empanadas", img: "images/temporada-empanada-ave-carne.jpg",
+    es: { name: "Empanadas al Horno (Ave, trozos de carne)" },
+    en: { name: "Baked Empanada (Chicken & Beef Chunks)" },
     price: 2800 },
   { id: "empanada-carne-molida", subcategory: "empanadas", img: "images/temporada-empanada-carne-molida.jpg",
     es: { name: "Empanada al Horno (Carne Molida)" },
