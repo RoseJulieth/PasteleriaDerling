@@ -9,16 +9,16 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="icon" href="images/logo.png">
 </head>
-<body>
+<body id="top">
 <a class="skip-link" href="#main-content" data-i18n="skipLink">Ir al contenido</a>
 
 <header class="site-header">
   <div class="header-inner">
-    <div class="brand">
+    <a href="#top" class="brand" aria-label="Ir al inicio">
       <img id="brand-logo" class="brand-logo" src="images/logo.png" alt="" loading="eager">
       <span class="brand-mark" id="brand-mark-emoji" aria-hidden="true" hidden>🍰</span>
       <span class="brand-name" id="business-name">Pastelería Derling</span>
-    </div>
+    </a>
 
     <button type="button" id="nav-toggle" class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="main-nav">
       <span></span><span></span><span></span>
@@ -58,6 +58,7 @@
     <div class="section-inner">
       <h2 id="seasonal-title">Fiestas Patrias</h2>
       <p class="section-subtitle" id="seasonal-subtitle">Empanadas y productos típicos para este 18 de septiembre.</p>
+      <p class="delivery-notice" data-i18n="deliveryNotice">🕒 Horario de entrega: de lunes a sábado, entre las 17:00 y las 19:00 hrs.</p>
       <div id="seasonal-grid" class="catalog-grid"></div>
     </div>
   </section>
@@ -66,6 +67,7 @@
     <div class="section-inner">
       <h2 data-i18n="catalogTitle">Nuestro Catálogo</h2>
       <p class="section-subtitle" data-i18n="catalogSubtitle">Elige el tamaño y el precio se actualiza al instante.</p>
+      <p class="delivery-notice" data-i18n="deliveryNotice">🕒 Horario de entrega: de lunes a sábado, entre las 17:00 y las 19:00 hrs.</p>
 
       <div class="search-bar">
         <label for="product-search" class="visually-hidden" data-i18n="searchLabel">Buscar en el catálogo</label>
@@ -128,8 +130,9 @@
           </label>
           <label class="quote-field">
             <span data-i18n="quoteHora">Hora del pedido</span>
-            <input type="time" id="q-hora" required>
+            <input type="time" id="q-hora" min="17:00" max="19:00" required>
           </label>
+          <p class="quote-datetime-hint quote-field-wide" data-i18n="quoteDateTimeHint">La entrega es de lunes a sábado, entre 17:00 y 19:00 hrs.</p>
           <label class="quote-field quote-field-wide">
             <span data-i18n="quoteCakeText">Escrito en torta (opcional)</span>
             <input type="text" id="q-escrito" maxlength="60">
@@ -214,7 +217,10 @@
     <div class="footer-brand">
       <span id="footer-business-name">Pastelería Derling</span>
       <p id="business-address-footer" class="footer-address">Av. El Palomar 1733, Copiapó</p>
-      <a href="mailto:esteladerling@gmail.com" id="contact-email" class="footer-email">esteladerling@gmail.com</a>
+      <div class="footer-contact">
+        <a href="tel:+56522210429" id="footer-phone" class="footer-contact-link"></a>
+        <a href="mailto:esteladerling@gmail.com" id="contact-email" class="footer-contact-link"></a>
+      </div>
     </div>
     <div class="footer-social">
       <p data-i18n="footerFollow">Síguenos</p>
