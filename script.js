@@ -374,9 +374,21 @@ const SEASONAL = {
 };
 
 /*
- * Cada producto de temporada necesita nombre y foto. El precio es
- * opcional: si no quieres mostrar uno, borra esa línea completa
- * (la que dice "price: ...,").
+ * Grupos dentro de la Temporada Especial (por ejemplo "Empanadas" y
+ * "Dulces Chilenos"). Cada producto de SEASONAL_ITEMS más abajo indica
+ * a cuál pertenece con "subcategory". Para agregar un grupo nuevo,
+ * copia un bloque completo aquí y usa su "id" en los productos.
+ */
+const SEASONAL_SUBCATEGORIES = [
+  { id: "empanadas", es: "Empanadas", en: "Empanadas" },
+  { id: "dulces", es: "Dulces Chilenos", en: "Chilean Sweets" },
+];
+
+/*
+ * Cada producto de temporada necesita nombre, foto y grupo
+ * ("subcategory", debe coincidir con un "id" de SEASONAL_SUBCATEGORIES
+ * de arriba). El precio es opcional: si no quieres mostrar uno, borra
+ * esa línea completa (la que dice "price: ...,").
  *
  * Para agregar uno nuevo: copia un bloque completo (desde { hasta },) y
  * pégalo antes del corchete final "]". Cambia "id" (sin espacios ni
@@ -385,18 +397,41 @@ const SEASONAL = {
  * mismo nombre). Para quitar un producto, borra su bloque completo.
  */
 const SEASONAL_ITEMS = [
-  { id: "temporada-1", img: "images/temporada-1.jpg",
-    es: { name: "Empanada de Pino" },
-    en: { name: "Beef Empanada" },
-    price: 1800 },
-  { id: "temporada-2", img: "images/temporada-2.jpg",
-    es: { name: "Empanada de Queso" },
-    en: { name: "Cheese Empanada" },
-    price: 1600 },
-  { id: "temporada-3", img: "images/temporada-3.jpg",
-    es: { name: "Torta de Chocolate Especial 18" },
-    en: { name: "Special Chocolate Cake" },
-    price: 35000 },
+  // ---------- Empanadas ----------
+  { id: "empanada-ave-pino", subcategory: "empanadas", img: "images/temporada-empanada-ave-pino.jpg",
+    es: { name: "Empanadas al Horno (Ave, trozos de pino)" },
+    en: { name: "Baked Empanada (Chicken & Pino)" },
+    price: 2800 },
+  { id: "empanada-carne-molida", subcategory: "empanadas", img: "images/temporada-empanada-carne-molida.jpg",
+    es: { name: "Empanada al Horno (Carne Molida)" },
+    en: { name: "Baked Empanada (Ground Beef)" },
+    price: 2400 },
+  { id: "empanada-napolitana", subcategory: "empanadas", img: "images/temporada-empanada-napolitana.jpg",
+    es: { name: "Empanada Napolitana al Horno" },
+    en: { name: "Baked Napolitana Empanada" },
+    price: 2400 },
+  { id: "empanada-queso-frita", subcategory: "empanadas", img: "images/temporada-empanada-queso-frita.jpg",
+    es: { name: "Empanada de Queso (Frita)" },
+    en: { name: "Fried Cheese Empanada" },
+    price: 2500 },
+  { id: "empanada-queso-hoja", subcategory: "empanadas", img: "images/temporada-empanada-queso-hoja.jpg",
+    es: { name: "Empanada de Queso (Masa de Hoja)" },
+    en: { name: "Puff Pastry Cheese Empanada" },
+    price: 2600 },
+
+  // ---------- Dulces Chilenos ----------
+  { id: "alfajores-patrios", subcategory: "dulces", img: "images/temporada-alfajores.jpg",
+    es: { name: "Alfajores (Manjar, c/Chancaca)" },
+    en: { name: "Alfajores (Manjar & Chancaca)" },
+    price: 1200 },
+  { id: "dulces-blancos", subcategory: "dulces", img: "images/temporada-dulces-blancos.jpg",
+    es: { name: "Dulces Blancos" },
+    en: { name: "Dulces Blancos (Chilean Meringue Sweet)" },
+    price: 1200 },
+  { id: "empanada-alcayota", subcategory: "dulces", img: "images/temporada-empanada-alcayota.jpg",
+    es: { name: "Empanada de Alcayota" },
+    en: { name: "Alcayota Sweet Empanada" },
+    price: 1200 },
 ];
 
 /*
@@ -990,9 +1025,23 @@ function renderSeasonal() {
   document.getElementById("seasonal-title").textContent = SEASONAL[currentLang].title;
   document.getElementById("seasonal-subtitle").textContent = SEASONAL[currentLang].subtitle;
 
-  const grid = document.getElementById("seasonal-grid");
-  grid.textContent = "";
-  SEASONAL_ITEMS.forEach((item) => grid.appendChild(buildSeasonalCard(item)));
+  const container = document.getElementById("seasonal-grid");
+  container.textContent = "";
+
+  SEASONAL_SUBCATEGORIES.forEach((sub) => {
+    const items = SEASONAL_ITEMS.filter((item) => item.subcategory === sub.id);
+    if (items.length === 0) return;
+
+    const heading = document.createElement("h3");
+    heading.className = "seasonal-subtitle-heading";
+    heading.textContent = sub[currentLang];
+    container.appendChild(heading);
+
+    const grid = document.createElement("div");
+    grid.className = "catalog-grid";
+    items.forEach((item) => grid.appendChild(buildSeasonalCard(item)));
+    container.appendChild(grid);
+  });
 }
 
 // Actualiza el texto del botón de WhatsApp del formulario de cotización

@@ -121,15 +121,29 @@ ahí mismo están las instrucciones.)
 
 TEMPORADA ESPECIAL (Fiestas Patrias, Navidad, etc.)
 ------------------------------------
-temporada-1.jpg
-temporada-2.jpg
-temporada-3.jpg
+hero-pattern2.jpg
+(Fondo con ilustraciones para todo el recuadro de Fiestas Patrias.
+Mientras no lo subas, se ve un degradado durazno liso en su lugar.)
+
+Empanadas:
+temporada-empanada-ave-pino.jpg
+temporada-empanada-carne-molida.jpg
+temporada-empanada-napolitana.jpg
+temporada-empanada-queso-frita.jpg
+temporada-empanada-queso-hoja.jpg
+
+Dulces Chilenos:
+temporada-alfajores.jpg
+temporada-dulces-blancos.jpg
+temporada-empanada-alcayota.jpg
+
 (Esta sección aparece destacada arriba del catálogo, con un recuadro de
 color. Para cambiar el título "Fiestas Patrias" por el de otra fecha
-(Navidad, Día de la Madre, etc.), los productos, sus precios, o para
-ocultar toda la sección cuando termine la temporada, edita el bloque
-"SEASONAL" y "SEASONAL_ITEMS" en script.js — ahí mismo están las
-instrucciones, incluyendo cómo "apagarla" con active: false.)
+(Navidad, Día de la Madre, etc.), los productos, sus precios, los grupos
+("Empanadas" / "Dulces Chilenos"), o para ocultar toda la sección
+cuando termine la temporada, edita los bloques "SEASONAL",
+"SEASONAL_SUBCATEGORIES" y "SEASONAL_ITEMS" en script.js — ahí mismo
+están las instrucciones, incluyendo cómo "apagarla" con active: false.)
 
 TIP: no necesitas subir todas las fotos el primer día. Empieza con las
 5-10 tortas que más vendes y ve agregando el resto después. La página

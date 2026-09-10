@@ -290,13 +290,30 @@ a {
   padding: 44px 0 8px;
 }
 .seasonal-section .section-inner {
-  background: linear-gradient(135deg, #fff3e0, #ffe3d6);
+  /*
+    El fondo con ilustraciones de Fiestas Patrias se guarda como
+    images/hero-pattern2.jpg. Mientras no lo subas, se ve el degradado
+    durazno de siempre — no se rompe nada. La capa blanca semitransparente
+    de arriba es la que mantiene el texto oscuro legible encima del dibujo.
+  */
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)),
+    url("images/hero-pattern2.jpg") center/cover no-repeat,
+    linear-gradient(135deg, #fff3e0, #ffe3d6);
   border: 2px dashed var(--color-accent);
   border-radius: var(--radius-lg);
   padding: 28px 20px;
 }
 .seasonal-section h2 {
   margin-bottom: 0.2em;
+}
+.seasonal-subtitle-heading {
+  margin: 28px 0 14px;
+  color: var(--color-primary-dark);
+  font-size: 1.15rem;
+}
+.seasonal-subtitle-heading:first-of-type {
+  margin-top: 20px;
 }
 
 /* ---------- Catálogo ---------- */
