@@ -412,8 +412,6 @@ const UI = {
     tagline: "Sabores que perduran en cada celebración",
     heroTitle: "Pastelería Derling",
     heroSubtitle: "Tortas artesanales, cóctel y kuchenes salados hechos con receta de familia en Copiapó.",
-    ctaCatalog: "Ver catálogo",
-    ctaWhatsapp: "Pedir por WhatsApp",
     navTemporada: "Temporada Especial",
     navCatalog: "Catálogo",
     navGaleria: "Galería",
@@ -500,8 +498,6 @@ const UI = {
     tagline: "Flavors that last through every celebration",
     heroTitle: "Pastelería Derling",
     heroSubtitle: "Handcrafted cakes, cocktail bites and savory kuchen made with a family recipe in Copiapó, Chile.",
-    ctaCatalog: "View catalog",
-    ctaWhatsapp: "Order on WhatsApp",
     navTemporada: "Special Season",
     navCatalog: "Catalog",
     navGaleria: "Gallery",
@@ -1152,13 +1148,6 @@ function setupContactLinks() {
   const noviosCall = document.getElementById("novios-call");
   noviosCall.setAttribute("href", "tel:" + BUSINESS.phoneCall);
   setIconLabel(noviosCall, "phone", t.noviosCall + ": " + BUSINESS.phoneCallDisplay);
-
-  const heroWhats = document.getElementById("hero-whatsapp");
-  safeExternalLink(
-    heroWhats,
-    buildWhatsappLink(BUSINESS.whatsappNumber, currentLang === "es" ? "Hola, quiero hacer un pedido." : "Hi! I'd like to place an order.")
-  );
-  setWhatsappLabel(heroWhats, t.ctaWhatsapp);
 
   const igLink = document.getElementById("social-instagram");
   safeExternalLink(igLink, BUSINESS.instagram);

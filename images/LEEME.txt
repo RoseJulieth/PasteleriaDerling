@@ -19,9 +19,13 @@ tengas guardado — por ejemplo, desde el chat donde te lo enviaron — con
 "Guardar imagen como..." y ese nombre exacto: logo.png. Mientras no lo
 subas, se muestra un emoji de torta 🍰 en su lugar.)
 
-FOTO PRINCIPAL (portada) — opcional
+FONDO DE LA PORTADA (banner de ilustraciones) — opcional
 ------------------------------------
-hero.jpg
+hero-pattern.jpg
+(El dibujo con tortas, macarons y flores en fondo rosado que aparece
+detrás de "Bienvenidos... Pastelería Derling" al inicio de la página.
+Mientras no lo subas, se ve un degradado rosado liso en su lugar —
+también se ve bien, así que no es urgente.)
 
 CÓDIGO QR DE TRANSFERENCIAS
 ------------------------------------
