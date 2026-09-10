@@ -232,6 +232,63 @@
 
 <a href="#" id="float-whatsapp" class="float-whatsapp" aria-label="Escríbenos por WhatsApp"></a>
 
+<dialog id="order-panel" class="order-panel">
+  <button type="button" id="order-panel-close" class="order-panel-close" data-i18n-aria-label="mapsClose" aria-label="Cerrar">✕</button>
+  <h2 id="order-panel-title">—</h2>
+  <p id="order-panel-subtitle" class="order-panel-subtitle"></p>
+
+  <form id="order-form" class="quote-form" novalidate>
+    <label class="quote-field">
+      <span data-i18n="quoteNombre">Nombre</span>
+      <input type="text" id="o-nombre" required autocomplete="given-name">
+    </label>
+    <label class="quote-field">
+      <span data-i18n="quoteApellido">Apellido</span>
+      <input type="text" id="o-apellido" required autocomplete="family-name">
+    </label>
+    <label class="quote-field">
+      <span data-i18n="quoteEmail">Email</span>
+      <input type="email" id="o-email" required autocomplete="email">
+    </label>
+    <label class="quote-field">
+      <span data-i18n="quoteTelefono">Teléfono</span>
+      <input type="tel" id="o-telefono" required autocomplete="tel">
+    </label>
+    <label class="quote-field">
+      <span data-i18n="quoteDireccion">Dirección</span>
+      <input type="text" id="o-direccion" required autocomplete="street-address">
+    </label>
+    <label class="quote-field">
+      <span data-i18n="quoteFecha">Fecha del pedido</span>
+      <input type="date" id="o-fecha" required>
+    </label>
+    <p class="quote-datetime-hint" data-i18n="quoteDateTimeHint">La entrega es en el local de lunes a sábado, entre 17:00 y 19:00 hrs. Domingo cerrado.</p>
+    <label class="quote-field">
+      <span data-i18n="quoteHora">Hora del pedido</span>
+      <select id="o-hora" required>
+        <option value="" data-i18n="quoteHoraPlaceholder">Elige una hora</option>
+        <option value="17:00">17:00</option>
+        <option value="17:30">17:30</option>
+        <option value="18:00">18:00</option>
+        <option value="18:30">18:30</option>
+        <option value="19:00">19:00</option>
+      </select>
+    </label>
+    <label class="quote-field" id="order-cake-text-field">
+      <span data-i18n="cakeTextLabel">✏️ Escrito en la torta (opcional)</span>
+      <input type="text" id="o-escrito" maxlength="60">
+    </label>
+    <label class="quote-field">
+      <span data-i18n="orderQty">Cantidad</span>
+      <input type="number" id="o-cantidad" min="1" value="1" required>
+    </label>
+
+    <p class="order-deposit-notice" data-i18n="orderDepositNotice">Le informamos que para confirmar su orden es necesario abonar el 50% del valor total como garantía.</p>
+
+    <button type="button" id="order-send-whatsapp" class="btn btn-whatsapp order-send-btn"></button>
+  </form>
+</dialog>
+
 <dialog id="welcome-modal" class="welcome-modal">
   <button type="button" id="welcome-modal-close" class="welcome-modal-close" data-i18n-aria-label="mapsClose" aria-label="Cerrar">✕</button>
   <div class="welcome-modal-body">

@@ -459,11 +459,18 @@ const UI = {
     searchPlaceholder: "Buscar torta o producto...",
     filterAll: "Todas",
     peopleLabel: "Elige el tamaño",
-    priceFrom: "Desde",
+    orderPriceLabel: "Precio",
     orderButton: "Pedir aquí",
     aroLabel: "Aro",
     cakeTextLabel: "✏️ Escrito en la torta (opcional)",
     cakeTextPlaceholder: "Ej: Feliz Cumpleaños Juan",
+    orderProductLabel: "Producto",
+    orderSizeLabel: "Tamaño",
+    orderCakeTextLabel: "Escrito en la torta",
+    orderQty: "Cantidad",
+    orderMessageIntro: "Hola, quiero hacer un pedido:",
+    orderDepositNotice: "Le informamos que para confirmar su orden es necesario abonar el 50% del valor total como garantía.",
+    orderSendWhatsapp: "Enviar por WhatsApp",
     mapsLinkText: "📍 Ver en Google Maps",
     mapsEnlarge: "🔍 Ampliar mapa",
     mapsClose: "Cerrar",
@@ -513,16 +520,6 @@ const UI = {
     footerFollow: "Síguenos",
     footerRights: "Todos los derechos reservados.",
     floatWhatsapp: "Escríbenos por WhatsApp",
-    whatsGreeting: (name, size, price, cakeText) =>
-      `Hola, quiero encargar la ${name} para ${size} (Precio: ${price}).` +
-      (cakeText ? ` Escrito en la torta: "${cakeText}".` : "") +
-      ` ¿Está disponible?`,
-    whatsGreetingSimple: (name, unit, price) =>
-      `Hola, quiero encargar: ${name} (${unit}) - Precio: ${price}. ¿Está disponible?`,
-    whatsGreetingSeasonal: (name, seasonTitle, price) =>
-      price
-        ? `Hola, quiero encargar: ${name} (${seasonTitle}) - Precio: ${price}. ¿Está disponible?`
-        : `Hola, quiero encargar: ${name} (${seasonTitle}). ¿Está disponible?`,
     whatsGreetingNovios: "Hola, me gustaría cotizar una torta para matrimonio o evento especial. Fecha del evento: ___ / Número de invitados: ___",
     photoSoon: "Foto próximamente",
   },
@@ -545,11 +542,18 @@ const UI = {
     searchPlaceholder: "Search for a cake or product...",
     filterAll: "All",
     peopleLabel: "Choose a size",
-    priceFrom: "From",
+    orderPriceLabel: "Price",
     orderButton: "Order here",
     aroLabel: "Size",
     cakeTextLabel: "✏️ Cake message (optional)",
     cakeTextPlaceholder: "E.g.: Happy Birthday John",
+    orderProductLabel: "Product",
+    orderSizeLabel: "Size",
+    orderCakeTextLabel: "Cake message",
+    orderQty: "Quantity",
+    orderMessageIntro: "Hi! I'd like to place an order:",
+    orderDepositNotice: "Please note that a 50% deposit of the total is required to confirm your order.",
+    orderSendWhatsapp: "Send via WhatsApp",
     mapsLinkText: "📍 View on Google Maps",
     mapsEnlarge: "🔍 Enlarge map",
     mapsClose: "Close",
@@ -599,16 +603,6 @@ const UI = {
     footerFollow: "Follow us",
     footerRights: "All rights reserved.",
     floatWhatsapp: "Message us on WhatsApp",
-    whatsGreeting: (name, size, price, cakeText) =>
-      `Hi! I'd like to order the ${name} for ${size} (Price: ${price}).` +
-      (cakeText ? ` Cake message: "${cakeText}".` : "") +
-      ` Is it available?`,
-    whatsGreetingSimple: (name, unit, price) =>
-      `Hi! I'd like to order: ${name} (${unit}) - Price: ${price}. Is it available?`,
-    whatsGreetingSeasonal: (name, seasonTitle, price) =>
-      price
-        ? `Hi! I'd like to order: ${name} (${seasonTitle}) - Price: ${price}. Is it available?`
-        : `Hi! I'd like to order: ${name} (${seasonTitle}). Is it available?`,
     whatsGreetingNovios: "Hi! I'd like a quote for a wedding or special-event cake. Event date: ___ / Number of guests: ___",
     photoSoon: "Photo coming soon",
   },
@@ -730,6 +724,99 @@ function makePhotoBox(imgPath, altText) {
   return box;
 }
 
+/*
+ * ==========================================================================
+ * PANEL DE PEDIDO ("Pedir aquí")
+ * ==========================================================================
+ * Un solo panel (a la derecha de la pantalla) que se reutiliza para
+ * cualquier torta, canapé, quiche o producto de temporada. Al presionar
+ * "Pedir aquí" en una tarjeta, se abre este panel con los datos de ese
+ * producto ya elegidos (nombre, tamaño/unidad, precio) y pide los datos
+ * de contacto antes de armar el mensaje final de WhatsApp.
+ */
+let currentOrderContext = null;
+
+function openOrderPanel(context) {
+  currentOrderContext = context;
+  const t = UI[currentLang];
+
+  document.getElementById("order-panel-title").textContent = context.productName;
+  const subtitleParts = [];
+  if (context.sizeLabel) subtitleParts.push(context.sizeLabel);
+  if (context.price) subtitleParts.push(formatCLP(context.price));
+  document.getElementById("order-panel-subtitle").textContent = subtitleParts.join(" — ");
+
+  document.getElementById("order-cake-text-field").hidden = !context.isCake;
+
+  const panel = document.getElementById("order-panel");
+  if (typeof panel.showModal === "function") panel.showModal();
+}
+
+// Igual que en el formulario de cotización: solo falta revisar que la
+// fecha no caiga domingo (la hora ya está limitada por el selector).
+function validateOrderBusinessRules() {
+  const t = UI[currentLang];
+  const fechaInput = document.getElementById("o-fecha");
+  fechaInput.setCustomValidity("");
+  if (fechaInput.value) {
+    const [y, m, d] = fechaInput.value.split("-").map(Number);
+    const dayOfWeek = new Date(y, m - 1, d).getDay(); // hora local; 0 = domingo
+    if (dayOfWeek === 0) {
+      fechaInput.setCustomValidity(t.quoteDateSundayError);
+    }
+  }
+}
+
+function buildOrderMessage() {
+  const t = UI[currentLang];
+  const nombre = document.getElementById("o-nombre").value.trim();
+  const apellido = document.getElementById("o-apellido").value.trim();
+  const email = document.getElementById("o-email").value.trim();
+  const telefono = document.getElementById("o-telefono").value.trim();
+  const direccion = document.getElementById("o-direccion").value.trim();
+  const fecha = document.getElementById("o-fecha").value;
+  const hora = document.getElementById("o-hora").value;
+  const escrito = document.getElementById("o-escrito").value.trim();
+  const cantidad = document.getElementById("o-cantidad").value.trim();
+
+  const lines = [t.orderMessageIntro, ""];
+  lines.push(t.orderProductLabel + ": " + currentOrderContext.productName);
+  if (currentOrderContext.sizeLabel) lines.push(t.orderSizeLabel + ": " + currentOrderContext.sizeLabel);
+  if (currentOrderContext.price) lines.push(t.orderPriceLabel + ": " + formatCLP(currentOrderContext.price));
+  lines.push("");
+  lines.push(t.quoteNombre + ": " + nombre);
+  lines.push(t.quoteApellido + ": " + apellido);
+  lines.push(t.quoteEmail + ": " + email);
+  lines.push(t.quoteTelefono + ": " + telefono);
+  lines.push(t.quoteDireccion + ": " + direccion);
+  lines.push(t.quoteFecha + ": " + formatDateCL(fecha));
+  lines.push(t.quoteHora + ": " + hora);
+  if (currentOrderContext.isCake && escrito) {
+    lines.push(t.orderCakeTextLabel + ": " + escrito);
+  }
+  lines.push(t.orderQty + ": " + cantidad);
+  lines.push("");
+  lines.push(t.orderDepositNotice);
+  return lines.join("\n");
+}
+
+function handleOrderSend() {
+  const form = document.getElementById("order-form");
+  validateOrderBusinessRules();
+  if (!form.reportValidity()) return;
+  const url = buildWhatsappLink(BUSINESS.whatsappNumber, buildOrderMessage());
+  window.open(url, "_blank", "noopener,noreferrer");
+  document.getElementById("order-panel").close();
+}
+
+// Actualiza los textos del panel (botón con ícono, placeholders, etc.)
+// al idioma actual. Se llama en cada render().
+function setupOrderPanelLabels() {
+  const t = UI[currentLang];
+  const sendBtn = document.getElementById("order-send-whatsapp");
+  if (sendBtn) setWhatsappLabel(sendBtn, t.orderSendWhatsapp);
+}
+
 function buildCakeCard(product) {
   const t = UI[currentLang];
   const article = document.createElement("article");
@@ -761,19 +848,6 @@ function buildCakeCard(product) {
   sizeRow.className = "size-row";
   body.appendChild(sizeRow);
 
-  const cakeTextLabel = document.createElement("label");
-  cakeTextLabel.className = "cake-text-label";
-  const cakeTextLabelSpan = document.createElement("span");
-  cakeTextLabelSpan.textContent = t.cakeTextLabel;
-  const cakeTextInput = document.createElement("input");
-  cakeTextInput.type = "text";
-  cakeTextInput.className = "cake-text-input";
-  cakeTextInput.maxLength = 60;
-  cakeTextInput.placeholder = t.cakeTextPlaceholder;
-  cakeTextLabel.appendChild(cakeTextLabelSpan);
-  cakeTextLabel.appendChild(cakeTextInput);
-  body.appendChild(cakeTextLabel);
-
   const priceRow = document.createElement("div");
   priceRow.className = "price-row";
   const priceValue = document.createElement("span");
@@ -781,27 +855,28 @@ function buildCakeCard(product) {
   priceRow.appendChild(priceValue);
   body.appendChild(priceRow);
 
-  const orderLink = document.createElement("a");
-  orderLink.className = "btn btn-order";
-  setWhatsappLabel(orderLink, t.orderButton);
-  body.appendChild(orderLink);
+  const orderBtn = document.createElement("button");
+  orderBtn.type = "button";
+  orderBtn.className = "btn btn-order";
+  setWhatsappLabel(orderBtn, t.orderButton);
+  body.appendChild(orderBtn);
 
   let selectedIndex = 0;
 
   function refresh() {
-    const labels = PORTION_GROUPS[product.group][currentLang];
     const price = product.prices[selectedIndex];
     priceValue.textContent = formatCLP(price);
-    const message = t.whatsGreeting(
-      product[currentLang].name,
-      labels[selectedIndex],
-      formatCLP(price),
-      cakeTextInput.value.trim()
-    );
-    safeExternalLink(orderLink, buildWhatsappLink(BUSINESS.whatsappNumber, message));
   }
 
-  cakeTextInput.addEventListener("input", refresh);
+  orderBtn.addEventListener("click", () => {
+    const labels = PORTION_GROUPS[product.group][currentLang];
+    openOrderPanel({
+      productName: product[currentLang].name,
+      sizeLabel: labels[selectedIndex],
+      price: product.prices[selectedIndex],
+      isCake: true,
+    });
+  });
 
   const labels = PORTION_GROUPS[product.group][currentLang];
   const shortLabels = PORTION_GROUPS[product.group].short[currentLang];
@@ -871,16 +946,19 @@ function buildSimpleCard(product) {
   }
   body.appendChild(priceRow);
 
-  const orderLink = document.createElement("a");
-  orderLink.className = "btn btn-order";
-  setWhatsappLabel(orderLink, t.orderButton);
-  const message = t.whatsGreetingSimple(
-    product[currentLang].name,
-    product[currentLang].unit || "",
-    formatCLP(product.price)
-  );
-  safeExternalLink(orderLink, buildWhatsappLink(BUSINESS.whatsappNumber, message));
-  body.appendChild(orderLink);
+  const orderBtn = document.createElement("button");
+  orderBtn.type = "button";
+  orderBtn.className = "btn btn-order";
+  setWhatsappLabel(orderBtn, t.orderButton);
+  orderBtn.addEventListener("click", () => {
+    openOrderPanel({
+      productName: product[currentLang].name,
+      sizeLabel: product[currentLang].unit || "",
+      price: product.price,
+      isCake: false,
+    });
+  });
+  body.appendChild(orderBtn);
 
   article.appendChild(body);
   return article;
@@ -995,16 +1073,19 @@ function buildSeasonalCard(item) {
     body.appendChild(priceRow);
   }
 
-  const orderLink = document.createElement("a");
-  orderLink.className = "btn btn-order";
-  setWhatsappLabel(orderLink, t.orderButton);
-  const message = t.whatsGreetingSeasonal(
-    item[currentLang].name,
-    SEASONAL[currentLang].title,
-    item.price ? formatCLP(item.price) : ""
-  );
-  safeExternalLink(orderLink, buildWhatsappLink(BUSINESS.whatsappNumber, message));
-  body.appendChild(orderLink);
+  const orderBtn = document.createElement("button");
+  orderBtn.type = "button";
+  orderBtn.className = "btn btn-order";
+  setWhatsappLabel(orderBtn, t.orderButton);
+  orderBtn.addEventListener("click", () => {
+    openOrderPanel({
+      productName: item[currentLang].name,
+      sizeLabel: "",
+      price: item.price || 0,
+      isCake: false,
+    });
+  });
+  body.appendChild(orderBtn);
 
   article.appendChild(body);
   return article;
@@ -1254,6 +1335,7 @@ function render() {
   renderInfoSchedule();
   setupContactLinks();
   setupQuoteFormLabels();
+  setupOrderPanelLabels();
   applyFilters();
 }
 
@@ -1326,9 +1408,20 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("quote-whatsapp").addEventListener("click", handleQuoteWhatsapp);
   document.getElementById("quote-email").addEventListener("click", handleQuoteEmail);
 
-  // No dejar elegir una fecha anterior a hoy en el formulario de cotización.
+  // No dejar elegir una fecha anterior a hoy en el formulario de cotización
+  // ni en el panel de pedido.
   const todayISO = new Date().toLocaleDateString("en-CA"); // formato AAAA-MM-DD
   document.getElementById("q-fecha").min = todayISO;
+  document.getElementById("o-fecha").min = todayISO;
+
+  // Panel de pedido ("Pedir aquí").
+  const orderPanel = document.getElementById("order-panel");
+  document.getElementById("order-form").addEventListener("submit", (e) => e.preventDefault());
+  document.getElementById("order-panel-close").addEventListener("click", () => orderPanel.close());
+  orderPanel.addEventListener("click", (e) => {
+    if (e.target === orderPanel) orderPanel.close();
+  });
+  document.getElementById("order-send-whatsapp").addEventListener("click", handleOrderSend);
 
   // Ventana de bienvenida: se muestra sola al entrar a la página.
   const welcomeLogo = document.getElementById("welcome-logo");
