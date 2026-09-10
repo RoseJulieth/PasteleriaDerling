@@ -407,6 +407,8 @@ const SEASONAL_ITEMS = [
 const UI = {
   es: {
     skipLink: "Ir al contenido",
+    welcomeTitle: "Bienvenidos",
+    welcomeSchedule: "Horario de entrega en el local: de lunes a sábado, entre las 17:00 y las 19:00 hrs. Domingo cerrado.",
     tagline: "Sabores que perduran en cada celebración",
     heroTitle: "Pastelería Derling",
     heroSubtitle: "Tortas artesanales, cóctel y kuchenes salados hechos con receta de familia en Copiapó.",
@@ -420,7 +422,6 @@ const UI = {
     langButton: "EN",
     catalogTitle: "Nuestro Catálogo",
     catalogSubtitle: "Elige el tamaño y el precio se actualiza al instante.",
-    deliveryNotice: "🕒 Horario de entrega: de lunes a sábado, entre las 17:00 y las 19:00 hrs. No trabajamos los domingos ni contamos con despacho a domicilio por ahora — la entrega es en nuestro local.",
     searchLabel: "Buscar en el catálogo",
     searchPlaceholder: "Buscar torta o producto...",
     filterAll: "Todas",
@@ -445,9 +446,9 @@ const UI = {
     quoteDireccion: "Dirección",
     quoteFecha: "Fecha del pedido",
     quoteHora: "Hora del pedido",
-    quoteDateTimeHint: "La entrega es de lunes a sábado, entre 17:00 y 19:00 hrs (no hay despacho a domicilio por ahora).",
+    quoteHoraPlaceholder: "Elige una hora",
+    quoteDateTimeHint: "La entrega es en el local de lunes a sábado, entre 17:00 y 19:00 hrs. Domingo cerrado.",
     quoteDateSundayError: "No trabajamos los domingos. Por favor elige otro día para la entrega.",
-    quoteTimeRangeError: "La entrega solo está disponible entre las 17:00 y las 19:00 hrs. Por favor ajusta la hora.",
     quoteCakeText: "Escrito en torta (opcional)",
     quoteMessage: "Consulta o cotización",
     quoteMessagePlaceholder: "Cuéntanos qué necesitas: tipo de torta, cantidad de personas, otros productos (canapés, alfajores, cachitos...), fecha del evento, etc.",
@@ -494,6 +495,8 @@ const UI = {
   },
   en: {
     skipLink: "Skip to content",
+    welcomeTitle: "Welcome",
+    welcomeSchedule: "Pickup hours at our store: Monday to Saturday, between 5:00 and 7:00 PM. Closed Sundays.",
     tagline: "Flavors that last through every celebration",
     heroTitle: "Pastelería Derling",
     heroSubtitle: "Handcrafted cakes, cocktail bites and savory kuchen made with a family recipe in Copiapó, Chile.",
@@ -507,7 +510,6 @@ const UI = {
     langButton: "ES",
     catalogTitle: "Our Catalog",
     catalogSubtitle: "Choose a size and the price updates instantly.",
-    deliveryNotice: "🕒 Pickup hours: Monday to Saturday, between 5:00 and 7:00 PM. We're closed Sundays and don't offer home delivery yet — pickup is at our store.",
     searchLabel: "Search the catalog",
     searchPlaceholder: "Search for a cake or product...",
     filterAll: "All",
@@ -532,9 +534,9 @@ const UI = {
     quoteDireccion: "Address",
     quoteFecha: "Order Date",
     quoteHora: "Order Time",
-    quoteDateTimeHint: "Pickup is Monday to Saturday, between 5:00 and 7:00 PM (no home delivery for now).",
+    quoteHoraPlaceholder: "Choose a time",
+    quoteDateTimeHint: "Pickup is at our store, Monday to Saturday, between 5:00 and 7:00 PM. Closed Sundays.",
     quoteDateSundayError: "We're closed on Sundays. Please choose another delivery day.",
-    quoteTimeRangeError: "Pickup is only available between 5:00 and 7:00 PM. Please adjust the time.",
     quoteCakeText: "Cake message (optional)",
     quoteMessage: "Inquiry or quote request",
     quoteMessagePlaceholder: "Tell us what you need: cake type, number of guests, other products (canapés, alfajores, cachitos...), event date, etc.",
@@ -1044,17 +1046,15 @@ function buildQuoteMessage() {
   return lines.join("\n");
 }
 
-// Además de lo que ya exige el navegador (campos vacíos, min/max de la
-// hora), revisamos que la fecha elegida no caiga domingo — usamos el
-// mensaje de error nativo del formulario (setCustomValidity) para que
-// se vea igual que cualquier otro error de campo obligatorio.
+// La hora ya está limitada por el propio selector (solo ofrece opciones
+// entre 17:00 y 19:00), así que aquí solo falta revisar que la fecha
+// elegida no caiga domingo — usamos el mensaje de error nativo del
+// formulario (setCustomValidity) para que se vea igual que cualquier
+// otro error de campo obligatorio.
 function validateQuoteBusinessRules() {
   const t = UI[currentLang];
   const fechaInput = document.getElementById("q-fecha");
-  const horaInput = document.getElementById("q-hora");
-
   fechaInput.setCustomValidity("");
-  horaInput.setCustomValidity("");
 
   if (fechaInput.value) {
     const [y, m, d] = fechaInput.value.split("-").map(Number);
@@ -1062,9 +1062,6 @@ function validateQuoteBusinessRules() {
     if (dayOfWeek === 0) {
       fechaInput.setCustomValidity(t.quoteDateSundayError);
     }
-  }
-  if (horaInput.value && (horaInput.value < "17:00" || horaInput.value > "19:00")) {
-    horaInput.setCustomValidity(t.quoteTimeRangeError);
   }
 }
 
@@ -1294,4 +1291,21 @@ document.addEventListener("DOMContentLoaded", () => {
   // No dejar elegir una fecha anterior a hoy en el formulario de cotización.
   const todayISO = new Date().toLocaleDateString("en-CA"); // formato AAAA-MM-DD
   document.getElementById("q-fecha").min = todayISO;
+
+  // Ventana de bienvenida: se muestra sola al entrar a la página.
+  const welcomeLogo = document.getElementById("welcome-logo");
+  const welcomeLogoEmoji = document.getElementById("welcome-logo-emoji");
+  watchImageForError(welcomeLogo, () => {
+    welcomeLogo.hidden = true;
+    welcomeLogoEmoji.hidden = false;
+  });
+
+  const welcomeModal = document.getElementById("welcome-modal");
+  document.getElementById("welcome-modal-close").addEventListener("click", () => welcomeModal.close());
+  welcomeModal.addEventListener("click", (e) => {
+    if (e.target === welcomeModal) welcomeModal.close();
+  });
+  if (typeof welcomeModal.showModal === "function") {
+    welcomeModal.showModal();
+  }
 });

@@ -311,17 +311,6 @@ a {
   font-size: 1.05rem;
 }
 
-.delivery-notice {
-  display: inline-block;
-  margin: 10px 0 0;
-  padding: 10px 16px;
-  border-radius: 999px;
-  background: #fff3e0;
-  border: 1px solid var(--color-accent);
-  color: #7a4f10;
-  font-size: 0.88rem;
-  font-weight: 600;
-}
 
 .visually-hidden {
   position: absolute;
@@ -609,6 +598,7 @@ a {
   margin-top: 16px;
 }
 .quote-field input,
+.quote-field select,
 .quote-field textarea {
   min-height: var(--touch-min);
   padding: 10px 14px;
@@ -618,12 +608,14 @@ a {
   font-weight: 400;
   font-family: inherit;
   color: var(--color-text);
+  background: #fff;
 }
 .quote-field textarea {
   min-height: 110px;
   resize: vertical;
 }
 .quote-field input:focus,
+.quote-field select:focus,
 .quote-field textarea:focus {
   outline: none;
   border-color: var(--color-primary);
@@ -759,6 +751,59 @@ a {
   font-weight: 700;
   font-size: 0.95rem;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.welcome-modal {
+  position: fixed;
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 36px 28px 30px;
+  max-width: 92vw;
+  width: 420px;
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+.welcome-modal::backdrop {
+  background: rgba(20, 10, 8, 0.6);
+}
+.welcome-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: 999px;
+  border: none;
+  background: var(--color-border);
+  color: var(--color-text);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.welcome-modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.welcome-logo {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  border-radius: 16px;
+  margin-bottom: 4px;
+}
+.welcome-logo-emoji {
+  font-size: 5rem;
+  margin-bottom: 4px;
+}
+.welcome-modal-body h2 {
+  margin-bottom: 0;
+}
+.welcome-schedule {
+  color: var(--color-text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
 }
 
 .map-modal {

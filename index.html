@@ -58,7 +58,6 @@
     <div class="section-inner">
       <h2 id="seasonal-title">Fiestas Patrias</h2>
       <p class="section-subtitle" id="seasonal-subtitle">Empanadas y productos típicos para este 18 de septiembre.</p>
-      <p class="delivery-notice" data-i18n="deliveryNotice">🕒 Horario de entrega: de lunes a sábado, entre las 17:00 y las 19:00 hrs.</p>
       <div id="seasonal-grid" class="catalog-grid"></div>
     </div>
   </section>
@@ -67,7 +66,6 @@
     <div class="section-inner">
       <h2 data-i18n="catalogTitle">Nuestro Catálogo</h2>
       <p class="section-subtitle" data-i18n="catalogSubtitle">Elige el tamaño y el precio se actualiza al instante.</p>
-      <p class="delivery-notice" data-i18n="deliveryNotice">🕒 Horario de entrega: de lunes a sábado, entre las 17:00 y las 19:00 hrs.</p>
 
       <div class="search-bar">
         <label for="product-search" class="visually-hidden" data-i18n="searchLabel">Buscar en el catálogo</label>
@@ -130,9 +128,16 @@
           </label>
           <label class="quote-field">
             <span data-i18n="quoteHora">Hora del pedido</span>
-            <input type="time" id="q-hora" min="17:00" max="19:00" required>
+            <select id="q-hora" required>
+              <option value="" data-i18n="quoteHoraPlaceholder">Elige una hora</option>
+              <option value="17:00">17:00</option>
+              <option value="17:30">17:30</option>
+              <option value="18:00">18:00</option>
+              <option value="18:30">18:30</option>
+              <option value="19:00">19:00</option>
+            </select>
           </label>
-          <p class="quote-datetime-hint quote-field-wide" data-i18n="quoteDateTimeHint">La entrega es de lunes a sábado, entre 17:00 y 19:00 hrs.</p>
+          <p class="quote-datetime-hint quote-field-wide" data-i18n="quoteDateTimeHint">La entrega es en el local de lunes a sábado, entre 17:00 y 19:00 hrs. Domingo cerrado.</p>
           <label class="quote-field quote-field-wide">
             <span data-i18n="quoteCakeText">Escrito en torta (opcional)</span>
             <input type="text" id="q-escrito" maxlength="60">
@@ -234,6 +239,16 @@
 </footer>
 
 <a href="#" id="float-whatsapp" class="float-whatsapp" aria-label="Escríbenos por WhatsApp"></a>
+
+<dialog id="welcome-modal" class="welcome-modal">
+  <button type="button" id="welcome-modal-close" class="welcome-modal-close" data-i18n-aria-label="mapsClose" aria-label="Cerrar">✕</button>
+  <div class="welcome-modal-body">
+    <img id="welcome-logo" class="welcome-logo" src="images/logo.png" alt="" loading="eager">
+    <span class="welcome-logo-emoji" id="welcome-logo-emoji" aria-hidden="true" hidden>🍰</span>
+    <h2 data-i18n="welcomeTitle">Bienvenidos</h2>
+    <p class="welcome-schedule" data-i18n="welcomeSchedule">Horario de entrega en el local: de lunes a sábado, entre las 17:00 y las 19:00 hrs. Domingo cerrado.</p>
+  </div>
+</dialog>
 
 <dialog id="map-modal" class="map-modal">
   <div class="map-modal-header">
