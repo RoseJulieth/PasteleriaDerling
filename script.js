@@ -256,7 +256,7 @@ const CAKES = [
     es: { name: "Torta a tu Elección", desc: "Rellena con crema pastelera, manjar o mermelada de frambuesa." },
     en: { name: "Build-Your-Own Filling", desc: "Filled with pastry cream, manjar or raspberry jam — your choice." },
     prices: [36700, 44000, 52500, 63000, 68000, 84000] },
-  { id: "cinco-sabores", category: "premium", group: "B", img: "images/torta-5-sabores.jpg", photoPosition: "center 15%",
+  { id: "cinco-sabores", category: "premium", group: "B", img: "images/torta-5-sabores.jpg",
     es: { name: "Torta 5 Sabores", desc: "Bizcocho de piña, panqueque de naranja, bizcocho de chocolate, merengue de lúcuma y hojarasca." },
     en: { name: "Five Flavors Cake", desc: "Pineapple sponge, orange crepe cake, chocolate sponge, lúcuma meringue and hojarasca." },
     prices: [37300, 44100, 52500, 63000, 73000, 84000] },
@@ -434,7 +434,7 @@ const SEASONAL_ITEMS = [
   { id: "empanada-queso-hoja", subcategory: "empanadas", img: "images/temporada-empanada-queso-hoja.jpg",
     es: { name: "Empanada de Queso (Masa de Hoja)" },
     en: { name: "Puff Pastry Cheese Empanada" },
-    price: 2600 },
+    price: 2800 },
 
   // ---------- Dulces Chilenos ----------
   { id: "alfajores-patrios", subcategory: "dulces", img: "images/temporada-alfajores.jpg",
