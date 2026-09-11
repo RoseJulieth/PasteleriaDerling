@@ -256,6 +256,10 @@ const CAKES = [
     es: { name: "Torta a tu Elección", desc: "Rellena con crema pastelera, manjar o mermelada de frambuesa." },
     en: { name: "Build-Your-Own Filling", desc: "Filled with pastry cream, manjar or raspberry jam — your choice." },
     prices: [36700, 44000, 52500, 63000, 68000, 84000] },
+  { id: "cinco-sabores", category: "premium", group: "B", img: "images/torta-5-sabores.jpg", photoPosition: "center 15%",
+    es: { name: "Torta 5 Sabores", desc: "Bizcocho de piña, panqueque de naranja, bizcocho de chocolate, merengue de lúcuma y hojarasca." },
+    en: { name: "Five Flavors Cake", desc: "Pineapple sponge, orange crepe cake, chocolate sponge, lúcuma meringue and hojarasca." },
+    prices: [37300, 44100, 52500, 63000, 73000, 84000] },
 ];
 
 /*
@@ -414,15 +418,15 @@ const SEASONAL_ITEMS = [
   { id: "empanada-ave-carne", subcategory: "empanadas", img: "images/temporada-empanada-ave-carne.jpg",
     es: { name: "Empanadas al Horno (Ave, trozos de carne)" },
     en: { name: "Baked Empanada (Chicken & Beef Chunks)" },
-    price: 2800 },
+    price: 2900 },
   { id: "empanada-carne-molida", subcategory: "empanadas", img: "images/temporada-empanada-carne-molida.jpg",
     es: { name: "Empanada al Horno (Carne Molida)" },
     en: { name: "Baked Empanada (Ground Beef)" },
-    price: 2400 },
+    price: 2500 },
   { id: "empanada-napolitana", subcategory: "empanadas", img: "images/temporada-empanada-napolitana.jpg",
     es: { name: "Empanada Napolitana al Horno" },
     en: { name: "Baked Napolitana Empanada" },
-    price: 2400 },
+    price: 2500 },
   { id: "empanada-queso-frita", subcategory: "empanadas", img: "images/temporada-empanada-queso-frita.jpg",
     es: { name: "Empanada de Queso (Frita)" },
     en: { name: "Fried Cheese Empanada" },
@@ -718,7 +722,10 @@ function watchImageForError(img, onError) {
   }
 }
 
-function makePhotoBox(imgPath, altText) {
+// "position" es opcional (ej. "top") para fotos verticales donde el
+// producto no queda centrado — evita que el recorte cuadrado automático
+// corte la parte importante de la foto.
+function makePhotoBox(imgPath, altText, position) {
   const box = document.createElement("div");
   box.className = "photo-box";
 
@@ -726,6 +733,7 @@ function makePhotoBox(imgPath, altText) {
   img.src = imgPath;
   img.alt = altText;
   img.loading = "lazy";
+  if (position) img.style.objectPosition = position;
 
   const placeholder = document.createElement("div");
   placeholder.className = "photo-placeholder";
@@ -840,7 +848,7 @@ function buildCakeCard(product) {
   article.dataset.category = product.category;
   article.dataset.searchText = product[currentLang].name + " " + product[currentLang].desc;
 
-  article.appendChild(makePhotoBox(product.img, product[currentLang].name));
+  article.appendChild(makePhotoBox(product.img, product[currentLang].name, product.photoPosition));
 
   const body = document.createElement("div");
   body.className = "card-body";
@@ -933,7 +941,7 @@ function buildSimpleCard(product) {
   article.dataset.category = product.category;
   article.dataset.searchText = product[currentLang].name + " " + product[currentLang].desc;
 
-  article.appendChild(makePhotoBox(product.img, product[currentLang].name));
+  article.appendChild(makePhotoBox(product.img, product[currentLang].name, product.photoPosition));
 
   const body = document.createElement("div");
   body.className = "card-body";
