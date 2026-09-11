@@ -933,26 +933,49 @@ a {
   font-weight: 700;
 }
 
-.qr-caption {
-  font-weight: 600;
-  margin-bottom: 10px;
+.payment-cash {
+  font-weight: 700;
 }
-.qr-box {
-  width: 160px;
-  max-width: 100%;
-  aspect-ratio: 1 / 1;
-  border: 2px dashed var(--color-border);
+.payment-transfer-intro {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.payment-details-list {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  background: #fafafa;
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   overflow: hidden;
-  background: #fafafa;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
-.qr-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+.payment-details-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  border-bottom: 1px dashed var(--color-border);
+  font-size: 0.92rem;
+}
+.payment-details-list li:last-child {
+  border-bottom: none;
+}
+.payment-label {
+  font-weight: 700;
+  color: var(--color-text);
+}
+.payment-value {
+  color: var(--color-muted);
+  text-align: right;
+  word-break: break-word;
+}
+.payment-receipt-note {
+  font-size: 0.9rem;
+}
+.payment-receipt-note a {
+  color: var(--color-primary);
+  font-weight: 700;
+  text-decoration: none;
 }
 
 /* ---------- Footer ---------- */

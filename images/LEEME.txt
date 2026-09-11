@@ -27,10 +27,6 @@ detrás de "Bienvenidos... Pastelería Derling" al inicio de la página.
 Mientras no lo subas, se ve un degradado rosado liso en su lugar —
 también se ve bien, así que no es urgente.)
 
-CÓDIGO QR DE TRANSFERENCIAS
-------------------------------------
-qr-pago.png
-
 TORTAS CLÁSICAS
 ------------------------------------
 torta-pina.jpg

@@ -197,11 +197,13 @@
 
         <div class="info-card">
           <h3 data-i18n="infoPayment">Métodos de Pago</h3>
-          <p data-i18n="infoPaymentText">Efectivo, transferencia bancaria y tarjetas de débito/crédito (sujeto a disponibilidad).</p>
-          <p class="qr-caption" data-i18n="infoQr">Transfiere escaneando este código QR:</p>
-          <div class="qr-box">
-            <img src="images/qr-pago.png" alt="Código QR para transferencias" id="qr-image" loading="lazy">
-          </div>
+          <p class="payment-cash" data-i18n="paymentCash">Efectivo</p>
+          <p class="payment-transfer-intro" data-i18n="paymentTransferIntro">Transferencia bancaria a:</p>
+          <ul id="payment-details-list" class="payment-details-list"></ul>
+          <p class="payment-receipt-note">
+            <span data-i18n="paymentReceiptNote">Enviar comprobante al WhatsApp</span>:
+            <a href="#" id="payment-whatsapp-link"></a>
+          </p>
         </div>
       </div>
     </div>

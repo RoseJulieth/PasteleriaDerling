@@ -23,6 +23,19 @@ const BUSINESS = {
 };
 
 /*
+ * Datos de la cuenta bancaria para transferencias, que se muestran en
+ * "Información > Métodos de Pago". Edítalos aquí si cambian.
+ */
+const PAYMENT_INFO = {
+  rut: "76.008.418-2",
+  nombreTitular: "Estela Juantok Guzmán",
+  banco: "Banco Estado",
+  tipoCuenta: "Corriente",
+  numeroCuenta: "12100136668",
+  correo: "esteladerling@gmail.com",
+};
+
+/*
  * ==========================================================================
  * EDITA AQUÍ: nombres, descripciones y precios de tus productos
  * ==========================================================================
@@ -506,14 +519,20 @@ const UI = {
     infoTitle: "Información Útil",
     infoSchedule: "Horario de Atención",
     infoAddress: "Dirección y Retiro",
-    infoDelivery: "Coordinamos despacho dentro de Copiapó o retiro directo en nuestro local. Consulta disponibilidad y costo de envío por WhatsApp.",
+    infoDelivery: "La entrega es en el local de lunes a sábado, entre 17:00 y 19:00 hrs. Domingo cerrado.",
     infoAnticipation: "Anticipación para Pedidos",
     infoAnticipationText: "Recomendamos encargar tus tortas con al menos 48 horas de anticipación, y con 1 semana para tortas de matrimonio o eventos grandes. Se solicita un abono para confirmar el pedido.",
     infoPayment: "Métodos de Pago",
-    infoPaymentText: "Efectivo, transferencia bancaria y tarjetas de débito/crédito (sujeto a disponibilidad).",
-    infoQr: "Transfiere escaneando este código QR:",
-    infoQrAlt: "Código QR para transferencias",
-    days: { mon: "Lunes", tue: "Martes", wed: "Miércoles", thu: "Jueves", fri: "Viernes", sat: "Sábado", sun: "Domingo" },
+    paymentCash: "Efectivo",
+    paymentTransferIntro: "Transferencia bancaria a:",
+    paymentRut: "Rut",
+    paymentNombre: "Nombre",
+    paymentBanco: "Banco",
+    paymentTipoCuenta: "Tipo cuenta",
+    paymentNumeroCuenta: "N° cuenta",
+    paymentCorreo: "Correo",
+    paymentReceiptNote: "Enviar comprobante al WhatsApp",
+    days: { monFri: "Lunes a Viernes", sat: "Sábado", sun: "Domingo" },
     hoursWeek: "10:00–14:00 y 16:30–19:00",
     hoursSat: "10:00–14:30 y 16:30–19:00",
     hoursClosed: "Cerrado",
@@ -589,14 +608,20 @@ const UI = {
     infoTitle: "Useful Information",
     infoSchedule: "Business Hours",
     infoAddress: "Address & Pickup",
-    infoDelivery: "We arrange delivery within Copiapó or direct pickup at our store. Ask about availability and delivery cost via WhatsApp.",
+    infoDelivery: "Pickup is at our store, Monday to Saturday, between 5:00 and 7:00 PM. Closed Sundays.",
     infoAnticipation: "Advance Notice for Orders",
     infoAnticipationText: "We recommend ordering your cakes at least 48 hours in advance, and 1 week ahead for wedding cakes or large events. A deposit is required to confirm your order.",
     infoPayment: "Payment Methods",
-    infoPaymentText: "Cash, bank transfer, and debit/credit cards (subject to availability).",
-    infoQr: "Pay by scanning this QR code:",
-    infoQrAlt: "QR code for bank transfers",
-    days: { mon: "Monday", tue: "Tuesday", wed: "Wednesday", thu: "Thursday", fri: "Friday", sat: "Saturday", sun: "Sunday" },
+    paymentCash: "Cash",
+    paymentTransferIntro: "Bank transfer to:",
+    paymentRut: "Tax ID (RUT)",
+    paymentNombre: "Name",
+    paymentBanco: "Bank",
+    paymentTipoCuenta: "Account type",
+    paymentNumeroCuenta: "Account number",
+    paymentCorreo: "Email",
+    paymentReceiptNote: "Send your receipt via WhatsApp",
+    days: { monFri: "Monday to Friday", sat: "Saturday", sun: "Sunday" },
     hoursWeek: "10:00 AM–2:00 PM & 4:30–7:00 PM",
     hoursSat: "10:00 AM–2:30 PM & 4:30–7:00 PM",
     hoursClosed: "Closed",
@@ -757,14 +782,7 @@ function openOrderPanel(context) {
 function validateOrderBusinessRules() {
   const t = UI[currentLang];
   const fechaInput = document.getElementById("o-fecha");
-  fechaInput.setCustomValidity("");
-  if (fechaInput.value) {
-    const [y, m, d] = fechaInput.value.split("-").map(Number);
-    const dayOfWeek = new Date(y, m - 1, d).getDay(); // hora local; 0 = domingo
-    if (dayOfWeek === 0) {
-      fechaInput.setCustomValidity(t.quoteDateSundayError);
-    }
-  }
+  fechaInput.setCustomValidity(isDateSunday(fechaInput.value) ? t.quoteDateSundayError : "");
 }
 
 function buildOrderMessage() {
@@ -795,8 +813,6 @@ function buildOrderMessage() {
     lines.push(t.orderCakeTextLabel + ": " + escrito);
   }
   lines.push(t.orderQty + ": " + cantidad);
-  lines.push("");
-  lines.push(t.orderDepositNotice);
   return lines.join("\n");
 }
 
@@ -1144,6 +1160,28 @@ function formatDateCL(isoDate) {
   return `${d}-${m}-${y}`;
 }
 
+// true si la fecha ("AAAA-MM-DD") cae domingo. Se arma con año/mes/día
+// por separado (no con new Date(string)) para evitar que un desfase de
+// zona horaria corra el día.
+function isDateSunday(isoDate) {
+  if (!isoDate) return false;
+  const [y, m, d] = isoDate.split("-").map(Number);
+  return new Date(y, m - 1, d).getDay() === 0;
+}
+
+// No deja seleccionar un domingo en el calendario: apenas se elige uno,
+// se limpia el campo al instante y se avisa, en vez de esperar a que la
+// persona presione enviar.
+function blockSundaySelection(dateInput) {
+  dateInput.addEventListener("change", () => {
+    if (isDateSunday(dateInput.value)) {
+      dateInput.value = "";
+      const t = UI[currentLang];
+      window.alert(t.quoteDateSundayError);
+    }
+  });
+}
+
 function buildQuoteMessage() {
   const t = UI[currentLang];
   const nombre = document.getElementById("q-nombre").value.trim();
@@ -1180,15 +1218,7 @@ function buildQuoteMessage() {
 function validateQuoteBusinessRules() {
   const t = UI[currentLang];
   const fechaInput = document.getElementById("q-fecha");
-  fechaInput.setCustomValidity("");
-
-  if (fechaInput.value) {
-    const [y, m, d] = fechaInput.value.split("-").map(Number);
-    const dayOfWeek = new Date(y, m - 1, d).getDay(); // hora local; 0 = domingo
-    if (dayOfWeek === 0) {
-      fechaInput.setCustomValidity(t.quoteDateSundayError);
-    }
-  }
+  fechaInput.setCustomValidity(isDateSunday(fechaInput.value) ? t.quoteDateSundayError : "");
 }
 
 function handleQuoteWhatsapp() {
@@ -1214,11 +1244,7 @@ function handleQuoteEmail() {
 function renderInfoSchedule() {
   const t = UI[currentLang];
   const rows = [
-    [t.days.mon, t.hoursWeek],
-    [t.days.tue, t.hoursWeek],
-    [t.days.wed, t.hoursWeek],
-    [t.days.thu, t.hoursWeek],
-    [t.days.fri, t.hoursWeek],
+    [t.days.monFri, t.hoursWeek],
     [t.days.sat, t.hoursSat],
     [t.days.sun, t.hoursClosed],
   ];
@@ -1234,6 +1260,32 @@ function renderInfoSchedule() {
     hoursEl.textContent = hours;
     li.appendChild(dayEl);
     li.appendChild(hoursEl);
+    list.appendChild(li);
+  });
+}
+
+function renderPaymentDetails() {
+  const t = UI[currentLang];
+  const rows = [
+    [t.paymentRut, PAYMENT_INFO.rut],
+    [t.paymentNombre, PAYMENT_INFO.nombreTitular],
+    [t.paymentBanco, PAYMENT_INFO.banco],
+    [t.paymentTipoCuenta, PAYMENT_INFO.tipoCuenta],
+    [t.paymentNumeroCuenta, PAYMENT_INFO.numeroCuenta],
+    [t.paymentCorreo, PAYMENT_INFO.correo],
+  ];
+  const list = document.getElementById("payment-details-list");
+  list.textContent = "";
+  rows.forEach(([label, value]) => {
+    const li = document.createElement("li");
+    const labelEl = document.createElement("span");
+    labelEl.className = "payment-label";
+    labelEl.textContent = label + ":";
+    const valueEl = document.createElement("span");
+    valueEl.className = "payment-value";
+    valueEl.textContent = value;
+    li.appendChild(labelEl);
+    li.appendChild(valueEl);
     list.appendChild(li);
   });
 }
@@ -1299,13 +1351,12 @@ function setupContactLinks() {
   footerPhone.setAttribute("href", "tel:" + BUSINESS.phoneCall);
   setIconLabel(footerPhone, "phone", BUSINESS.phoneCallDisplay);
 
-  const qrImage = document.getElementById("qr-image");
-  if (!qrImage.dataset.errorHandlerAttached) {
-    qrImage.dataset.errorHandlerAttached = "true";
-    watchImageForError(qrImage, () => {
-      qrImage.hidden = true;
-    });
-  }
+  const paymentWhats = document.getElementById("payment-whatsapp-link");
+  safeExternalLink(
+    paymentWhats,
+    buildWhatsappLink(BUSINESS.whatsappNumber, currentLang === "es" ? "Hola, les envío el comprobante de mi transferencia." : "Hi! Here's my transfer receipt.")
+  );
+  paymentWhats.textContent = BUSINESS.whatsappDisplay;
 
   const mapsLink = document.getElementById("maps-link");
   const mapsUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(BUSINESS.addressLine);
@@ -1333,6 +1384,7 @@ function render() {
   renderCatalog();
   renderGallery();
   renderInfoSchedule();
+  renderPaymentDetails();
   setupContactLinks();
   setupQuoteFormLabels();
   setupOrderPanelLabels();
@@ -1408,11 +1460,15 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("quote-whatsapp").addEventListener("click", handleQuoteWhatsapp);
   document.getElementById("quote-email").addEventListener("click", handleQuoteEmail);
 
-  // No dejar elegir una fecha anterior a hoy en el formulario de cotización
-  // ni en el panel de pedido.
+  // No dejar elegir una fecha anterior a hoy, ni un domingo, en el
+  // formulario de cotización ni en el panel de pedido.
   const todayISO = new Date().toLocaleDateString("en-CA"); // formato AAAA-MM-DD
-  document.getElementById("q-fecha").min = todayISO;
-  document.getElementById("o-fecha").min = todayISO;
+  const qFecha = document.getElementById("q-fecha");
+  const oFecha = document.getElementById("o-fecha");
+  qFecha.min = todayISO;
+  oFecha.min = todayISO;
+  blockSundaySelection(qFecha);
+  blockSundaySelection(oFecha);
 
   // Panel de pedido ("Pedir aquí").
   const orderPanel = document.getElementById("order-panel");
