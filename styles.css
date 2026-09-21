@@ -250,14 +250,14 @@ a {
 .hero {
   /*
     El fondo con las ilustraciones de pastelería se guarda como
-    images/hero-pattern.jpg (o .png). Mientras no subas ese archivo,
+    images/hero-pattern.webp. Mientras no subas ese archivo,
     se ve automáticamente el degradado rosado de respaldo — la capa
     oscura semitransparente de arriba es la que mantiene el texto
     blanco legible encima del dibujo.
   */
   background:
     linear-gradient(180deg, rgba(58, 20, 20, 0.55), rgba(58, 20, 20, 0.55)),
-    url("images/hero-pattern.jpg") center/cover no-repeat,
+    url("images/hero-pattern.webp") center/cover no-repeat,
     linear-gradient(135deg, #a6455a, #7a3140);
   color: #fff;
   padding: 64px 0 72px;
@@ -292,13 +292,13 @@ a {
 .seasonal-section .section-inner {
   /*
     El fondo con ilustraciones de Fiestas Patrias se guarda como
-    images/hero-pattern2.jpg. Mientras no lo subas, se ve el degradado
+    images/hero-pattern2.webp. Mientras no lo subas, se ve el degradado
     durazno de siempre — no se rompe nada. La capa blanca semitransparente
     de arriba es la que mantiene el texto oscuro legible encima del dibujo.
   */
   background:
     linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)),
-    url("images/hero-pattern2.jpg") center/cover no-repeat,
+    url("images/hero-pattern2.webp") center/cover no-repeat,
     linear-gradient(135deg, #fff3e0, #ffe3d6);
   border: 2px dashed var(--color-accent);
   border-radius: var(--radius-lg);

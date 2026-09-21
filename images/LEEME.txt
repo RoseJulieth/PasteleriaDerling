@@ -1,12 +1,15 @@
 CÓMO AGREGAR TUS FOTOS
 =======================
 Guarda tus fotos en esta misma carpeta "images" usando EXACTAMENTE estos
-nombres (todo en minúscula, con guiones, sin tildes ni espacios). Si el
-nombre no coincide, la página mostrará un ícono de torta en su lugar (no se
-rompe, pero no se verá tu foto).
+nombres, con la extensión que se indica en cada línea (todo en minúscula,
+con guiones, sin tildes ni espacios). Si el nombre no coincide, la página
+mostrará un ícono de torta en su lugar (no se rompe, pero no se verá tu foto).
 
-Formato recomendado: JPG o PNG, foto cuadrada o 4:3, menos de 1 MB por fototografía
-para que la página cargue rápido.
+Formato recomendado: WEBP (pesa mucho menos que JPG, así la página carga más
+rápido) — foto cuadrada o 4:3, menos de 1 MB por fotografía. Los productos
+que todavía dicen ".jpg" abajo son los que aún no se han convertido a WEBP;
+en cuanto tengas esa foto en WEBP, avísame para actualizar el nombre en el
+código. El LOGO es la única excepción y siempre debe ser PNG (logo.png).
 
 LOGO DEL LOCAL — muy importante
 ------------------------------------
@@ -17,11 +20,12 @@ Aparece en la esquina superior izquierda de toda la página y como el
 computador, pídeselo a quien te lo diseñó, o guárdalo desde donde lo
 tengas guardado — por ejemplo, desde el chat donde te lo enviaron — con
 "Guardar imagen como..." y ese nombre exacto: logo.png. Mientras no lo
-subas, se muestra un emoji de torta 🍰 en su lugar.)
+subas, se muestra un emoji de torta 🍰 en su lugar. Este archivo SIEMPRE
+va en PNG, nunca en WEBP.)
 
 FONDO DE LA PORTADA (banner de ilustraciones) — opcional
 ------------------------------------
-hero-pattern.jpg
+hero-pattern.webp
 (El dibujo con tortas, macarons y flores en fondo rosado que aparece
 detrás de "Bienvenidos... Pastelería Derling" al inicio de la página.
 Mientras no lo subas, se ve un degradado rosado liso en su lugar —
@@ -29,38 +33,38 @@ también se ve bien, así que no es urgente.)
 
 TORTAS CLÁSICAS
 ------------------------------------
-torta-pina.jpg
+torta-pina.webp
 torta-naranja.jpg
-torta-moka.jpg
+torta-moka.webp
 torta-primavera.jpg
 torta-manjar-merengue.jpg
-torta-manjar-nueces.jpg
+torta-manjar-nueces.webp
 torta-manjar-pastelera.jpg
 torta-lucuma.jpg
 torta-comb-hoja-merengue.jpg
-torta-combinada.jpg
-torta-chocolate-manjar.jpg
+torta-combinada.webp
+torta-chocolate-manjar.webp
 torta-selva-negra.jpg
 
 TORTAS TRADICIONALES
 ------------------------------------
-torta-reina-ana.jpg
-torta-chocolate-ganache.jpg
+torta-reina-ana.webp
+torta-chocolate-ganache.webp
 torta-ciruela.jpg
 torta-turron-nuez.jpg
 torta-turron-coco.jpg
 
 TORTAS ESPECIALES
 ------------------------------------
-torta-hojarasca-manjar.jpg
+torta-hojarasca-manjar.webp
 torta-hojarasca-yemas.jpg
 torta-pompadour.jpg
-torta-trasnochada.jpg
-torta-amor.jpg
+torta-trasnochada.webp
+torta-amor.webp
 torta-tropical.jpg
 torta-merengue-lucuma.jpg
 torta-merengue-mango.jpg
-torta-merengue-frutilla.jpg
+torta-merengue-frutilla.webp
 torta-merengue-pina.jpg
 torta-merengue-frambuesa.jpg
 torta-merengue-durazno.jpg
@@ -68,20 +72,20 @@ torta-merengue-durazno.jpg
 TORTAS DE PANQUEQUE
 ------------------------------------
 torta-panq-almendra.jpg
-torta-panq-chocolate.jpg
+torta-panq-chocolate.webp
 torta-reina-sofia.jpg
 torta-bicolor.jpg
 torta-muselina.jpg
-torta-panq-naranja.jpg
+torta-panq-naranja.webp
 torta-panq-chocolate-cobertura.jpg
 
 TORTAS PREMIUM
 ------------------------------------
-torta-napoleon.jpg
+torta-napoleon.webp
 torta-nuez.jpg
 torta-tres-leches.jpg
 torta-rellena.jpg
-torta-5-sabores.jpg
+torta-5-sabores.webp
 
 CÓCTEL Y CANAPÉS
 ------------------------------------
@@ -96,6 +100,13 @@ pastel-choclo.jpg
 tapaditos-1.jpg
 diplomatico.jpg
 tapaditos-2.jpg
+empanada-ave-carne.webp
+empanada-carne-molida.webp
+empanada-napolitana.webp
+empanada-queso-frita.webp
+empanada-queso-hoja.webp
+(Las 5 empanadas de arriba vivían antes en "Temporada Especial" y ahora
+son parte permanente del catálogo, en esta sección.)
 
 QUICHES Y KUCHENES SALADOS
 ------------------------------------
@@ -108,39 +119,31 @@ quiche-individual.jpg
 
 GALERÍA DE TORTAS ESPECIALES REALIZADAS
 ------------------------------------
-galeria-1.jpg
-galeria-2.jpg
+galeria-1.webp
+galeria-2.webp
 galeria-3.jpg
-galeria-4.jpg
+galeria-4.webp
 (Para cambiar los nombres que aparecen bajo cada foto, o agregar/quitar
 tortas de esta galería, edita el bloque "GALLERY_ITEMS" en script.js —
 ahí mismo están las instrucciones.)
 
-TEMPORADA ESPECIAL (Fiestas Patrias, Navidad, etc.)
+TEMPORADA ESPECIAL (Navidad, Día de la Madre, etc.) — ACTUALMENTE APAGADA
 ------------------------------------
-hero-pattern2.jpg
-(Fondo con ilustraciones para todo el recuadro de Fiestas Patrias.
-Mientras no lo subas, se ve un degradado durazno liso en su lugar.)
+Esta sección está desactivada (active: false) porque ya pasaron las Fiestas
+Patrias y por ahora no hay ninguna temporada activa. No se muestra en la
+página ni en el menú. Cuando quieras activarla de nuevo para otra fecha,
+edita "SEASONAL" en script.js y cambia active a true, actualiza el título,
+subtítulo y los productos en "SEASONAL_ITEMS" (los que ya no correspondan
+se pueden borrar o reemplazar).
 
-Empanadas:
-temporada-empanada-ave-carne.jpg
-temporada-empanada-carne-molida.jpg
-temporada-empanada-napolitana.jpg
-temporada-empanada-queso-frita.jpg
-temporada-empanada-queso-hoja.jpg
+hero-pattern2.webp
+(Fondo con ilustraciones para todo el recuadro de temporada. Mientras no lo
+subas, se ve un degradado durazno liso en su lugar.)
 
-Dulces Chilenos:
+Dulces Chilenos (quedaron guardados por si los usas en una próxima temporada):
 temporada-alfajores.jpg
 temporada-dulces-blancos.jpg
 temporada-empanada-alcayota.jpg
-
-(Esta sección aparece destacada arriba del catálogo, con un recuadro de
-color. Para cambiar el título "Fiestas Patrias" por el de otra fecha
-(Navidad, Día de la Madre, etc.), los productos, sus precios, los grupos
-("Empanadas" / "Dulces Chilenos"), o para ocultar toda la sección
-cuando termine la temporada, edita los bloques "SEASONAL",
-"SEASONAL_SUBCATEGORIES" y "SEASONAL_ITEMS" en script.js — ahí mismo
-están las instrucciones, incluyendo cómo "apagarla" con active: false.)
 
 TIP: no necesitas subir todas las fotos el primer día. Empieza con las
 5-10 tortas que más vendes y ve agregando el resto después. La página

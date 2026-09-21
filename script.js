@@ -45,7 +45,7 @@ const PAYMENT_INFO = {
  *
  * Para agregar la foto de un producto, guarda una imagen en la carpeta
  * "images" con el mismo nombre que aparece en "img" (por ejemplo
- * images/torta-pina.jpg). Si no subes la foto, se mostrará un ícono
+ * images/torta-pina.webp). Si no subes la foto, se mostrará un ícono
  * decorativo automáticamente — la página nunca se ve rota.
  */
 const PORTION_GROUPS = {
@@ -88,7 +88,7 @@ const CATEGORIES = [
 
 const CAKES = [
   // ---------- TORTAS CLÁSICAS ----------
-  { id: "pina", category: "clasicas", group: "A", img: "images/torta-pina.jpg",
+  { id: "pina", category: "clasicas", group: "A", img: "images/torta-pina.webp",
     es: { name: "Torta de Piña", desc: "Crema de piña con trozos y coco rallado." },
     en: { name: "Pineapple Cake", desc: "Pineapple cream with fruit chunks and shredded coconut." },
     prices: [26300, 33100, 44000, 52500, 63000, 66300] },
@@ -96,7 +96,7 @@ const CAKES = [
     es: { name: "Torta de Naranja", desc: "Crema de naranja con mermelada de naranja y nuez." },
     en: { name: "Orange Cake", desc: "Orange cream with orange marmalade and walnuts." },
     prices: [26300, 33100, 44000, 52500, 63000, 66300] },
-  { id: "moka", category: "clasicas", group: "A", img: "images/torta-moka.jpg",
+  { id: "moka", category: "clasicas", group: "A", img: "images/torta-moka.webp",
     es: { name: "Torta Moka", desc: "Crema de café con chocolate." },
     en: { name: "Mocha Cake", desc: "Coffee cream with chocolate." },
     prices: [26300, 33100, 44000, 52500, 63000, 66300] },
@@ -108,7 +108,7 @@ const CAKES = [
     es: { name: "Manjar con Merengue Italiano", desc: "Manjar (dulce de leche) con merengue italiano." },
     en: { name: "Manjar with Italian Meringue", desc: "Manjar (Chilean dulce de leche) with Italian meringue." },
     prices: [28700, 35300, 45000, 56700, 67000, 78000] },
-  { id: "manjar-nueces", category: "clasicas", group: "A", img: "images/torta-manjar-nueces.jpg",
+  { id: "manjar-nueces", category: "clasicas", group: "A", img: "images/torta-manjar-nueces.webp",
     es: { name: "Manjar con Nueces", desc: "Manjar con nueces." },
     en: { name: "Manjar with Walnuts", desc: "Manjar filling with walnuts." },
     prices: [28700, 35300, 45000, 56700, 67000, 78000] },
@@ -124,11 +124,11 @@ const CAKES = [
     es: { name: "Combinada con Hoja y Merengue", desc: "Bizcocho, merengue de frambuesa, hoja de manjar y merengue de lúcuma." },
     en: { name: "Combo with Manjar Leaf & Meringue", desc: "Sponge, raspberry meringue, manjar leaf and lúcuma meringue." },
     prices: [33100, 37300, 47000, 56700, 67000, 75000] },
-  { id: "combinada-hoja-merengue", category: "clasicas", group: "A", img: "images/torta-combinada.jpg",
+  { id: "combinada-hoja-merengue", category: "clasicas", group: "A", img: "images/torta-combinada.webp",
     es: { name: "Combinada con Hoja o Merengue", desc: "Combinación de hoja de manjar o merengue, a elección." },
     en: { name: "Combo, Manjar Leaf or Meringue", desc: "Your choice of manjar leaf or meringue combination." },
     prices: [33100, 37300, 47000, 56700, 67000, 75000] },
-  { id: "chocolate-manjar", category: "clasicas", group: "A", img: "images/torta-chocolate-manjar.jpg",
+  { id: "chocolate-manjar", category: "clasicas", group: "A", img: "images/torta-chocolate-manjar.webp",
     es: { name: "Torta de Chocolate", desc: "Manjar y cobertura de chocolate." },
     en: { name: "Chocolate Cake", desc: "Manjar filling with chocolate coating." },
     prices: [33100, 37300, 47000, 56700, 67000, 75000] },
@@ -138,11 +138,11 @@ const CAKES = [
     prices: [33100, 37300, 47000, 56700, 67000, 75000] },
 
   // ---------- TORTAS TRADICIONALES ----------
-  { id: "reina-ana", category: "tradicionales", group: "A", img: "images/torta-reina-ana.jpg",
+  { id: "reina-ana", category: "tradicionales", group: "A", img: "images/torta-reina-ana.webp",
     es: { name: "Reina Ana", desc: "Receta tradicional de la casa." },
     en: { name: "Reina Ana", desc: "Our traditional house recipe." },
     prices: [33100, 37300, 47000, 54000, 64000, 75000] },
-  { id: "chocolate-ganache", category: "tradicionales", group: "A", img: "images/torta-chocolate-ganache.jpg",
+  { id: "chocolate-ganache", category: "tradicionales", group: "A", img: "images/torta-chocolate-ganache.webp",
     es: { name: "Torta de Chocolate con Ganache", desc: "Relleno con ganache de chocolate." },
     en: { name: "Chocolate Ganache Cake", desc: "Filled with chocolate ganache." },
     prices: [36700, 44000, 52500, 63000, 68000, 84000] },
@@ -160,7 +160,7 @@ const CAKES = [
     prices: [36700, 44000, 52500, 63000, 68000, 84000] },
 
   // ---------- TORTAS ESPECIALES ----------
-  { id: "hojarasca-manjar", category: "especiales", group: "A", img: "images/torta-hojarasca-manjar.jpg",
+  { id: "hojarasca-manjar", category: "especiales", group: "A", img: "images/torta-hojarasca-manjar.webp",
     es: { name: "Hojarasca con Manjar y Nueces", desc: "Masa hojaldrada con manjar y nueces." },
     en: { name: "Hojarasca with Manjar & Walnuts", desc: "Flaky pastry layers with manjar and walnuts." },
     prices: [33100, 40900, 47000, 57700, 68000, 87000] },
@@ -172,11 +172,11 @@ const CAKES = [
     es: { name: "Pompadour", desc: "Relleno con crema de plátano." },
     en: { name: "Pompadour", desc: "Filled with banana cream." },
     prices: [37300, 44100, 52500, 60900, 73000, 89000] },
-  { id: "trasnochada", category: "especiales", group: "A", img: "images/torta-trasnochada.jpg",
+  { id: "trasnochada", category: "especiales", group: "A", img: "images/torta-trasnochada.webp",
     es: { name: "Trasnochada", desc: "Manjar, crema pastelera y mermelada, cubierta con chantilly." },
     en: { name: "Trasnochada", desc: "Manjar, pastry cream and jam, topped with chantilly cream." },
     prices: [37300, 44100, 52500, 60900, 73000, 89000] },
-  { id: "amor", category: "especiales", group: "A", img: "images/torta-amor.jpg",
+  { id: "amor", category: "especiales", group: "A", img: "images/torta-amor.webp",
     es: { name: "Torta Amor", desc: "Especialidad de la casa con crema de vainilla." },
     en: { name: "Amor Cake", desc: "House specialty with vanilla cream." },
     prices: [37300, 44100, 52200, 60900, 73000, 89000] },
@@ -192,7 +192,7 @@ const CAKES = [
     es: { name: "Merengue Relleno con Mango", desc: "Capas de merengue con relleno de mango." },
     en: { name: "Meringue with Mango", desc: "Meringue layers filled with mango cream." },
     prices: [31500, 37500, 42000, 52500, 63000, 78700] },
-  { id: "merengue-frutilla", category: "especiales", group: "A", img: "images/torta-merengue-frutilla.jpg",
+  { id: "merengue-frutilla", category: "especiales", group: "A", img: "images/torta-merengue-frutilla.webp",
     es: { name: "Merengue Relleno con Frutilla", desc: "Capas de merengue con relleno de frutilla." },
     en: { name: "Meringue with Strawberry", desc: "Meringue layers filled with strawberry cream." },
     prices: [31500, 37500, 42000, 52500, 63000, 78700] },
@@ -214,7 +214,7 @@ const CAKES = [
     es: { name: "Pompadour de Almendra", desc: "Panqueque de almendra con crema de almendra." },
     en: { name: "Almond Crepe Cake", desc: "Almond crepe layers with almond cream." },
     prices: [37800, 44000, 52000, 68000, 78000, 89000] },
-  { id: "panq-chocolate", category: "panqueque", group: "C", img: "images/torta-panq-chocolate.jpg",
+  { id: "panq-chocolate", category: "panqueque", group: "C", img: "images/torta-panq-chocolate.webp",
     es: { name: "Panqueque de Chocolate", desc: "Relleno con manjar, ganache y mermelada." },
     en: { name: "Chocolate Crepe Cake", desc: "Filled with manjar, ganache and jam." },
     prices: [37800, 44000, 52000, 68000, 78000, 89000] },
@@ -230,7 +230,7 @@ const CAKES = [
     es: { name: "Muselina", desc: "Panqueque de chocolate, crema de café, manjar y trufa." },
     en: { name: "Muselina Crepe Cake", desc: "Chocolate crepe layers, coffee cream, manjar and truffle." },
     prices: [37800, 44000, 52000, 68000, 78000, 89000] },
-  { id: "panq-naranja", category: "panqueque", group: "C", img: "images/torta-panq-naranja.jpg",
+  { id: "panq-naranja", category: "panqueque", group: "C", img: "images/torta-panq-naranja.webp",
     es: { name: "Panqueque de Naranja", desc: "Panqueque de naranja con crema de naranja." },
     en: { name: "Orange Crepe Cake", desc: "Orange crepe layers with orange cream." },
     prices: [37800, 44000, 52000, 68000, 78000, 89000] },
@@ -240,7 +240,7 @@ const CAKES = [
     prices: [37800, 44000, 52000, 68000, 78000, 89000] },
 
   // ---------- TORTAS PREMIUM ----------
-  { id: "napoleon", category: "premium", group: "B", img: "images/torta-napoleon.jpg",
+  { id: "napoleon", category: "premium", group: "B", img: "images/torta-napoleon.webp",
     es: { name: "Napoleón", desc: "Bizcocho de nuez, merengue, crema de vainilla y manjar." },
     en: { name: "Napoleón", desc: "Walnut sponge, meringue, vanilla cream and manjar." },
     prices: [37300, 44100, 52500, 63000, 73000, 84000] },
@@ -256,7 +256,7 @@ const CAKES = [
     es: { name: "Torta a tu Elección", desc: "Rellena con crema pastelera, manjar o mermelada de frambuesa." },
     en: { name: "Build-Your-Own Filling", desc: "Filled with pastry cream, manjar or raspberry jam — your choice." },
     prices: [36700, 44000, 52500, 63000, 68000, 84000] },
-  { id: "cinco-sabores", category: "premium", group: "B", img: "images/torta-5-sabores.jpg",
+  { id: "cinco-sabores", category: "premium", group: "B", img: "images/torta-5-sabores.webp",
     es: { name: "Torta 5 Sabores", desc: "Bizcocho de piña, panqueque de naranja, bizcocho de chocolate, merengue de lúcuma y hojarasca." },
     en: { name: "Five Flavors Cake", desc: "Pineapple sponge, orange crepe cake, chocolate sponge, lúcuma meringue and hojarasca." },
     prices: [37300, 44100, 52500, 63000, 73000, 84000] },
@@ -312,6 +312,26 @@ const SIMPLE_ITEMS = [
     es: { name: "Tapaditos de Carne, Tocino, Pollo y Choricillo", desc: "Bocaditos individuales surtidos.", unit: "c/u" },
     en: { name: "Beef, Bacon, Chicken & Sausage Tapaditos", desc: "Assorted individual savory bites.", unit: "each" },
     price: 1700 },
+  { id: "empanada-ave-carne", category: "coctel", img: "images/empanada-ave-carne.webp",
+    es: { name: "Empanadas al Horno (Ave, trozos de carne)", desc: "Empanada horneada, rellena de ave y trozos de carne.", unit: "c/u" },
+    en: { name: "Baked Empanada (Chicken & Beef Chunks)", desc: "Baked empanada filled with chicken and beef chunks.", unit: "each" },
+    price: 2900 },
+  { id: "empanada-carne-molida", category: "coctel", img: "images/empanada-carne-molida.webp",
+    es: { name: "Empanada al Horno (Carne Molida)", desc: "Empanada horneada, rellena de carne molida.", unit: "c/u" },
+    en: { name: "Baked Empanada (Ground Beef)", desc: "Baked empanada filled with ground beef.", unit: "each" },
+    price: 2500 },
+  { id: "empanada-napolitana", category: "coctel", img: "images/empanada-napolitana.webp",
+    es: { name: "Empanada Napolitana al Horno", desc: "Empanada napolitana horneada.", unit: "c/u" },
+    en: { name: "Baked Napolitana Empanada", desc: "Baked Napolitana-style empanada.", unit: "each" },
+    price: 2500 },
+  { id: "empanada-queso-frita", category: "coctel", img: "images/empanada-queso-frita.webp",
+    es: { name: "Empanada de Queso (Frita)", desc: "Empanada frita, rellena de queso.", unit: "c/u" },
+    en: { name: "Fried Cheese Empanada", desc: "Fried empanada filled with cheese.", unit: "each" },
+    price: 2500 },
+  { id: "empanada-queso-hoja", category: "coctel", img: "images/empanada-queso-hoja.webp",
+    es: { name: "Empanada de Queso (Masa de Hoja)", desc: "Empanada de masa de hoja, rellena de queso.", unit: "c/u" },
+    en: { name: "Puff Pastry Cheese Empanada", desc: "Puff pastry empanada filled with cheese.", unit: "each" },
+    price: 2800 },
 
   { id: "quiche-clasico", category: "quiches", img: "images/quiche-clasico.jpg",
     es: { name: "Quiche / Kuchen Salado Clásico", desc: "Carne, pavo y brócoli, espinaca y jamón, vacuno picado, o pollo y zanahoria.", unit: "tamaño familiar" },
@@ -354,16 +374,16 @@ const SIMPLE_ITEMS = [
  * Para quitar una torta de la galería, borra su bloque completo.
  */
 const GALLERY_ITEMS = [
-  { id: "galeria-1", img: "images/galeria-1.jpg",
+  { id: "galeria-1", img: "images/galeria-1.webp",
     es: { name: "Torta de Bodas" },
     en: { name: "Wedding Cake" } },
-  { id: "galeria-2", img: "images/galeria-2.jpg",
+  { id: "galeria-2", img: "images/galeria-2.webp",
     es: { name: "Cumpleaños Temático" },
     en: { name: "Themed Birthday Cake" } },
   { id: "galeria-3", img: "images/galeria-3.jpg",
     es: { name: "Torta de Bautizo" },
     en: { name: "Christening Cake" } },
-  { id: "galeria-4", img: "images/galeria-4.jpg",
+  { id: "galeria-4", img: "images/galeria-4.webp",
     es: { name: "Torta de Cumpleaños Infantil" },
     en: { name: "Kids' Birthday Cake" } },
 ];
@@ -379,7 +399,7 @@ const GALLERY_ITEMS = [
  * título, las fotos y los productos, y vuelve a poner "active" a true.
  */
 const SEASONAL = {
-  active: true, // true = mostrar la sección / false = ocultarla
+  active: false, // true = mostrar la sección / false = ocultarla
   es: {
     title: "Fiestas Patrias",
     subtitle: "Empanadas y productos típicos para este 18 de septiembre. ¡Encarga con tiempo!",
@@ -397,7 +417,6 @@ const SEASONAL = {
  * copia un bloque completo aquí y usa su "id" en los productos.
  */
 const SEASONAL_SUBCATEGORIES = [
-  { id: "empanadas", es: "Empanadas", en: "Empanadas" },
   { id: "dulces", es: "Dulces Chilenos", en: "Chilean Sweets" },
 ];
 
@@ -414,28 +433,6 @@ const SEASONAL_SUBCATEGORIES = [
  * mismo nombre). Para quitar un producto, borra su bloque completo.
  */
 const SEASONAL_ITEMS = [
-  // ---------- Empanadas ----------
-  { id: "empanada-ave-carne", subcategory: "empanadas", img: "images/temporada-empanada-ave-carne.jpg",
-    es: { name: "Empanadas al Horno (Ave, trozos de carne)" },
-    en: { name: "Baked Empanada (Chicken & Beef Chunks)" },
-    price: 2900 },
-  { id: "empanada-carne-molida", subcategory: "empanadas", img: "images/temporada-empanada-carne-molida.jpg",
-    es: { name: "Empanada al Horno (Carne Molida)" },
-    en: { name: "Baked Empanada (Ground Beef)" },
-    price: 2500 },
-  { id: "empanada-napolitana", subcategory: "empanadas", img: "images/temporada-empanada-napolitana.jpg",
-    es: { name: "Empanada Napolitana al Horno" },
-    en: { name: "Baked Napolitana Empanada" },
-    price: 2500 },
-  { id: "empanada-queso-frita", subcategory: "empanadas", img: "images/temporada-empanada-queso-frita.jpg",
-    es: { name: "Empanada de Queso (Frita)" },
-    en: { name: "Fried Cheese Empanada" },
-    price: 2500 },
-  { id: "empanada-queso-hoja", subcategory: "empanadas", img: "images/temporada-empanada-queso-hoja.jpg",
-    es: { name: "Empanada de Queso (Masa de Hoja)" },
-    en: { name: "Puff Pastry Cheese Empanada" },
-    price: 2800 },
-
   // ---------- Dulces Chilenos ----------
   { id: "alfajores-patrios", subcategory: "dulces", img: "images/temporada-alfajores.jpg",
     es: { name: "Alfajores (Manjar, c/Chancaca)" },
