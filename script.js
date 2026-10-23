@@ -10,9 +10,9 @@ const BUSINESS = {
   name: "Pastelería Derling",
   addressLine: "Av. El Palomar 1733, Copiapó",
   // Número de WhatsApp SIN "+", sin espacios, con código de país 56.
-  whatsappNumber: "56999646164",
+  whatsappNumber: "56981844937",
   // El mismo número de WhatsApp, pero bonito para mostrar en pantalla.
-  whatsappDisplay: "+56 9 9964 6164",
+  whatsappDisplay: "+56 9 8184 4937",
   // Teléfono fijo para el botón "Llamar" (formato tel: con +).
   phoneCall: "+56522210429",
   // El mismo teléfono fijo, pero bonito para mostrar en pantalla.
