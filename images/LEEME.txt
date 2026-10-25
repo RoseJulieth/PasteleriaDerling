@@ -87,6 +87,55 @@ torta-tres-leches.jpg
 torta-rellena.jpg
 torta-5-sabores.webp
 
+TORTAS RECTANGULARES
+------------------------------------
+rect-biscochuelo-blanco.jpg
+rect-biscochuelo-chocolate.jpg
+rect-merengue-lucuma-frutilla-mango.jpg
+rect-mil-hojas.jpg
+rect-hojaldre-bandeja-12.jpg
+rect-hojaldre-bandeja-14.jpg
+rect-nuez.jpg
+rect-bizcocho-blanco-decoracion.jpg
+rect-bizcocho-chocolate-diseno.jpg
+rect-novio.jpg
+rect-ciruela.jpg
+
+PASTELES Y DULCES INDIVIDUALES
+------------------------------------
+ind-alfajor-maicena.jpg
+ind-alfajor-hoja-coco.jpg
+ind-alfajor-hoja-nuez.jpg
+ind-alfajor-mendocino.jpg
+ind-dulces-blanco.jpg
+ind-berlines.jpg
+ind-colegiales.jpg
+ind-cachitos.jpg
+ind-hojaldre.jpg
+ind-repollos.jpg
+ind-eclair.jpg
+ind-strudel-grande.jpg
+ind-strudel-trozo.jpg
+ind-pie-limon-chico.jpg
+ind-pie-limon-grande.jpg
+ind-kuchen-grande.jpg
+ind-kuchen-nuez.jpg
+ind-kuchen-nuez-trozo.jpg
+ind-kuchen-chico.jpg
+ind-tartaletas-grandes.jpg
+ind-tartaletas-chicas.jpg
+ind-trozo-pina.jpg
+ind-trozo-chocolate.jpg
+ind-trozo-ciruela.jpg
+ind-trozo-mil-hojas.jpg
+ind-trozo-nuez.jpg
+ind-trozo-napoleon.jpg
+ind-trozo-panqueque.jpg
+ind-brazo-reina.jpg
+ind-brazo-reina-trozo.jpg
+ind-queque.jpg
+ind-queque-chico.jpg
+
 CÓCTEL Y CANAPÉS
 ------------------------------------
 canapes-pastas.jpg
