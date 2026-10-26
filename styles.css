@@ -324,6 +324,16 @@ a {
   color: var(--color-muted);
   font-size: 1.05rem;
 }
+.catalog-category-heading {
+  margin: 36px 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--color-accent);
+  color: var(--color-primary-dark);
+  font-size: 1.3rem;
+}
+.catalog-category-heading:first-of-type {
+  margin-top: 20px;
+}
 
 
 .visually-hidden {

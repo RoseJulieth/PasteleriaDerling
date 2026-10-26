@@ -1206,10 +1206,22 @@ function applyFilters() {
   const searchInput = document.getElementById("product-search");
   const query = normalizeText((searchInput ? searchInput.value : "").trim());
 
-  document.querySelectorAll("#catalog-grid .card").forEach((card) => {
-    const matchesCategory = category === "all" || card.dataset.category === category;
-    const matchesSearch = !query || normalizeText(card.dataset.searchText || "").includes(query);
-    card.hidden = !(matchesCategory && matchesSearch);
+  document.querySelectorAll("#catalog-grid .catalog-grid").forEach((grid) => {
+    const matchesCategory = category === "all" || grid.dataset.category === category;
+    let visibleCount = 0;
+
+    grid.querySelectorAll(".card").forEach((card) => {
+      const matchesSearch = !query || normalizeText(card.dataset.searchText || "").includes(query);
+      const show = matchesCategory && matchesSearch;
+      card.hidden = !show;
+      if (show) visibleCount += 1;
+    });
+
+    grid.hidden = visibleCount === 0;
+    const heading = document.querySelector(
+      `.catalog-category-heading[data-category="${grid.dataset.category}"]`
+    );
+    if (heading) heading.hidden = visibleCount === 0;
   });
 }
 
@@ -1226,10 +1238,28 @@ function populateSearchSuggestions() {
 }
 
 function renderCatalog() {
-  const grid = document.getElementById("catalog-grid");
-  grid.textContent = "";
-  CAKES.forEach((product) => grid.appendChild(buildCakeCard(product)));
-  SIMPLE_ITEMS.forEach((product) => grid.appendChild(buildSimpleCard(product)));
+  const container = document.getElementById("catalog-grid");
+  container.textContent = "";
+
+  CATEGORIES.forEach((cat) => {
+    const cakeItems = CAKES.filter((product) => product.category === cat.id);
+    const simpleItems = SIMPLE_ITEMS.filter((product) => product.category === cat.id);
+    if (cakeItems.length === 0 && simpleItems.length === 0) return;
+
+    const heading = document.createElement("h3");
+    heading.className = "catalog-category-heading";
+    heading.textContent = cat[currentLang];
+    heading.dataset.category = cat.id;
+    container.appendChild(heading);
+
+    const grid = document.createElement("div");
+    grid.className = "catalog-grid";
+    grid.dataset.category = cat.id;
+    cakeItems.forEach((product) => grid.appendChild(buildCakeCard(product)));
+    simpleItems.forEach((product) => grid.appendChild(buildSimpleCard(product)));
+    container.appendChild(grid);
+  });
+
   populateSearchSuggestions();
 }
 
