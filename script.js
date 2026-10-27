@@ -721,6 +721,7 @@ const UI = {
     floatWhatsapp: "Escríbenos por WhatsApp",
     whatsGreetingNovios: "Hola, me gustaría cotizar una torta para matrimonio o evento especial. Fecha del evento: ___ / Número de invitados: ___",
     photoSoon: "Foto próximamente",
+    photoReferenceLabel: "Imagen referencial",
   },
   en: {
     skipLink: "Skip to content",
@@ -810,6 +811,7 @@ const UI = {
     floatWhatsapp: "Message us on WhatsApp",
     whatsGreetingNovios: "Hi! I'd like a quote for a wedding or special-event cake. Event date: ___ / Number of guests: ___",
     photoSoon: "Photo coming soon",
+    photoReferenceLabel: "Reference image",
   },
 };
 
@@ -901,7 +903,7 @@ function watchImageForError(img, onError) {
 // "position" es opcional (ej. "top") para fotos verticales donde el
 // producto no queda centrado — evita que el recorte cuadrado automático
 // corte la parte importante de la foto.
-function makePhotoBox(imgPath, altText, position) {
+function makePhotoBox(imgPath, altText, position, showReferenceLabel) {
   const box = document.createElement("div");
   box.className = "photo-box";
 
@@ -923,9 +925,18 @@ function makePhotoBox(imgPath, altText, position) {
   placeholder.appendChild(icon);
   placeholder.appendChild(label);
 
+  let badge = null;
+  if (showReferenceLabel) {
+    badge = document.createElement("span");
+    badge.className = "photo-reference-badge";
+    badge.textContent = UI[currentLang].photoReferenceLabel;
+    box.appendChild(badge);
+  }
+
   img.addEventListener("error", () => {
     img.hidden = true;
     placeholder.hidden = false;
+    if (badge) badge.hidden = true;
   });
 
   box.appendChild(img);
@@ -1024,7 +1035,7 @@ function buildCakeCard(product) {
   article.dataset.category = product.category;
   article.dataset.searchText = product[currentLang].name + " " + product[currentLang].desc;
 
-  article.appendChild(makePhotoBox(product.img, product[currentLang].name, product.photoPosition));
+  article.appendChild(makePhotoBox(product.img, product[currentLang].name, product.photoPosition, true));
 
   const body = document.createElement("div");
   body.className = "card-body";
@@ -1117,7 +1128,7 @@ function buildSimpleCard(product) {
   article.dataset.category = product.category;
   article.dataset.searchText = product[currentLang].name + " " + (product[currentLang].desc || "");
 
-  article.appendChild(makePhotoBox(product.img, product[currentLang].name, product.photoPosition));
+  article.appendChild(makePhotoBox(product.img, product[currentLang].name, product.photoPosition, true));
 
   const body = document.createElement("div");
   body.className = "card-body";

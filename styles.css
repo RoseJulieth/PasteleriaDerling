@@ -446,6 +446,21 @@ a {
   opacity: 0.75;
 }
 
+.photo-reference-badge {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 1;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 0.65rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
 .card-body {
   padding: 18px 18px 20px;
   display: flex;
