@@ -645,7 +645,8 @@ a {
 }
 
 /* ---------- Panel de pedido ("Pedir aquí") ---------- */
-.order-panel {
+.order-panel,
+.cart-panel {
   position: fixed;
   top: 0;
   right: 0;
@@ -660,11 +661,13 @@ a {
   overflow-y: auto;
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
 }
-.order-panel::backdrop {
+.order-panel::backdrop,
+.cart-panel::backdrop {
   background: rgba(20, 10, 8, 0.55);
 }
 @media (max-width: 640px) {
-  .order-panel {
+  .order-panel,
+  .cart-panel {
     width: 100vw;
   }
 }
@@ -719,6 +722,182 @@ a {
 }
 .quote-actions .btn {
   flex: 1 1 220px;
+}
+
+.btn-secondary {
+  background: var(--color-border);
+  color: var(--color-text);
+}
+.btn-secondary:hover {
+  background: #ded0cb;
+}
+
+/* ---------- Carrito ---------- */
+.float-cart {
+  position: fixed;
+  right: 18px;
+  bottom: 86px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: none;
+  background: var(--color-primary-dark);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  z-index: 150;
+}
+.float-cart:active {
+  transform: scale(0.96);
+}
+.float-cart-icon {
+  width: 26px;
+  height: 26px;
+}
+.cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+}
+.cart-empty-msg {
+  color: var(--color-muted);
+  margin-top: 8px;
+}
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 16px;
+}
+.cart-item {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+.cart-item-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.cart-item-name {
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+.cart-item-size {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+.cart-item-remove {
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 999px;
+  border: none;
+  background: var(--color-border);
+  color: var(--color-text);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.cart-item-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.cart-item-price {
+  font-weight: 700;
+  color: var(--color-accent);
+}
+.cart-qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.cart-qty-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+.cart-qty-value {
+  min-width: 20px;
+  text-align: center;
+  font-weight: 700;
+}
+.cart-item-cake-text {
+  margin-top: 10px;
+}
+.cart-item-cake-text label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+.cart-item-cake-text input {
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  font-size: 0.9rem;
+}
+.cart-total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 2px solid var(--color-border);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--color-primary-dark);
+}
+.cart-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+.order-items-summary {
+  background: var(--color-bg-alt, #fdf6f2);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  font-size: 0.9rem;
+}
+.order-items-summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 0;
+}
+.order-items-summary-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-border);
+  font-weight: 700;
 }
 
 /* ---------- Novios / Eventos ---------- */

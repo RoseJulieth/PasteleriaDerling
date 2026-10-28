@@ -233,11 +233,29 @@
 </footer>
 
 <a href="#" id="float-whatsapp" class="float-whatsapp" aria-label="Escríbenos por WhatsApp"></a>
+<button type="button" id="float-cart" class="float-cart" aria-label="Ver carrito">
+  <span id="cart-badge" class="cart-badge" hidden>0</span>
+</button>
+
+<dialog id="cart-panel" class="cart-panel">
+  <button type="button" id="cart-panel-close" class="order-panel-close" data-i18n-aria-label="mapsClose" aria-label="Cerrar">✕</button>
+  <h2 data-i18n="cartTitle">Tu Pedido</h2>
+  <p id="cart-empty-msg" class="cart-empty-msg" data-i18n="cartEmpty">Todavía no has agregado productos.</p>
+  <div id="cart-items" class="cart-items"></div>
+  <div id="cart-total-row" class="cart-total-row" hidden>
+    <span data-i18n="cartTotal">Total</span>
+    <span id="cart-total-value">$0</span>
+  </div>
+  <div id="cart-actions" class="cart-actions" hidden>
+    <button type="button" id="cart-clear" class="btn btn-secondary" data-i18n="cartClear">Vaciar carrito</button>
+    <button type="button" id="cart-continue" class="btn btn-whatsapp" data-i18n="cartContinue">Continuar pedido</button>
+  </div>
+</dialog>
 
 <dialog id="order-panel" class="order-panel">
   <button type="button" id="order-panel-close" class="order-panel-close" data-i18n-aria-label="mapsClose" aria-label="Cerrar">✕</button>
-  <h2 id="order-panel-title">—</h2>
-  <p id="order-panel-subtitle" class="order-panel-subtitle"></p>
+  <h2 id="order-panel-title" data-i18n="checkoutTitle">Finalizar Pedido</h2>
+  <div id="order-items-summary" class="order-items-summary"></div>
 
   <form id="order-form" class="quote-form" novalidate>
     <label class="quote-field">
@@ -275,14 +293,6 @@
         <option value="18:30">18:30</option>
         <option value="19:00">19:00</option>
       </select>
-    </label>
-    <label class="quote-field" id="order-cake-text-field">
-      <span data-i18n="cakeTextLabel">✏️ Escrito en la torta (opcional)</span>
-      <input type="text" id="o-escrito" maxlength="60">
-    </label>
-    <label class="quote-field">
-      <span data-i18n="orderQty">Cantidad</span>
-      <input type="number" id="o-cantidad" min="1" value="1" required>
     </label>
 
     <p class="order-deposit-notice" data-i18n="orderDepositNotice">Le informamos que para confirmar su orden es necesario abonar el 50% del valor total como garantía.</p>

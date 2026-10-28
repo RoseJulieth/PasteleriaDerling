@@ -654,6 +654,8 @@ const UI = {
     peopleLabel: "Elige el tamaño",
     orderPriceLabel: "Precio",
     orderButton: "Pedir aquí",
+    addToCartButton: "Agregar al carrito",
+    addedToCartButton: "¡Agregado! ✓",
     aroLabel: "Aro",
     cakeTextLabel: "✏️ Escrito en la torta (opcional)",
     cakeTextPlaceholder: "Ej: Feliz Cumpleaños Juan",
@@ -661,9 +663,18 @@ const UI = {
     orderSizeLabel: "Tamaño",
     orderCakeTextLabel: "Escrito en la torta",
     orderQty: "Cantidad",
-    orderMessageIntro: "Hola, quiero hacer un pedido:",
+    orderMessageIntro: "Hola, quiero hacer el siguiente pedido:",
     orderDepositNotice: "Le informamos que para confirmar su orden es necesario abonar el 50% del valor total como garantía.",
     orderSendWhatsapp: "Enviar por WhatsApp",
+    cartTitle: "Tu Pedido",
+    cartEmpty: "Todavía no has agregado productos.",
+    cartTotal: "Total",
+    cartClear: "Vaciar carrito",
+    cartContinue: "Continuar pedido",
+    cartItemRemoveLabel: "Quitar",
+    cartCakeTextLabel: "✏️ Escrito en la torta (opcional)",
+    checkoutTitle: "Finalizar Pedido",
+    viewCartLabel: "Ver carrito",
     mapsLinkText: "📍 Ver en Google Maps",
     mapsEnlarge: "🔍 Ampliar mapa",
     mapsClose: "Cerrar",
@@ -744,6 +755,8 @@ const UI = {
     peopleLabel: "Choose a size",
     orderPriceLabel: "Price",
     orderButton: "Order here",
+    addToCartButton: "Add to cart",
+    addedToCartButton: "Added! ✓",
     aroLabel: "Size",
     cakeTextLabel: "✏️ Cake message (optional)",
     cakeTextPlaceholder: "E.g.: Happy Birthday John",
@@ -751,9 +764,18 @@ const UI = {
     orderSizeLabel: "Size",
     orderCakeTextLabel: "Cake message",
     orderQty: "Quantity",
-    orderMessageIntro: "Hi! I'd like to place an order:",
+    orderMessageIntro: "Hi! I'd like to place the following order:",
     orderDepositNotice: "Please note that a 50% deposit of the total is required to confirm your order.",
     orderSendWhatsapp: "Send via WhatsApp",
+    cartTitle: "Your Order",
+    cartEmpty: "You haven't added any products yet.",
+    cartTotal: "Total",
+    cartClear: "Clear cart",
+    cartContinue: "Continue order",
+    cartItemRemoveLabel: "Remove",
+    cartCakeTextLabel: "✏️ Cake message (optional)",
+    checkoutTitle: "Finish Order",
+    viewCartLabel: "View cart",
     mapsLinkText: "📍 View on Google Maps",
     mapsEnlarge: "🔍 Enlarge map",
     mapsClose: "Close",
@@ -853,6 +875,7 @@ const ICON_PATHS = {
   facebook: "M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z",
   phone: "M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z",
   email: "M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z",
+  cart: "M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z",
 };
 
 function makeIcon(name, className) {
@@ -954,20 +977,239 @@ function makePhotoBox(imgPath, altText, position, showReferenceLabel) {
  * producto ya elegidos (nombre, tamaño/unidad, precio) y pide los datos
  * de contacto antes de armar el mensaje final de WhatsApp.
  */
-let currentOrderContext = null;
+/*
+ * ==========================================================================
+ * CARRITO DE COMPRAS
+ * ==========================================================================
+ * Cada producto que el cliente agrega queda guardado aquí (y en
+ * localStorage, para no perderlo si recarga la página) hasta que arma
+ * el pedido final y lo envía por WhatsApp desde el panel de pago.
+ */
+const CART_STORAGE_KEY = "derling-cart";
+let cart = [];
 
-function openOrderPanel(context) {
-  currentOrderContext = context;
+function loadCart() {
+  try {
+    const raw = localStorage.getItem(CART_STORAGE_KEY);
+    cart = raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    cart = [];
+  }
+}
+
+function saveCart() {
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  } catch (e) {
+    /* Almacenamiento no disponible: el carrito sigue funcionando en memoria. */
+  }
+}
+
+function addToCart(item) {
+  cart.push({
+    cartItemId: "c" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+    productName: item.productName,
+    sizeLabel: item.sizeLabel || "",
+    price: item.price,
+    qty: 1,
+    isCake: !!item.isCake,
+    cakeText: "",
+  });
+  saveCart();
+  renderCartBadge();
+}
+
+function removeFromCart(cartItemId) {
+  cart = cart.filter((it) => it.cartItemId !== cartItemId);
+  saveCart();
+  renderCartBadge();
+  renderCartPanel();
+}
+
+function setCartItemQty(cartItemId, qty) {
+  const item = cart.find((it) => it.cartItemId === cartItemId);
+  if (!item) return;
+  item.qty = Math.max(1, qty);
+  saveCart();
+  renderCartBadge();
+  renderCartPanel();
+}
+
+function setCartItemCakeText(cartItemId, text) {
+  const item = cart.find((it) => it.cartItemId === cartItemId);
+  if (!item) return;
+  item.cakeText = text;
+  saveCart();
+}
+
+function clearCart() {
+  cart = [];
+  saveCart();
+  renderCartBadge();
+  renderCartPanel();
+}
+
+function cartItemCount() {
+  return cart.reduce((sum, it) => sum + it.qty, 0);
+}
+
+function cartTotal() {
+  return cart.reduce((sum, it) => sum + it.price * it.qty, 0);
+}
+
+function renderCartBadge() {
+  const badge = document.getElementById("cart-badge");
+  if (!badge) return;
+  const count = cartItemCount();
+  badge.textContent = String(count);
+  badge.hidden = count === 0;
+}
+
+function renderCartPanel() {
   const t = UI[currentLang];
+  const container = document.getElementById("cart-items");
+  const emptyMsg = document.getElementById("cart-empty-msg");
+  const totalRow = document.getElementById("cart-total-row");
+  const actions = document.getElementById("cart-actions");
+  if (!container) return;
 
-  document.getElementById("order-panel-title").textContent = context.productName;
-  const subtitleParts = [];
-  if (context.sizeLabel) subtitleParts.push(context.sizeLabel);
-  if (context.price) subtitleParts.push(formatCLP(context.price));
-  document.getElementById("order-panel-subtitle").textContent = subtitleParts.join(" — ");
+  container.textContent = "";
 
-  document.getElementById("order-cake-text-field").hidden = !context.isCake;
+  if (cart.length === 0) {
+    emptyMsg.hidden = false;
+    totalRow.hidden = true;
+    actions.hidden = true;
+    return;
+  }
 
+  emptyMsg.hidden = true;
+  totalRow.hidden = false;
+  actions.hidden = false;
+
+  cart.forEach((item) => {
+    const row = document.createElement("div");
+    row.className = "cart-item";
+
+    const top = document.createElement("div");
+    top.className = "cart-item-top";
+
+    const nameWrap = document.createElement("div");
+    const name = document.createElement("p");
+    name.className = "cart-item-name";
+    name.textContent = item.productName;
+    nameWrap.appendChild(name);
+    if (item.sizeLabel) {
+      const size = document.createElement("p");
+      size.className = "cart-item-size";
+      size.textContent = item.sizeLabel;
+      nameWrap.appendChild(size);
+    }
+    top.appendChild(nameWrap);
+
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "cart-item-remove";
+    removeBtn.textContent = "✕";
+    removeBtn.setAttribute("aria-label", t.cartItemRemoveLabel);
+    removeBtn.addEventListener("click", () => removeFromCart(item.cartItemId));
+    top.appendChild(removeBtn);
+
+    row.appendChild(top);
+
+    if (item.isCake) {
+      const cakeTextWrap = document.createElement("div");
+      cakeTextWrap.className = "cart-item-cake-text";
+      const label = document.createElement("label");
+      const span = document.createElement("span");
+      span.textContent = t.cartCakeTextLabel;
+      const input = document.createElement("input");
+      input.type = "text";
+      input.maxLength = 60;
+      input.value = item.cakeText;
+      input.addEventListener("input", () => setCartItemCakeText(item.cartItemId, input.value));
+      label.appendChild(span);
+      label.appendChild(input);
+      cakeTextWrap.appendChild(label);
+      row.appendChild(cakeTextWrap);
+    }
+
+    const bottom = document.createElement("div");
+    bottom.className = "cart-item-bottom";
+
+    const stepper = document.createElement("div");
+    stepper.className = "cart-qty-stepper";
+    const minusBtn = document.createElement("button");
+    minusBtn.type = "button";
+    minusBtn.className = "cart-qty-btn";
+    minusBtn.textContent = "−";
+    minusBtn.addEventListener("click", () => setCartItemQty(item.cartItemId, item.qty - 1));
+    const qtyValue = document.createElement("span");
+    qtyValue.className = "cart-qty-value";
+    qtyValue.textContent = String(item.qty);
+    const plusBtn = document.createElement("button");
+    plusBtn.type = "button";
+    plusBtn.className = "cart-qty-btn";
+    plusBtn.textContent = "+";
+    plusBtn.addEventListener("click", () => setCartItemQty(item.cartItemId, item.qty + 1));
+    stepper.appendChild(minusBtn);
+    stepper.appendChild(qtyValue);
+    stepper.appendChild(plusBtn);
+    bottom.appendChild(stepper);
+
+    const priceEl = document.createElement("span");
+    priceEl.className = "cart-item-price";
+    priceEl.textContent = formatCLP(item.price * item.qty);
+    bottom.appendChild(priceEl);
+
+    row.appendChild(bottom);
+    container.appendChild(row);
+  });
+
+  document.getElementById("cart-total-value").textContent = formatCLP(cartTotal());
+}
+
+function openCartPanel() {
+  renderCartPanel();
+  const panel = document.getElementById("cart-panel");
+  if (typeof panel.showModal === "function") panel.showModal();
+}
+
+// Arma el resumen (solo lectura) de los productos del carrito que se
+// muestra arriba del formulario de datos, en el panel de pago final.
+function renderOrderItemsSummary() {
+  const t = UI[currentLang];
+  const container = document.getElementById("order-items-summary");
+  container.textContent = "";
+
+  cart.forEach((item) => {
+    const row = document.createElement("div");
+    row.className = "order-items-summary-row";
+    const label = document.createElement("span");
+    let text = item.productName;
+    if (item.sizeLabel) text += " (" + item.sizeLabel + ")";
+    text += " x" + item.qty;
+    label.textContent = text;
+    const price = document.createElement("span");
+    price.textContent = formatCLP(item.price * item.qty);
+    row.appendChild(label);
+    row.appendChild(price);
+    container.appendChild(row);
+  });
+
+  const totalRow = document.createElement("div");
+  totalRow.className = "order-items-summary-total";
+  const totalLabel = document.createElement("span");
+  totalLabel.textContent = t.cartTotal;
+  const totalValue = document.createElement("span");
+  totalValue.textContent = formatCLP(cartTotal());
+  totalRow.appendChild(totalLabel);
+  totalRow.appendChild(totalValue);
+  container.appendChild(totalRow);
+}
+
+function openCheckoutPanel() {
+  if (cart.length === 0) return;
+  renderOrderItemsSummary();
   const panel = document.getElementById("order-panel");
   if (typeof panel.showModal === "function") panel.showModal();
 }
@@ -989,13 +1231,19 @@ function buildOrderMessage() {
   const direccion = document.getElementById("o-direccion").value.trim();
   const fecha = document.getElementById("o-fecha").value;
   const hora = document.getElementById("o-hora").value;
-  const escrito = document.getElementById("o-escrito").value.trim();
-  const cantidad = document.getElementById("o-cantidad").value.trim();
 
   const lines = [t.orderMessageIntro, ""];
-  lines.push(t.orderProductLabel + ": " + currentOrderContext.productName);
-  if (currentOrderContext.sizeLabel) lines.push(t.orderSizeLabel + ": " + currentOrderContext.sizeLabel);
-  if (currentOrderContext.price) lines.push(t.orderPriceLabel + ": " + formatCLP(currentOrderContext.price));
+  cart.forEach((item) => {
+    let line = "• " + item.productName;
+    if (item.sizeLabel) line += " (" + item.sizeLabel + ")";
+    line += " x" + item.qty + " — " + formatCLP(item.price * item.qty);
+    lines.push(line);
+    if (item.isCake && item.cakeText) {
+      lines.push("   " + t.orderCakeTextLabel + ": " + item.cakeText);
+    }
+  });
+  lines.push("");
+  lines.push(t.cartTotal + ": " + formatCLP(cartTotal()));
   lines.push("");
   lines.push(t.quoteNombre + ": " + nombre);
   lines.push(t.quoteApellido + ": " + apellido);
@@ -1004,10 +1252,6 @@ function buildOrderMessage() {
   lines.push(t.quoteDireccion + ": " + direccion);
   lines.push(t.quoteFecha + ": " + formatDateCL(fecha));
   lines.push(t.quoteHora + ": " + hora);
-  if (currentOrderContext.isCake && escrito) {
-    lines.push(t.orderCakeTextLabel + ": " + escrito);
-  }
-  lines.push(t.orderQty + ": " + cantidad);
   return lines.join("\n");
 }
 
@@ -1018,6 +1262,8 @@ function handleOrderSend() {
   const url = buildWhatsappLink(BUSINESS.whatsappNumber, buildOrderMessage());
   window.open(url, "_blank", "noopener,noreferrer");
   document.getElementById("order-panel").close();
+  clearCart();
+  form.reset();
 }
 
 // Actualiza los textos del panel (botón con ícono, placeholders, etc.)
@@ -1026,6 +1272,10 @@ function setupOrderPanelLabels() {
   const t = UI[currentLang];
   const sendBtn = document.getElementById("order-send-whatsapp");
   if (sendBtn) setWhatsappLabel(sendBtn, t.orderSendWhatsapp);
+  const floatCart = document.getElementById("float-cart");
+  if (floatCart) floatCart.setAttribute("aria-label", t.viewCartLabel);
+  renderCartBadge();
+  renderCartPanel();
 }
 
 function buildCakeCard(product) {
@@ -1069,7 +1319,7 @@ function buildCakeCard(product) {
   const orderBtn = document.createElement("button");
   orderBtn.type = "button";
   orderBtn.className = "btn btn-order";
-  setWhatsappLabel(orderBtn, t.orderButton);
+  setIconLabel(orderBtn, "cart", t.addToCartButton);
   body.appendChild(orderBtn);
 
   let selectedIndex = 0;
@@ -1081,12 +1331,16 @@ function buildCakeCard(product) {
 
   orderBtn.addEventListener("click", () => {
     const labels = PORTION_GROUPS[product.group][currentLang];
-    openOrderPanel({
+    addToCart({
       productName: product[currentLang].name,
       sizeLabel: labels[selectedIndex],
       price: product.prices[selectedIndex],
       isCake: true,
     });
+    setIconLabel(orderBtn, "cart", UI[currentLang].addedToCartButton);
+    window.setTimeout(() => {
+      setIconLabel(orderBtn, "cart", UI[currentLang].addToCartButton);
+    }, 1200);
   });
 
   const labels = PORTION_GROUPS[product.group][currentLang];
@@ -1162,14 +1416,18 @@ function buildSimpleCard(product) {
   const orderBtn = document.createElement("button");
   orderBtn.type = "button";
   orderBtn.className = "btn btn-order";
-  setWhatsappLabel(orderBtn, t.orderButton);
+  setIconLabel(orderBtn, "cart", t.addToCartButton);
   orderBtn.addEventListener("click", () => {
-    openOrderPanel({
+    addToCart({
       productName: product[currentLang].name,
       sizeLabel: product[currentLang].unit || "",
       price: product.price,
       isCake: false,
     });
+    setIconLabel(orderBtn, "cart", UI[currentLang].addedToCartButton);
+    window.setTimeout(() => {
+      setIconLabel(orderBtn, "cart", UI[currentLang].addToCartButton);
+    }, 1200);
   });
   body.appendChild(orderBtn);
 
@@ -1319,14 +1577,18 @@ function buildSeasonalCard(item) {
   const orderBtn = document.createElement("button");
   orderBtn.type = "button";
   orderBtn.className = "btn btn-order";
-  setWhatsappLabel(orderBtn, t.orderButton);
+  setIconLabel(orderBtn, "cart", t.addToCartButton);
   orderBtn.addEventListener("click", () => {
-    openOrderPanel({
+    addToCart({
       productName: item[currentLang].name,
       sizeLabel: "",
       price: item.price || 0,
       isCake: false,
     });
+    setIconLabel(orderBtn, "cart", UI[currentLang].addedToCartButton);
+    window.setTimeout(() => {
+      setIconLabel(orderBtn, "cart", UI[currentLang].addToCartButton);
+    }, 1200);
   });
   body.appendChild(orderBtn);
 
@@ -1637,6 +1899,7 @@ document.addEventListener("DOMContentLoaded", () => {
     /* Almacenamiento no disponible: usamos español por defecto. */
   }
   currentLang = saved;
+  loadCart();
   render();
 
   document.getElementById("lang-toggle").addEventListener("click", () => {
@@ -1697,7 +1960,7 @@ document.addEventListener("DOMContentLoaded", () => {
   blockSundaySelection(qFecha);
   blockSundaySelection(oFecha);
 
-  // Panel de pedido ("Pedir aquí").
+  // Panel de pago final (datos de contacto + envío del pedido).
   const orderPanel = document.getElementById("order-panel");
   document.getElementById("order-form").addEventListener("submit", (e) => e.preventDefault());
   document.getElementById("order-panel-close").addEventListener("click", () => orderPanel.close());
@@ -1705,6 +1968,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === orderPanel) orderPanel.close();
   });
   document.getElementById("order-send-whatsapp").addEventListener("click", handleOrderSend);
+
+  // Carrito de compras: botón flotante, panel de revisión y paso a pago.
+  const cartPanel = document.getElementById("cart-panel");
+  const floatCartBtn = document.getElementById("float-cart");
+  floatCartBtn.insertBefore(makeIcon("cart", "float-cart-icon"), floatCartBtn.firstChild);
+  floatCartBtn.addEventListener("click", openCartPanel);
+  document.getElementById("cart-panel-close").addEventListener("click", () => cartPanel.close());
+  cartPanel.addEventListener("click", (e) => {
+    if (e.target === cartPanel) cartPanel.close();
+  });
+  document.getElementById("cart-clear").addEventListener("click", clearCart);
+  document.getElementById("cart-continue").addEventListener("click", () => {
+    cartPanel.close();
+    openCheckoutPanel();
+  });
 
   // Ventana de bienvenida: se muestra sola al entrar a la página.
   const welcomeLogo = document.getElementById("welcome-logo");
