@@ -637,6 +637,7 @@ const UI = {
     skipLink: "Ir al contenido",
     welcomeTitle: "Bienvenidos",
     welcomeSchedule: "Horario de entrega en el local: de lunes a sábado, entre las 17:00 y las 19:00 hrs. Domingo cerrado.",
+    welcomeAdvanceNotice: "Los pedidos deben realizarse con un mínimo de 48 horas de anticipación.",
     tagline: "Sabores que perduran en cada celebración",
     heroTitle: "Pastelería Derling",
     heroSubtitle: "Tortas artesanales, cóctel y kuchenes salados hechos con receta de familia en Copiapó.",
@@ -694,6 +695,7 @@ const UI = {
     quoteHoraPlaceholder: "Elige una hora",
     quoteDateTimeHint: "La entrega es en el local de lunes a sábado, entre 17:00 y 19:00 hrs. Domingo cerrado.",
     quoteDateSundayError: "No trabajamos los domingos. Por favor elige otro día para la entrega.",
+    quoteDateTooSoonError: "Los pedidos deben hacerse con al menos 48 horas de anticipación. Por favor elige una fecha más adelante.",
     quoteCakeText: "Escrito en torta (opcional)",
     quoteMessage: "Consulta o cotización",
     quoteMessagePlaceholder: "Cuéntanos qué necesitas: tipo de torta, cantidad de personas, otros productos (canapés, alfajores, cachitos...), fecha del evento, etc.",
@@ -740,6 +742,7 @@ const UI = {
     skipLink: "Skip to content",
     welcomeTitle: "Welcome",
     welcomeSchedule: "Pickup hours at our store: Monday to Saturday, between 5:00 and 7:00 PM. Closed Sundays.",
+    welcomeAdvanceNotice: "Orders must be placed at least 48 hours in advance.",
     tagline: "Flavors that last through every celebration",
     heroTitle: "Pastelería Derling",
     heroSubtitle: "Handcrafted cakes, cocktail bites and savory kuchen made with a family recipe in Copiapó, Chile.",
@@ -797,6 +800,7 @@ const UI = {
     quoteHoraPlaceholder: "Choose a time",
     quoteDateTimeHint: "Pickup is at our store, Monday to Saturday, between 5:00 and 7:00 PM. Closed Sundays.",
     quoteDateSundayError: "We're closed on Sundays. Please choose another delivery day.",
+    quoteDateTooSoonError: "Orders must be placed at least 48 hours in advance. Please choose a later date.",
     quoteCakeText: "Cake message (optional)",
     quoteMessage: "Inquiry or quote request",
     quoteMessagePlaceholder: "Tell us what you need: cake type, number of guests, other products (canapés, alfajores, cachitos...), event date, etc.",
@@ -1235,7 +1239,13 @@ function openCheckoutPanel() {
 function validateOrderBusinessRules() {
   const t = UI[currentLang];
   const fechaInput = document.getElementById("o-fecha");
-  fechaInput.setCustomValidity(isDateSunday(fechaInput.value) ? t.quoteDateSundayError : "");
+  if (isDateSunday(fechaInput.value)) {
+    fechaInput.setCustomValidity(t.quoteDateSundayError);
+  } else if (isDateTooSoon(fechaInput.value)) {
+    fechaInput.setCustomValidity(t.quoteDateTooSoonError);
+  } else {
+    fechaInput.setCustomValidity("");
+  }
 }
 
 function buildOrderMessage() {
@@ -1674,6 +1684,19 @@ function isDateSunday(isoDate) {
   return new Date(y, m - 1, d).getDay() === 0;
 }
 
+// Devuelve la fecha mínima permitida para un pedido (hoy + 2 días,
+// formato AAAA-MM-DD) para exigir al menos 48 horas de anticipación.
+function getMinOrderDateISO() {
+  const minDate = new Date();
+  minDate.setDate(minDate.getDate() + 2);
+  return minDate.toLocaleDateString("en-CA");
+}
+
+function isDateTooSoon(isoDate) {
+  if (!isoDate) return false;
+  return isoDate < getMinOrderDateISO();
+}
+
 // No deja seleccionar un domingo en el calendario: apenas se elige uno,
 // se limpia el campo al instante y se avisa, en vez de esperar a que la
 // persona presione enviar.
@@ -1683,6 +1706,18 @@ function blockSundaySelection(dateInput) {
       dateInput.value = "";
       const t = UI[currentLang];
       window.alert(t.quoteDateSundayError);
+    }
+  });
+}
+
+// Igual que blockSundaySelection, pero para la regla de las 48 horas
+// mínimas de anticipación.
+function blockTooSoonSelection(dateInput) {
+  dateInput.addEventListener("change", () => {
+    if (isDateTooSoon(dateInput.value)) {
+      dateInput.value = "";
+      const t = UI[currentLang];
+      window.alert(t.quoteDateTooSoonError);
     }
   });
 }
@@ -1723,7 +1758,13 @@ function buildQuoteMessage() {
 function validateQuoteBusinessRules() {
   const t = UI[currentLang];
   const fechaInput = document.getElementById("q-fecha");
-  fechaInput.setCustomValidity(isDateSunday(fechaInput.value) ? t.quoteDateSundayError : "");
+  if (isDateSunday(fechaInput.value)) {
+    fechaInput.setCustomValidity(t.quoteDateSundayError);
+  } else if (isDateTooSoon(fechaInput.value)) {
+    fechaInput.setCustomValidity(t.quoteDateTooSoonError);
+  } else {
+    fechaInput.setCustomValidity("");
+  }
 }
 
 function handleQuoteWhatsapp() {
@@ -1975,13 +2016,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // No dejar elegir una fecha anterior a hoy, ni un domingo, en el
   // formulario de cotización ni en el panel de pedido.
-  const todayISO = new Date().toLocaleDateString("en-CA"); // formato AAAA-MM-DD
+  const minOrderDateISO = getMinOrderDateISO(); // hoy + 48 hrs mínimo de anticipación
   const qFecha = document.getElementById("q-fecha");
   const oFecha = document.getElementById("o-fecha");
-  qFecha.min = todayISO;
-  oFecha.min = todayISO;
+  qFecha.min = minOrderDateISO;
+  oFecha.min = minOrderDateISO;
   blockSundaySelection(qFecha);
   blockSundaySelection(oFecha);
+  blockTooSoonSelection(qFecha);
+  blockTooSoonSelection(oFecha);
 
   // Panel de pago final (datos de contacto + envío del pedido).
   const orderPanel = document.getElementById("order-panel");
