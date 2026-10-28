@@ -912,6 +912,12 @@ a {
   font-size: 0.9rem;
   color: var(--color-muted);
 }
+.payment-receipt-reminder {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+}
 
 /* ---------- Novios / Eventos ---------- */
 .novios-section {
