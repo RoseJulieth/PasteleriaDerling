@@ -669,6 +669,7 @@ const UI = {
     cartTitle: "Tu Pedido",
     cartEmpty: "Todavía no has agregado productos.",
     cartTotal: "Total",
+    cartDepositAmount: "Abono 50% (para confirmar)",
     cartClear: "Vaciar carrito",
     cartContinue: "Continuar pedido",
     cartItemRemoveLabel: "Quitar",
@@ -770,6 +771,7 @@ const UI = {
     cartTitle: "Your Order",
     cartEmpty: "You haven't added any products yet.",
     cartTotal: "Total",
+    cartDepositAmount: "50% deposit (to confirm)",
     cartClear: "Clear cart",
     cartContinue: "Continue order",
     cartItemRemoveLabel: "Remove",
@@ -1205,6 +1207,18 @@ function renderOrderItemsSummary() {
   totalRow.appendChild(totalLabel);
   totalRow.appendChild(totalValue);
   container.appendChild(totalRow);
+
+  const depositRow = document.createElement("div");
+  depositRow.className = "order-items-summary-row order-items-summary-deposit";
+  const depositLabel = document.createElement("span");
+  depositLabel.textContent = t.cartDepositAmount;
+  const depositValue = document.createElement("span");
+  depositValue.textContent = formatCLP(Math.round(cartTotal() / 2));
+  depositRow.appendChild(depositLabel);
+  depositRow.appendChild(depositValue);
+  container.appendChild(depositRow);
+
+  populatePaymentDetailsList(document.getElementById("order-payment-details-list"));
 }
 
 function openCheckoutPanel() {
@@ -1753,7 +1767,11 @@ function renderInfoSchedule() {
   });
 }
 
-function renderPaymentDetails() {
+// Rellena cualquier <ul class="payment-details-list"> con los datos de
+// transferencia (se usa tanto en "Información > Métodos de Pago" como en
+// el panel de pago final del carrito, para no tener que repetir la lista).
+function populatePaymentDetailsList(list) {
+  if (!list) return;
   const t = UI[currentLang];
   const rows = [
     [t.paymentRut, PAYMENT_INFO.rut],
@@ -1763,7 +1781,6 @@ function renderPaymentDetails() {
     [t.paymentNumeroCuenta, PAYMENT_INFO.numeroCuenta],
     [t.paymentCorreo, PAYMENT_INFO.correo],
   ];
-  const list = document.getElementById("payment-details-list");
   list.textContent = "";
   rows.forEach(([label, value]) => {
     const li = document.createElement("li");
@@ -1777,6 +1794,10 @@ function renderPaymentDetails() {
     li.appendChild(valueEl);
     list.appendChild(li);
   });
+}
+
+function renderPaymentDetails() {
+  populatePaymentDetailsList(document.getElementById("payment-details-list"));
 }
 
 function applyStaticTranslations() {

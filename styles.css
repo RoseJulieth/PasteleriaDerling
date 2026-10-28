@@ -899,6 +899,19 @@ a {
   border-top: 1px solid var(--color-border);
   font-weight: 700;
 }
+.order-items-summary-deposit {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+.order-payment-details {
+  margin-top: 4px;
+}
+.order-payment-details .payment-cash,
+.order-payment-details .payment-transfer-intro {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
 
 /* ---------- Novios / Eventos ---------- */
 .novios-section {
