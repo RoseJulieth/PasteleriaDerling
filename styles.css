@@ -348,9 +348,6 @@ a {
   border: 0;
 }
 
-.search-bar {
-  margin-bottom: 14px;
-}
 .search-input {
   width: 100%;
   min-height: var(--touch-min);
@@ -366,6 +363,62 @@ a {
   border-color: var(--color-primary);
 }
 
+/* ---------- Buscador en el header ---------- */
+.nav-search {
+  position: relative;
+}
+.search-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-height: var(--touch-min);
+  border-radius: 999px;
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-primary-dark);
+  cursor: pointer;
+}
+.search-toggle[aria-expanded="true"] {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.search-toggle-icon {
+  width: 20px;
+  height: 20px;
+}
+.nav-search-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  left: auto;
+  width: min(300px, 86vw);
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  z-index: 110;
+}
+
+/* ---------- Catálogo: grilla + barra lateral de categorías ---------- */
+.catalog-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.catalog-main {
+  min-width: 0;
+}
+.catalog-sidebar {
+  order: -1;
+}
+.catalog-sidebar-title {
+  margin: 0 0 8px;
+  color: var(--color-primary-dark);
+  font-size: 1rem;
+}
 .filter-bar {
   display: flex;
   gap: 10px;
@@ -390,6 +443,34 @@ a {
   background: var(--color-primary);
   border-color: var(--color-primary);
   color: #fff;
+}
+
+@media (min-width: 860px) {
+  .catalog-layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 32px;
+  }
+  .catalog-main {
+    flex: 1 1 0%;
+  }
+  .catalog-sidebar {
+    flex: 0 0 220px;
+    order: 0;
+    position: sticky;
+    top: 90px;
+  }
+  .catalog-sidebar .filter-bar {
+    flex-direction: column;
+    overflow-x: visible;
+    padding: 0;
+    margin-bottom: 0;
+  }
+  .catalog-sidebar .filter-btn {
+    width: 100%;
+    text-align: left;
+    white-space: normal;
+  }
 }
 
 .catalog-grid {

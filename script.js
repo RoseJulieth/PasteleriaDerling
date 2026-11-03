@@ -559,7 +559,7 @@ const GALLERY_ITEMS = [
   { id: "galeria-2", img: "images/galeria-2.webp",
     es: { name: "Cumpleaños Temático" },
     en: { name: "Themed Birthday Cake" } },
-  { id: "galeria-3", img: "images/galeria-3.jpg",
+  { id: "galeria-3", img: "images/galeria-3.webp",
     es: { name: "Torta de Bautizo" },
     en: { name: "Christening Cake" } },
   { id: "galeria-4", img: "images/galeria-4.webp",
@@ -652,6 +652,8 @@ const UI = {
     searchLabel: "Buscar en el catálogo",
     searchPlaceholder: "Buscar torta o producto...",
     filterAll: "Todas",
+    filterSidebarTitle: "Categorías",
+    searchToggleLabel: "Buscar",
     peopleLabel: "Elige el tamaño",
     orderPriceLabel: "Precio",
     orderButton: "Pedir aquí",
@@ -757,6 +759,8 @@ const UI = {
     searchLabel: "Search the catalog",
     searchPlaceholder: "Search for a cake or product...",
     filterAll: "All",
+    filterSidebarTitle: "Categories",
+    searchToggleLabel: "Search",
     peopleLabel: "Choose a size",
     orderPriceLabel: "Price",
     orderButton: "Order here",
@@ -884,6 +888,7 @@ const ICON_PATHS = {
   phone: "M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z",
   email: "M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z",
   cart: "M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z",
+  search: "M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z",
 };
 
 function makeIcon(name, className) {
@@ -1983,7 +1988,45 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  document.getElementById("product-search").addEventListener("input", applyFilters);
+  // Buscador del catálogo, movido al header junto al botón de idioma: un
+  // ícono de lupa que despliega el campo de búsqueda (con sugerencias).
+  const searchToggle = document.getElementById("search-toggle");
+  const searchPanel = document.getElementById("nav-search-panel");
+  const searchInput = document.getElementById("product-search");
+  searchToggle.appendChild(makeIcon("search", "search-toggle-icon"));
+
+  function closeSearchPanel() {
+    searchPanel.hidden = true;
+    searchToggle.setAttribute("aria-expanded", "false");
+  }
+
+  searchToggle.addEventListener("click", () => {
+    const isOpen = !searchPanel.hidden;
+    if (isOpen) {
+      closeSearchPanel();
+    } else {
+      searchPanel.hidden = false;
+      searchToggle.setAttribute("aria-expanded", "true");
+      searchInput.focus();
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!searchPanel.hidden && !e.target.closest(".nav-search")) closeSearchPanel();
+  });
+
+  searchInput.addEventListener("input", () => {
+    applyFilters();
+    if (searchInput.value.trim()) {
+      document.getElementById("catalogo").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+  searchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      document.getElementById("catalogo").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
 
   const mapModal = document.getElementById("map-modal");
   const mapTrigger = document.getElementById("map-embed-trigger");

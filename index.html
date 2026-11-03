@@ -31,6 +31,22 @@
       <a href="#cotizar" data-i18n="navCotizar">Cotiza Aquí</a>
       <a href="#novios" data-i18n="navNovios">Novios y Eventos</a>
       <a href="#info" data-i18n="navInfo">Información</a>
+      <div class="nav-search">
+        <button type="button" id="search-toggle" class="search-toggle" data-i18n-aria-label="searchToggleLabel" aria-label="Buscar" aria-expanded="false" aria-controls="nav-search-panel"></button>
+        <div id="nav-search-panel" class="nav-search-panel" hidden>
+          <label for="product-search" class="visually-hidden" data-i18n="searchLabel">Buscar en el catálogo</label>
+          <input
+            type="search"
+            id="product-search"
+            list="product-datalist"
+            class="search-input"
+            data-i18n-placeholder="searchPlaceholder"
+            placeholder="Buscar torta o producto..."
+            autocomplete="off"
+          >
+          <datalist id="product-datalist"></datalist>
+        </div>
+      </div>
       <button type="button" id="lang-toggle" class="lang-toggle" aria-label="Switch to English">EN</button>
     </nav>
   </div>
@@ -59,23 +75,13 @@
       <h2 data-i18n="catalogTitle">Nuestro Catálogo</h2>
       <p class="section-subtitle" data-i18n="catalogSubtitle">Elige el tamaño y el precio se actualiza al instante.</p>
 
-      <div class="search-bar">
-        <label for="product-search" class="visually-hidden" data-i18n="searchLabel">Buscar en el catálogo</label>
-        <input
-          type="search"
-          id="product-search"
-          list="product-datalist"
-          class="search-input"
-          data-i18n-placeholder="searchPlaceholder"
-          placeholder="Buscar torta o producto..."
-          autocomplete="off"
-        >
-        <datalist id="product-datalist"></datalist>
+      <div class="catalog-layout">
+        <div id="catalog-grid" class="catalog-main"></div>
+        <aside class="catalog-sidebar" aria-label="Filtrar catálogo">
+          <h3 class="catalog-sidebar-title" data-i18n="filterSidebarTitle">Categorías</h3>
+          <div id="filter-bar" class="filter-bar" role="tablist" aria-label="Filtrar catálogo"></div>
+        </aside>
       </div>
-
-      <div id="filter-bar" class="filter-bar" role="tablist" aria-label="Filtrar catálogo"></div>
-
-      <div id="catalog-grid"></div>
     </div>
   </section>
 
