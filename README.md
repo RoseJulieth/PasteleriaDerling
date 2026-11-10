@@ -4,7 +4,7 @@
 
 **Catálogo web para una pastelería artesanal en Copiapó, Chile** — bilingüe, 100% responsivo, con pedidos por WhatsApp y cero dependencias externas.
 
-[🔗 Ver sitio en vivo](https://TU-SITIO.netlify.app) · [📋 Reportar un problema](../../issues)
+[🔗 Ver sitio en vivo](https://pasteleriafinaderling.cl) · [📋 Reportar un problema](../../issues)
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
@@ -25,21 +25,22 @@
 </tr>
 <tr>
 <td width="50%"><img src="docs/screenshots/mobile-welcome.png" alt="Vista móvil con ventana de bienvenida"></td>
-<td width="50%"><img src="docs/screenshots/mobile-order-panel.png" alt="Panel de pedido en móvil"></td>
+<td width="50%"><img src="docs/screenshots/mobile-cart-panel.png" alt="Carrito de compras en móvil"></td>
 </tr>
 </table>
 
 ## ✨ Funcionalidades
 
-- **Catálogo interactivo** — más de 50 productos (tortas, cóctel, quiches) con selector de tamaño/porciones que actualiza el precio en pesos chilenos al instante.
+- **Catálogo interactivo** — decenas de productos organizados por categoría (tortas clásicas, especiales, rectangulares, individuales, cóctel, quiches y más) con selector de tamaño/porciones que actualiza el precio en pesos chilenos al instante.
 - **Bilingüe (ES/EN)** — un botón cambia todo el contenido, incluidos los mensajes de WhatsApp, sin recargar la página ni depender de un servicio de traducción pago.
-- **Panel de pedido** — al presionar "Pedir aquí" se abre un panel (lateral en escritorio, pantalla completa en celular) que reúne los datos del cliente y arma un mensaje de WhatsApp listo para enviar.
-- **Cotizador de pedidos múltiples** — formulario aparte para pedidos con varios productos a la vez, enviable por WhatsApp o por correo (Gmail).
-- **Reglas de negocio reales** — el calendario de entrega bloquea los domingos en tiempo real y limita el horario disponible (17:00–19:00) a intervalos de 30 minutos.
+- **Carrito de compras** — los productos se agregan al carrito desde cada tarjeta, con cantidad y texto personalizado para tortas; al finalizar, arma un mensaje de WhatsApp con el resumen del pedido, el total, el detalle del abono del 50% y los datos de transferencia bancaria.
+- **Cotizador de pedidos múltiples** — formulario aparte para pedidos fuera de catálogo o personalizados, enviable por WhatsApp o por correo (Gmail).
+- **Reglas de negocio reales** — el calendario de entrega bloquea los domingos y exige un mínimo de 48 horas de anticipación en tiempo real, y limita el horario disponible (17:00–19:00) a intervalos de 30 minutos.
+- **Buscador con autocompletado** — accesible desde un ícono de lupa junto al selector de idioma; filtra el catálogo mientras se escribe, ignorando tildes.
+- **Categorías en barra lateral** — filtro de categorías ordenado en una barra lateral en escritorio (fila horizontal en celular) para mantener el catálogo ordenado.
 - **Temporada especial** — sección destacada y activable/desactivable (ej. Fiestas Patrias) sin tocar el resto del sitio.
-- **Buscador con autocompletado** — filtra el catálogo mientras se escribe, ignorando tildes.
 - **Mapa embebido** — vista previa de la ubicación en la misma página, con modal ampliable.
-- **Botón flotante de WhatsApp** — siempre visible, con el número real del negocio.
+- **Botón flotante de WhatsApp y de carrito** — siempre visibles, con el número real del negocio y el conteo de productos agregados.
 
 ## 🔒 Seguridad
 
@@ -63,7 +64,7 @@ Es una decisión de diseño, no una limitación: el sitio pesa poco, carga rápi
 | **Interactividad** | JavaScript ES6+ nativo, DOM API |
 | **Íconos** | SVG dibujados a mano (WhatsApp, Instagram, Facebook, teléfono, correo) |
 | **Internacionalización** | Sistema propio de textos ES/EN por diccionario |
-| **Hosting** | Netlify (deploy continuo desde esta rama de GitHub) |
+| **Hosting** | Netlify (deploy continuo desde la rama `main` de GitHub) |
 | **Accesibilidad** | HTML semántico, `aria-label`, foco visible, tamaños táctiles ≥44px |
 
 ## 📁 Estructura del proyecto
@@ -87,7 +88,6 @@ No requiere instalar nada. Basta con abrir `index.html` en un navegador, o servi
 ```bash
 git clone https://github.com/RoseJulieth/PasteleriaDerling.git
 cd PasteleriaDerling
-git checkout claude/bakery-catalog-website-f31hgy
 python3 -m http.server 8000
 # abrir http://localhost:8000
 ```
